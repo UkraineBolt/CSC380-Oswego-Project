@@ -84,9 +84,9 @@ public class LibraryInterface extends javax.swing.JFrame {
                 .addComponent(jButton5)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(482, Short.MAX_VALUE)
+                .addContainerGap(476, Short.MAX_VALUE)
                 .addComponent(jButton6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 506, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 499, Short.MAX_VALUE)
                 .addComponent(jButton7))
         );
         layout.setVerticalGroup(

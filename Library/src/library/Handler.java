@@ -10,10 +10,16 @@ package library;
  */
 public class Handler {
     private Account current;
-    public Handler(){}
+    Accounts as;
+    public Handler(){
+    as=new Accounts();
+    }
+    public int aType(){
+        return current.gettype();
+    }
     public boolean signIn(String user,String pass){
-        Accounts a = new Accounts();
-        current=a.callAccount(user, pass);
+        
+        current=as.callAccount(user, pass);
         if(current!=null){
             return true;
         }else{
@@ -22,13 +28,16 @@ public class Handler {
     }
     
     public boolean create(String u,String p,String fn,String ln,String add,String c,String em, String ph, String zip,String st){
-        Accounts as = new Accounts();
         Account a= new Account(AccountType.Client,fn,ln,add,c,em,ph,zip,st);
         if(as.makeAccount(u, p, a)){
             return true;
         }else{
             return false;
         }
+    }
+    
+    public boolean delete(){
+        return true;
     }
     
     

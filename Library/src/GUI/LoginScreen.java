@@ -255,7 +255,7 @@ public class LoginScreen extends javax.swing.JFrame {
         try {
             String username = jTextField1.getText();
             String password = jPasswordField1.getText();
-            if (handler.signIn(username, password)&&username!=null&&password!=null) {
+            if (handler.signIn(username, password)==true) {
                 this.setVisible(false);
                 LibraryInterface li = new LibraryInterface();
                 li.getdata(handler);

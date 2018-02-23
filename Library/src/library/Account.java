@@ -51,6 +51,15 @@ class Account {
             accountType=at;
             checkouts = new Checkout[ap.getCheckOutSize()];
         }
+        int gettype(){
+            if(accountType==AccountType.Employer){
+               return 0; 
+            }else if(accountType==AccountType.Employee){
+                return 1;
+            }else{
+                return 2;
+            }
+        }
 
         String ChangeCheckOutMax(int s) {
             if (s>0&&s>checked) {

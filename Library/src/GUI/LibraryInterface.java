@@ -13,7 +13,6 @@ public class LibraryInterface extends javax.swing.JFrame {
     Handler handler = new Handler();
     /**
      * Creates new form LibraryInterface
-     * @param h
      */
     public LibraryInterface() {
         initComponents();
@@ -21,7 +20,18 @@ public class LibraryInterface extends javax.swing.JFrame {
     void getdata(Handler h){
         handler=h;
     }
-    
+    void typeVisibility(){
+        int pass = handler.aType();
+        if(pass==2){
+            jButton4.setVisible(false);
+            jButton2.setVisible(false);
+            jButton3.setVisible(false);
+        }else if(pass==1){
+            jButton4.setVisible(false);
+        }else{
+            
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -50,10 +60,25 @@ public class LibraryInterface extends javax.swing.JFrame {
         jButton1.setText("View Books");
 
         jButton2.setText("Check in/out");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Work Log");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Admin Page");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Events");
 
@@ -121,6 +146,18 @@ public class LibraryInterface extends javax.swing.JFrame {
        System.exit(0);
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -151,7 +188,9 @@ public class LibraryInterface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LibraryInterface().setVisible(true);//This may not be allowed
+                LibraryInterface li = new LibraryInterface();
+                li.typeVisibility();
+                li.setVisible(true);//This may not be allowed
             }
         });
     }

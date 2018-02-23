@@ -30,7 +30,7 @@ enum Location{
  *
  * @author alex
  */
-public class Stock {
+class Stock {
     class Book{
         private String title,author;
         private ArrayList<Genres> genres = new ArrayList<>();
@@ -65,7 +65,7 @@ public class Stock {
     void removeBook(Book b){
         books.remove(b);
     }
-    //need a search function
+    //need a search functions
     
       
     

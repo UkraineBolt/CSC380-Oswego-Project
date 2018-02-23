@@ -14,7 +14,6 @@ public class AdminPage {
     private double feePayment;
     private int checkOutSize;
     private double dmgfees;
-    private double hrlypay;
     
     long getKeepTime(){
         return keepTime;
@@ -28,10 +27,7 @@ public class AdminPage {
     double getDMGFees(){
         return dmgfees;
     }
-    
-    double getHourlyPay(){
-        return hrlypay;
-    }
+
     
     
     //need read write methods

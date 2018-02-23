@@ -5,6 +5,8 @@
  */
 package GUI;
 
+import library.Handler;
+
 /**
  *
  * @author Tok
@@ -14,8 +16,14 @@ public class LoginScreen extends javax.swing.JFrame {
     /**
      * Creates new form LoginScreen
      */
+    Handler handler = new Handler();
+
     public LoginScreen() {
         initComponents();
+    }
+
+    void getdata(Handler h) {
+        handler = h;
     }
 
     /**
@@ -67,6 +75,12 @@ public class LoginScreen extends javax.swing.JFrame {
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
+            }
+        });
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
             }
         });
 
@@ -237,9 +251,26 @@ public class LoginScreen extends javax.swing.JFrame {
         //if fail login
         //  print error
         //else
-        this.setVisible(false);
-        new LibraryInterface().setVisible(true);
+
+        try {
+            String username = jTextField1.getText();
+            String password = jPasswordField1.getText();
+            if (handler.signIn(username, password)&&username!=null&&password!=null) {
+                this.setVisible(false);
+                LibraryInterface li = new LibraryInterface();
+                li.getdata(handler);
+                li.setVisible(true);
+            }
+        } catch (NullPointerException e) {
+
+        }
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments

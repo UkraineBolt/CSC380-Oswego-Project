@@ -4,19 +4,24 @@
  * and open the template in the editor.
  */
 package GUI;
-
+import library.Handler;
 /**
  *
  * @author Tok
  */
 public class LibraryInterface extends javax.swing.JFrame {
-
+    Handler handler = new Handler();
     /**
      * Creates new form LibraryInterface
+     * @param h
      */
     public LibraryInterface() {
         initComponents();
     }
+    void getdata(Handler h){
+        handler=h;
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -146,7 +151,7 @@ public class LibraryInterface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LibraryInterface().setVisible(true);
+                new LibraryInterface().setVisible(true);//This may not be allowed
             }
         });
     }

@@ -9,6 +9,6 @@ package library;
  *
  * @author alex
  */
-public class Logs {
+class Logs {
     
 }

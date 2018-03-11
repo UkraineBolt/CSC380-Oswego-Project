@@ -29,11 +29,7 @@ public class Handler {
     
     public boolean create(String u,String p,String fn,String ln,String add,String c,String em, String ph, String zip,String st){
         Account a= new Account(AccountType.Client,fn,ln,add,c,em,ph,zip,st);
-        if(as.makeAccount(u, p, a)){
-            return true;
-        }else{
-            return false;
-        }
+        return as.makeAccount(u, p, a);
     }
     
     public boolean delete(){

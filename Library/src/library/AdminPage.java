@@ -10,21 +10,34 @@ package library;
  * @author alex
  */
 public class AdminPage {
-    private long keepTime;
+    private int keepTime;
     private double feePayment;
     private int checkOutSize;
     private double dmgfees;
     
-    long getKeepTime(){
+    public void setKeepTime(int l){
+        keepTime=l;
+    }
+    public void setFeePayment(double f){
+        feePayment=f;
+    }
+    public void setCheckOutSize(int c){
+        checkOutSize=c;
+    }
+    public void setDmgFees(double d){
+        dmgfees=d;
+    }
+    
+    public int getKeepTime(){
         return keepTime;
     }
-    double getFee(){
+    public double getFee(){
         return feePayment;
     }
-    int getCheckOutSize(){
+    public int getCheckOutSize(){
         return checkOutSize;
     }
-    double getDMGFees(){
+    public double getDMGFees(){
         return dmgfees;
     }
 

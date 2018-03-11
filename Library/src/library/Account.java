@@ -22,8 +22,7 @@ class Account {
                 dateCheckedOut=dco;
                 b.ChangeAvailability(Availability.CheckedOut);
             }
-        }
-        
+        }        
         private AccountType accountType;
         private String address;
         private String firstName;
@@ -52,34 +51,15 @@ class Account {
             checkouts = new Checkout[ap.getCheckOutSize()];
         }
         int gettype(){
-            if(accountType==AccountType.Employer){
-               return 0; 
-            }else if(accountType==AccountType.Employee){
-                return 1;
-            }else{
-                return 2;
-            }
-        }
-
-        String ChangeCheckOutMax(int s) {
-            if (s>0&&s>checked) {
-                Checkout[] co = new Checkout[s];
-                for (int i = 0; i < checkouts.length; i++) {
-                    co[i]=checkouts[i];                    
-                }
-                checkouts = co;
-                return "max checked out changed to "+s;
-            }else{
-                String x;
-                int j=s-checked;
-                if(j<0){
-                    x="too many books checked";
-                }else if(s<=0){
-                    x="inserting 0 or negative number";
-                }else{
-                    x="unknown problem";
-                }
-                return "Change failed due to "+x;
+            if(null==accountType){
+                return -1;
+            }else switch (accountType) {
+                case Employer:
+                    return 0;
+                case Employee:
+                    return 1;
+                default:
+                    return 2;
             }
         }
         void AddFee(double dmg,int days) {
@@ -108,7 +88,7 @@ class Account {
                     break;
                 }
             }
-            if(checker==true){
+            if(checker){
                 for(int i=temp;i<checkouts.length-1;i++){
                     checkouts[i]=checkouts[i+1];
                 }

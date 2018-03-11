@@ -103,7 +103,7 @@ public class ForgotUserId extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(228, 228, 228)
                         .addComponent(jButton2)))
-                .addContainerGap(170, Short.MAX_VALUE))
+                .addContainerGap(209, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,7 +124,7 @@ public class ForgotUserId extends javax.swing.JFrame {
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addContainerGap(124, Short.MAX_VALUE))
         );
 
         pack();

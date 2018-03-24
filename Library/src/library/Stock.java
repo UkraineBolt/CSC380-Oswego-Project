@@ -54,6 +54,9 @@ class Stock {
         void ChangeCondition(Condition c){
             condition=c;
         }
+        public String toString(){
+            return title+author+crn+year+condition+genres.toString();
+        }
         
     }
     ArrayList<Book> books = new ArrayList<>();

@@ -28,11 +28,13 @@ public class Handler {
     }
     
     public boolean create(String u,String p,String fn,String ln,String add,String c,String em, String ph, String zip,String st){
-        Account a= new Account(AccountType.Client,fn,ln,add,c,em,ph,zip,st);
+        Account a= new Account(AccountType.Client,fn,ln,add,c,em,ph,zip,st,u);
         return as.makeAccount(u, p, a);
     }
     
     public boolean delete(){
+        String u = current.getUsername();
+        as.deleteAccount(u, as.user.get(u));
         return true;
     }
     

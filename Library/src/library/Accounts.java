@@ -18,10 +18,12 @@ enum AccountType {
 public class Accounts {
 
     private AdminPage ap = new AdminPage();
-
-    HashMap<String, String> user = new HashMap();
-    HashMap<Integer, Account> accounts = new HashMap();
-
+    HashMap<String, String> user;
+    HashMap<Integer, Account> accounts;
+    Accounts(){
+        user = new HashMap();
+        accounts = new HashMap();
+    }
     boolean makeAccount(String uname, String pass, Account a) {
         try {
             user.put(uname, pass);

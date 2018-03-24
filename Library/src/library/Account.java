@@ -6,6 +6,7 @@
 package library;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 /**
  *
@@ -22,7 +23,12 @@ class Account {
                 dateCheckedOut=dco;
                 b.ChangeAvailability(Availability.CheckedOut);
             }
-        }        
+            @Override
+            public String toString(){
+                return book.toString()+ " "+dateCheckedOut+" - "+dueDate;
+            }
+        }
+        private String username;
         private AccountType accountType;
         private String address;
         private String firstName;
@@ -37,7 +43,7 @@ class Account {
         private double fee = 0;
 
         AdminPage ap = new AdminPage();
-        Account( AccountType at, String fname, String lname,String a,String c,String em, String ph, String zip,String st) {
+        Account( AccountType at, String fname, String lname,String a,String c,String em, String ph, String zip,String st,String u) {
             state=st;
             address = a;
             firstName=fname;
@@ -49,6 +55,7 @@ class Account {
             checked=0;
             accountType=at;
             checkouts = new Checkout[ap.getCheckOutSize()];
+            username=u;
         }
         int gettype(){
             if(null==accountType){
@@ -93,5 +100,12 @@ class Account {
                     checkouts[i]=checkouts[i+1];
                 }
             }
+        }
+        String getUsername(){
+            return username;
+        }
+        @Override
+        public String toString(){
+            return firstName+" "+lastName+" "+city+" "+state+" "+zipCode+" "+phoneNumber+" "+email+" "+Arrays.toString(checkouts)+" "+username;
         }
     }

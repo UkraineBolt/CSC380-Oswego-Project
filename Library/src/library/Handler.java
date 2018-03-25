@@ -10,9 +10,11 @@ package library;
  */
 public class Handler {
     private Account current;
+    WR w;
     Accounts as;
     public Handler(){
     as=new Accounts();
+    w=new WR();
     }
     public int aType(){
         return current.gettype();

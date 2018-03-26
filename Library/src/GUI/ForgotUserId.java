@@ -139,7 +139,10 @@ public class ForgotUserId extends javax.swing.JFrame {
         email = jTextField1.getText(); //email will be passed to user account handler and the user id will be passed back
         if(email.equals("test")) {
             jTextField2.setText("jreiss98");
-        }// TODO add your handling code here:
+        } else {
+           ForgotUserIdError fue= new ForgotUserIdError();
+           fue.setVisible(true);
+       }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

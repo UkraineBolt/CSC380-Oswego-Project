@@ -40,6 +40,7 @@ public class RegistrationScreen extends javax.swing.JFrame {
         jDialog6 = new javax.swing.JDialog();
         jOptionPane1 = new javax.swing.JOptionPane();
         jOptionPane2 = new javax.swing.JOptionPane();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -380,7 +381,8 @@ public class RegistrationScreen extends javax.swing.JFrame {
             ls.getdata(handler);
             ls.setVisible(true);
         }else{
-            //add invalid shit here
+           RegistrationError re= new RegistrationError();
+           re.setVisible(true);
         }
         
         
@@ -498,6 +500,7 @@ final JFrame parent = new JFrame();
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JPasswordField jPasswordField2;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;

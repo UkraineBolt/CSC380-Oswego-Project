@@ -241,6 +241,10 @@ public class LoginScreen extends javax.swing.JFrame {
         jPasswordField1.setText("");
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.setVisible(false);
         new ResetPassword().setVisible(true);
@@ -256,7 +260,10 @@ public class LoginScreen extends javax.swing.JFrame {
         try {
             String username = jTextField1.getText();
             String password = jPasswordField1.getText();
-            if (handler.signIn(username, password)==true) {
+            if (!(handler.signIn(username, password)==true)) {
+                LoginScreenError lse = new LoginScreenError();
+                lse.setVisible(true);
+            } else {
                 this.setVisible(false);
                 LibraryInterface li = new LibraryInterface();
                 li.getdata(handler);
@@ -266,12 +273,7 @@ public class LoginScreen extends javax.swing.JFrame {
 
         }
 
-
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-
-    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments

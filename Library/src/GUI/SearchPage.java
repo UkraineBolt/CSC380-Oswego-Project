@@ -153,6 +153,8 @@ public class SearchPage extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //  Here is where you put method to take in user input from textfield1 and then put user wanted by employer into textfield2
+        SearchPageError er = new SearchPageError();
+        er.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

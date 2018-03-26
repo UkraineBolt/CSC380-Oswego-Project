@@ -20,17 +20,20 @@ public class Accounts {
     private AdminPage ap = new AdminPage();
     HashMap<String, String> user;
     HashMap<Integer, Account> accounts;
-    Accounts(){
+
+    Accounts() {
         user = new HashMap();
         accounts = new HashMap();
     }
+
     boolean makeAccount(String uname, String pass, Account a) {
         try {
             user.put(uname, pass);
             int accountMarker = uname.hashCode() + pass.hashCode();
             accounts.put(accountMarker, a);
             return true;
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+            System.out.println("Unable to make account. Null-Pointer exception occurred");
             return false;
         }
     }
@@ -45,22 +48,23 @@ public class Accounts {
             } else {
                 return null;
             }
-
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+            System.out.println("Unable to call account. Null-Pointer exception occurred");
             return null;
         }
     }
 
     boolean deleteAccount(String name, String pass) {
         try {
-            Account temp = callAccount(name,pass);
-            if(temp!=null){
-                int key = name.hashCode()+pass.hashCode();
+            Account temp = callAccount(name, pass);
+            if (temp != null) {
+                int key = name.hashCode() + pass.hashCode();
                 accounts.remove(key, temp);
                 return true;
             }
             return false;
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+            System.out.println("Unable to delete account. Null-Pointer exception occurred");
             return false;
         }
     }

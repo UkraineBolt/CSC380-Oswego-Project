@@ -3,15 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/Library/src/library/Logs.java</file>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/Library/src/GUI/LibraryInterface.java</file>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/Library/src/library/Stock.java</file>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/Library/src/library/Accounts.java</file>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/Library/src/library/AdminPage.java</file>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/Library/src/library/Account.java</file>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/Library/src/library/Handler.java</file>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/Library/src/GUI/RegistrationScreen.java</file>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/Library/src/GUI/LoginScreen.java</file>
+            <file>file:/C:/Users/shado/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/src/library/Handler.java</file>
+            <file>file:/C:/Users/shado/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/src/library/Main.java</file>
+            <file>file:/C:/Users/shado/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/src/library/Accounts.java</file>
+            <file>file:/C:/Users/shado/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/src/GUI/RegistrationScreen.java</file>
+            <file>file:/C:/Users/shado/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/src/library/Account.java</file>
+            <file>file:/C:/Users/shado/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/src/library/Stock.java</file>
         </group>
     </open-files>
 </project-private>

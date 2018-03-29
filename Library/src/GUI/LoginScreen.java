@@ -262,7 +262,7 @@ public class LoginScreen extends javax.swing.JFrame {
         try {
             String username = jTextField1.getText();
             String password = jPasswordField1.getText();
-            if ((handler.signIn(username, password)==true)) {
+            if (!(handler.signIn(username, password)==true)) {
                 LoginScreenError lse = new LoginScreenError();
                 lse.setVisible(true);
             } else {

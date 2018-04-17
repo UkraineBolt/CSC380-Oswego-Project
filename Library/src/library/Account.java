@@ -74,7 +74,10 @@ class Account {
         }        
         void ClearFee() {
             fee = 0;
-        }        
+        }
+        double getBill(){
+            return fee;
+        }
         void CheckOutBook(Stock.Book b){
             LocalDate today = LocalDate.now();
             LocalDate due = today.plusDays(ap.getKeepTime());

@@ -42,6 +42,9 @@ public class LogsTest {
         events.add("Event 1");
         events.add("Event 2");
         events.add("Event 3");
+        assertEquals(events.get(0),"Event 1");
+        assertEquals(events.get(1),"Event 2");
+        assertEquals(events.get(2),"Event 3");
     }
     
     @Test
@@ -58,6 +61,7 @@ public class LogsTest {
        for(int i=0;i<events.size();i++){
             events.remove(i);
        }
+       assertEquals(events.isEmpty(),true);
     }
     @Test
     public void testReplaceEvent(){
@@ -70,6 +74,9 @@ public class LogsTest {
             events.add("new event 2");
             events.add("new event 3");
         }
+        assertEquals(events.get(0),"new event 1");
+        assertEquals(events.get(1),"new event 2");
+        assertEquals(events.get(2),"new event 3");
     }
     
 }

@@ -5,7 +5,7 @@
  */
 package library;
 
-import java.io.*;
+
 import java.nio.file.Paths;
 
 /**
@@ -16,13 +16,16 @@ public class WR {
     static String BD;
     static String C;
     static String A;
+    static String L;
     
     WR(){
     String projectPath=Paths.get(".").toAbsolutePath().normalize().toString();
     String packagePath=projectPath+"\\Library\\src\\DataFilePackage";
+    String logPath=projectPath+"\\Library\\src\\LogPackages";
     BD = packagePath+"\\bookData";
     C= packagePath+"\\Constants";
     A= packagePath+"\\Accounts";
+    L=logPath;
     }
     
 }

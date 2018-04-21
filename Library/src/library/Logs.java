@@ -5,6 +5,7 @@
  */
 package library;
 
+import java.io.*;
 import java.util.Date;
 import java.util.PriorityQueue;
 
@@ -37,6 +38,10 @@ public class Logs {
             }
         }
 
+    }
+    
+    Logs(){
+        
     }
 
     //may need fixing
@@ -92,6 +97,29 @@ public class Logs {
     void clearLog() {
         workLog.clear();
     }
+    
+    private void writeLogs() throws IOException{
+        WR r = new WR();
+        FileOutputStream fos = new FileOutputStream(new File(r.returnWorkLogsPath()),false);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(workLog);
+        oos.close();
+        fos.close();
+    }
+    
+    private void readLogs() throws IOException, ClassNotFoundException{
+        WR r = new WR();
+        FileInputStream fis = new FileInputStream(new File(r.returnWorkLogsPath()));
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        workLog = (PriorityQueue<Event>) ois.readObject();
+        ois.close();
+        fis.close();
+    }
+    
+    private void dumpLogs(){
+        WR r = new WR();
+    }
+    
 
     void addEvent(Date date, String title, String host, String where, String discription) {
         Event e = new Event();
@@ -127,6 +155,28 @@ public class Logs {
     void completedEvent(Event e) {
         e.complete = true;
         deleteEvent(e);
+    }
+    
+    private void writeEvents() throws IOException{
+        WR r = new WR();
+        FileOutputStream fos = new FileOutputStream(new File(r.returnEventsPath()),false);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(eventLog);
+        oos.close();
+        fos.close();
+    }
+    
+    private void readEvents() throws IOException, ClassNotFoundException{
+        WR r = new WR();
+        FileInputStream fis = new FileInputStream(new File(r.returnEventsPath()));
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        workLog = (PriorityQueue<Event>) ois.readObject();
+        ois.close();
+        fis.close();
+    }
+    
+    private void dumpEvents(){
+        WR r = new WR();
     }
 
 }

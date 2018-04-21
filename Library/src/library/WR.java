@@ -17,14 +17,18 @@ public class WR {
     static String C;
     static String A;
     static String L;
+    static String WL;
+    static String E;
     
     WR(){
     String projectPath=Paths.get(".").toAbsolutePath().normalize().toString();
     String packagePath=projectPath+"\\Library\\src\\DataFilePackage";
-    BD = packagePath+"\\bookData.txt";
+    BD = packagePath+"\\BookData.txt";
     C= packagePath+"\\Constants.txt";
     A= packagePath+"\\Accounts.txt";
     L=projectPath+"\\Library\\src\\LogPackages";
+    WL=packagePath+"\\WorkLogs.txt";
+    E=packagePath+"\\Events.txt";
     }
     
     public String returnBookDataPath(){
@@ -39,5 +43,10 @@ public class WR {
     public String returnLogFolderPath(){
         return L;
     }
-    
+    public String returnEventsPath(){
+        return E;
+    }
+    public String returnWorkLogsPath(){
+        return WL;
+    }
 }

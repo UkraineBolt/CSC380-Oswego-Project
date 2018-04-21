@@ -8,6 +8,7 @@ package library;
 import java.io.*;
 import java.util.Date;
 import java.util.PriorityQueue;
+import java.util.Scanner;
 
 /**
  *
@@ -116,8 +117,49 @@ public class Logs {
         fis.close();
     }
     
-    private void dumpLogs(){
-        WR r = new WR();
+    private void dumpLogs(Event e) throws IOException{
+        WR paths = new WR();
+        File folder = new File(paths.returnLogFolderPath());
+        File[] files = folder.listFiles();
+        int i=0;
+        int count=0;
+        File f = null;
+        while(i<files.length){
+            if(files[i].getName().contains("WL")){
+               f = files[i];
+               count++;
+            }
+            i++;
+        }
+        if(f==null){
+            f = new File(paths.returnLogFolderPath()+"\\WL"+count);
+        }else{
+            int p = 0;
+            Scanner s = new Scanner(f);
+            while(s.hasNextLine()){
+                p++;
+            }
+            if(p>4999){
+                f = new File(paths.returnLogFolderPath()+"\\WL"+count);
+                f.createNewFile();
+            }
+        }
+        
+        PrintWriter pw = new PrintWriter(f);
+        pw.println(e.returnDataGroup());
+        
+    }
+    private void deleteDumpLogs(){
+        WR paths = new WR();
+        File folder = new File(paths.returnLogFolderPath());
+        File[] files = folder.listFiles();
+        int i=0;
+        while(i<files.length){
+            if(files[i].getName().contains("WL")){
+                files[i].delete();
+            }
+            i++;
+        }
     }
     
 
@@ -175,8 +217,48 @@ public class Logs {
         fis.close();
     }
     
-    private void dumpEvents(){
-        WR r = new WR();
+    private void dumpEvents(Event e) throws IOException{
+        WR paths = new WR();
+        File folder = new File(paths.returnLogFolderPath());
+        File[] files = folder.listFiles();
+        int i=0;
+        int count=0;
+        File f = null;
+        while(i<files.length){
+            if(files[i].getName().contains("E")){
+               f = files[i];
+               count++;
+            }
+        }
+        if(f==null){
+            f = new File(paths.returnLogFolderPath()+"\\E"+count);
+        }else{
+            int p = 0;
+            Scanner s = new Scanner(f);
+            while(s.hasNextLine()){
+                p++;
+            }
+            if(p>4999){
+                f = new File(paths.returnLogFolderPath()+"\\E"+count);
+                f.createNewFile();
+            }
+        }
+        
+        PrintWriter pw = new PrintWriter(f);
+        pw.print(e.returnDataGroup());
+    }
+    
+    private void deleteDumpEvents(){
+        WR paths = new WR();
+        File folder = new File(paths.returnLogFolderPath());
+        File[] files = folder.listFiles();
+        int i=0;
+        while(i<files.length){
+            if(files[i].getName().contains("E")){
+                files[i].delete();
+            }
+            i++;
+        }
     }
 
 }

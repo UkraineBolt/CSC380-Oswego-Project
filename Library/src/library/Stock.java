@@ -5,15 +5,16 @@
  */
 package library;
 
+import java.io.*;
 import java.util.ArrayList;
 
-enum Availability{
+enum Availability implements java.io.Serializable{
     CheckedOut,Reserved,InStock
 }
-enum Condition{
+enum Condition implements java.io.Serializable{
     New,Good,Worned,Poor,Unacceptable,InRepair
 }
-enum Genres{
+enum Genres implements java.io.Serializable{
 Science,Fiction,Satire,Drama,Action,Adventure,Romance,
 Mystery,Horror,SelfHelp,Health,Guide,Travel,Childrens,
 Religion,Spirituality,NewAge,History,Math, Anthology,
@@ -22,7 +23,7 @@ Diaries,Journals,PrayerBooks,Series,Trilogy,Biographies,
 Autobiographies,Fantasy,Realism,Mythology,Tragedy,Comedy,
 Classic,Folklore,PictureBook,Thiller,Maginzies
 }
-enum Location{
+enum Location implements java.io.Serializable{
     Childrens, YoungAdult,Reference,Periodical, AdultFiction, AdultNonFiction,Archieves
 }
 
@@ -31,7 +32,7 @@ enum Location{
  * @author alex
  */
 class Stock {
-    class Book{
+    class Book implements java.io.Serializable{
         private String title,author;
         private ArrayList<Genres> genres = new ArrayList<>();
         private int crn;
@@ -55,22 +56,39 @@ class Stock {
             condition=c;
         }
         public String toString(){
-            return title+author+crn+year+condition+genres.toString();
+            return "Title: "+title+" Author: "+author+" Year: "+year+"\nCRN#: "+crn+" Condition: "+condition+"\nGenres: "+genres.toString();
         }
         
     }
     ArrayList<Book> books = new ArrayList<>();
     
     void addBook(String t,String a,int year, int crn,Condition c,ArrayList<Genres> genres,double v){
+        
+        
         Book b = new Book(t,a,crn,year,c,genres,v);
         books.add(b);
     }
     void removeBook(Book b){
         books.remove(b);
     }
-    //need a search functions
     
-      
+    private void writeBooks() throws FileNotFoundException, IOException{
+        WR r = new WR();
+        FileOutputStream fos = new FileOutputStream(new File(r.returnBookDataPath()),false);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(books);
+        oos.close();
+        fos.close();
+    }
+    
+    private void readBooks() throws FileNotFoundException, IOException, ClassNotFoundException{
+        WR r = new WR();
+        FileInputStream fis = new FileInputStream(new File(r.returnAccountsPath()));
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        books = (ArrayList<Book>) ois.readObject();
+        ois.close();
+        fis.close();
+    } 
     
     
 }

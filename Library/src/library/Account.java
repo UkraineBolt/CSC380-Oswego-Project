@@ -12,8 +12,8 @@ import java.util.Arrays;
  *
  * @author alex
  */
-class Account {
-        private class Checkout{
+class Account implements java.io.Serializable{
+        private class Checkout implements java.io.Serializable{
             Stock.Book book;
             LocalDate dueDate;
             LocalDate dateCheckedOut;

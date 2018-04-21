@@ -21,11 +21,23 @@ public class WR {
     WR(){
     String projectPath=Paths.get(".").toAbsolutePath().normalize().toString();
     String packagePath=projectPath+"\\Library\\src\\DataFilePackage";
-    String logPath=projectPath+"\\Library\\src\\LogPackages";
-    BD = packagePath+"\\bookData";
-    C= packagePath+"\\Constants";
-    A= packagePath+"\\Accounts";
-    L=logPath;
+    BD = packagePath+"\\bookData.txt";
+    C= packagePath+"\\Constants.txt";
+    A= packagePath+"\\Accounts.txt";
+    L=projectPath+"\\Library\\src\\LogPackages";
+    }
+    
+    public String returnBookDataPath(){
+        return BD;
+    }
+    public String returnConstantsPath(){
+        return C;
+    }
+    public String returnAccountsPath(){
+        return A;
+    }
+    public String returnLogFolderPath(){
+        return L;
     }
     
 }

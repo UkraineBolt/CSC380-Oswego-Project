@@ -10,17 +10,14 @@ package library;
  */
 public class Handler {
     private Account current;
-    WR w;
     Accounts as;
     public Handler(){
-    as=new Accounts();
-    w=new WR();
+        as=new Accounts();
     }
     public int aType(){
         return current.gettype();
     }
     public boolean signIn(String user,String pass){
-        
         current=as.callAccount(user, pass);
         if(current!=null){
             return true;

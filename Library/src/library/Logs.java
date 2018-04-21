@@ -14,7 +14,7 @@ import java.util.PriorityQueue;
  */
 public class Logs {
 
-    private class Event {
+    private class Event implements java.io.Serializable{
 
         private boolean workType;
         private boolean complete;
@@ -31,9 +31,9 @@ public class Logs {
 
         public String returnDataGroup() {
             if (workType) {
-                return priority + startDate.toString() + requestName + action + completeName + completeDate.toString();
+                return priority + " " + startDate.toString() + " " + requestName + " " + action + " " + completeName + " " + completeDate.toString();
             } else {
-                return date.toString() + title + host + where + discription;
+                return date.toString() + " " + title + " " + host + " " + where + " " + discription;
             }
         }
 
@@ -73,14 +73,12 @@ public class Logs {
     }
 
     void completedTask(Event e, String completeName, Date completeDate) {
+        if (deleteTask(e)) {
+
+        }
         e.completeDate = completeDate;
         e.completeName = completeName;
         e.complete = true;
-
-        if (deleteTask(e)) {
-            
-        }
-
     }
 
     boolean deleteTask(Event e) {
@@ -128,6 +126,7 @@ public class Logs {
 
     void completedEvent(Event e) {
         e.complete = true;
+        deleteEvent(e);
     }
 
 }

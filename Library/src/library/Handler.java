@@ -11,8 +11,14 @@ package library;
 public class Handler {
     private Account current;
     Accounts as;
+    Logs log;
+    Stock s;
+    AdminPage ap;
     public Handler(){
         as=new Accounts();
+        log=new Logs();
+        s=new Stock();
+        ap=new AdminPage();
     }
     public int aType(){
         return current.gettype();

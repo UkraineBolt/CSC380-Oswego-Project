@@ -9,6 +9,8 @@ import java.io.*;
 import java.util.Date;
 import java.util.PriorityQueue;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -42,6 +44,16 @@ public class Logs {
     }
     
     Logs(){
+        try {
+            readEvents();
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            readLogs();
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
 
@@ -140,7 +152,7 @@ public class Logs {
                 p++;
             }
             if(p>4999){
-                f = new File(paths.returnLogFolderPath()+"\\WL"+count);
+                f = new File(paths.returnLogFolderPath()+"\\WL"+f.getName().substring(2));
                 f.createNewFile();
             }
         }
@@ -239,7 +251,7 @@ public class Logs {
                 p++;
             }
             if(p>4999){
-                f = new File(paths.returnLogFolderPath()+"\\E"+count);
+                f = new File(paths.returnLogFolderPath()+"\\E"+f.getName().substring(1));
                 f.createNewFile();
             }
         }

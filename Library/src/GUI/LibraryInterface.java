@@ -307,9 +307,7 @@ public class LibraryInterface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                LibraryInterface li = new LibraryInterface();
-                li.typeVisibility();
-                li.setVisible(true);//This may not be allowed
+              new LibraryInterface().setVisible(true);
             }
         });
     }

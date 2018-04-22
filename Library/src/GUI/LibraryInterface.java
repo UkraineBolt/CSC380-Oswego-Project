@@ -143,7 +143,7 @@ public class LibraryInterface extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Library System");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\tok\\Documents\\NetBeansProjects\\CSC380-Oswego-Project\\Library\\src\\my\\LoginScreen\\bg-education-library.jpg")); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\tok\\Documents\\NetBeansProjects\\CSC380-Oswego-Project\\Library\\src\\my\\LoginScreen\\pretty library.jpg")); // NOI18N
 
         jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\tok\\Documents\\NetBeansProjects\\CSC380-Oswego-Project\\Library\\src\\my\\LoginScreen\\black2.jpg")); // NOI18N
         jLabel2.setText("jLabel2");
@@ -307,7 +307,9 @@ public class LibraryInterface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-              new LibraryInterface().setVisible(true);
+                LibraryInterface li = new LibraryInterface();
+                li.typeVisibility();
+                li.setVisible(true);//This may not be allowed
             }
         });
     }

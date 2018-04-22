@@ -98,12 +98,7 @@ public class Main {
         
         System.out.println("adding account to database");
         Accounts as = new Accounts();
-        try {
-            as.makeAccount(id,pass,a);
-        } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(-375);
-        }
+        as.makeAccount(id,pass,a);
         System.out.println("account has been added");
         System.out.println("basic admin set up has been confirmed");
         System.out.println("Run program through LoginScreen");

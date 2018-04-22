@@ -39,11 +39,12 @@ class Account implements java.io.Serializable{
         private String phoneNumber;
         private String state;
         private Checkout[] checkouts;
+        private int libraryNumber;
         private int checked;
         private double fee = 0;
-
+        
         AdminPage ap = new AdminPage();
-        Account( AccountType at, String fname, String lname,String a,String c,String em, String ph, String zip,String st,String u,int checkOutSize) {
+        Account( AccountType at, String fname, String lname,String a,String c,String em, String ph, String zip,String st,String u,int checkOutSize,int lbnum) {
             state=st;
             address = a;
             firstName=fname;
@@ -56,6 +57,22 @@ class Account implements java.io.Serializable{
             accountType=at;
             checkouts = new Checkout[checkOutSize];
             username=u;
+            libraryNumber = lbnum;
+        }
+        Account(Account x){
+            state=x.state;
+            address=x.address;
+            firstName=x.firstName;
+            lastName=x.lastName;
+            city=x.city;
+            email=x.email;
+            phoneNumber=x.phoneNumber;
+            zipCode=x.zipCode;
+            checked=x.checked;
+            accountType=x.accountType;
+            checkouts=x.checkouts;
+            username=x.username;
+            libraryNumber=x.libraryNumber;
         }
         int gettype(){
             if(null==accountType){
@@ -71,9 +88,15 @@ class Account implements java.io.Serializable{
         }
         void AddFee(double dmg,int days) {
             fee = fee + (ap.getFee()*days) + dmg;
-        }        
+        }
+        int getLibNum(){
+            return libraryNumber;
+        }
         void ClearFee() {
             fee = 0;
+        }
+        boolean compareEmail(String x){
+            return x.equals(email);
         }
         double getBill(){
             return fee;
@@ -109,6 +132,8 @@ class Account implements java.io.Serializable{
         }
         @Override
         public String toString(){
-            return firstName+"\n"+lastName+"\n"+city+"\n"+state+"%"+zipCode+"%"+phoneNumber+"%"+email+"%"+Arrays.toString(checkouts)+"%"+username;
+            return firstName+":::"+lastName+":::"+ address+":::"+city+":::"+state+":::"+zipCode+":::"+phoneNumber+":::"+email+":::"+accountType.toString()+":::"+username+":::"+libraryNumber;
         }
+        
+        
     }

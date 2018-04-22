@@ -16,10 +16,11 @@ public class LoginScreen extends javax.swing.JFrame {
     /**
      * Creates new form LoginScreen
      */
-    Handler handler = new Handler();
+    Handler handler;
 
     public LoginScreen() {
         initComponents();
+        handler = new Handler();
     }
 
     void getdata(Handler h) {
@@ -235,14 +236,18 @@ public class LoginScreen extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         this.setVisible(false);
-        new ForgotUserId().setVisible(true);
-        this.dispose();
+        ForgotUserId fui = new ForgotUserId();
+        fui.callFrame(this);
+        fui.setVisible(true);
+        
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
 
         this.setVisible(false);
-        new RegistrationScreen().setVisible(true); // Main Form to show after the Login Form..
+        RegistrationScreen rs = new RegistrationScreen();
+        rs.callFrame(this);
+        rs.setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -256,7 +261,11 @@ public class LoginScreen extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.setVisible(false);
-        new ResetPassword().setVisible(true);
+        //new ResetPassword().setVisible(true);
+        ResetPassword rp = new ResetPassword();
+        rp.callFrame(this);
+        rp.setVisible(true);
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -269,17 +278,18 @@ public class LoginScreen extends javax.swing.JFrame {
         try {
             String username = jTextField1.getText();
             String password = jPasswordField1.getText();
-            if ((handler.signIn(username, password)==true)) {
+            if (handler.signIn(username, password)!=true) {
                 LoginScreenError lse = new LoginScreenError();
                 lse.setVisible(true);
             } else {
-                this.setVisible(false);
                 LibraryInterface li = new LibraryInterface();
                 li.getdata(handler);
+                li.typeVisibility();
                 li.setVisible(true);
+                this.dispose();
             }
         } catch (NullPointerException e) {
-
+            
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed

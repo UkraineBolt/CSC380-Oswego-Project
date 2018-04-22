@@ -7,8 +7,8 @@ package library;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 
 enum AccountType implements java.io.Serializable{
     Employer, Employee, Client
@@ -20,7 +20,6 @@ enum AccountType implements java.io.Serializable{
  */
 public class Accounts {
 
-    private AdminPage ap = new AdminPage();
     HashMap<String, String> user;
     HashMap<Integer, Account> accounts;
 
@@ -33,25 +32,26 @@ public class Accounts {
             try {
                 writeAccounts();
             } catch (IOException ex) {
-                Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
     }
 
-    boolean makeAccount(String uname, String pass, Account a) {
+    boolean makeAccount(String uname, String pass, Account a) throws IOException {
         try {
             readAccounts();
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
             user.put(uname, pass);
             int accountMarker = uname.hashCode() + pass.hashCode();
             accounts.put(accountMarker, a);
+            writeAccounts();
             return true;
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IOException e) {
             System.out.println("Unable to make account. Null-Pointer exception occurred");
             return false;
         }
@@ -62,7 +62,7 @@ public class Accounts {
         try {
             readAccounts();
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
         
@@ -85,7 +85,8 @@ public class Accounts {
         try {
             readAccounts();
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         
         try {
@@ -93,6 +94,7 @@ public class Accounts {
             if (temp != null) {
                 int key = name.hashCode() + pass.hashCode();
                 accounts.remove(key, temp);
+                user.remove(name);
             }
         } catch (NullPointerException e) {
             System.out.println("Unable to delete account. Null-Pointer exception occurred");
@@ -103,12 +105,12 @@ public class Accounts {
             writeAccounts();
             return true;
         } catch (IOException ex) {
-            Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
     
-    private void writeAccounts() throws FileNotFoundException, IOException{
+    private void writeAccounts() throws IOException{
         WR r = new WR();
         FileOutputStream fos = new FileOutputStream(new File(r.returnAccountsPath()),false);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -118,7 +120,7 @@ public class Accounts {
         fos.close();
     }
     
-    private void readAccounts() throws FileNotFoundException, IOException, ClassNotFoundException{
+    private void readAccounts() throws IOException, ClassNotFoundException{
         WR r = new WR();
         FileInputStream fis = new FileInputStream(new File(r.returnAccountsPath()));
         ObjectInputStream ois = new ObjectInputStream(fis);

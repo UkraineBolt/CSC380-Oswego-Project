@@ -16,19 +16,28 @@ public class WR {
     static String BD;
     static String C;
     static String A;
-    static String L;
     static String WL;
     static String E;
+    static String CL;
+    static String CE;
     
     WR(){
     String projectPath=Paths.get(".").toAbsolutePath().normalize().toString();
-    String packagePath=projectPath+"\\Library\\src\\DataFilePackage";
+    String packagePath=projectPath+"\\src\\DataFilePackage";
     BD = packagePath+"\\BookData.txt";
     C= packagePath+"\\Constants.txt";
     A= packagePath+"\\Accounts.txt";
-    L=projectPath+"\\Library\\src\\LogPackages";
     WL=packagePath+"\\WorkLogs.txt";
     E=packagePath+"\\Events.txt";
+    CL=packagePath+"\\CompletedLogs.txt";
+    CE=packagePath+"\\CompletedEvents.txt";
+    }
+    
+    public String returnCompletedLogsPath(){
+        return CL;
+    }
+    public String returnCompletedEventsPath(){
+        return CE;
     }
     
     public String returnBookDataPath(){
@@ -39,9 +48,6 @@ public class WR {
     }
     public String returnAccountsPath(){
         return A;
-    }
-    public String returnLogFolderPath(){
-        return L;
     }
     public String returnEventsPath(){
         return E;

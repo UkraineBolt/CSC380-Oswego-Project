@@ -6,22 +6,23 @@
 package library;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.PriorityQueue;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 
 /**
  *
  * @author alex
  */
 public class Logs {
-
-    private class Event implements java.io.Serializable{
+    private class Event implements java.io.Serializable, Comparable<Event>{
 
         private boolean workType;
         private boolean complete;
+        
         private Date startDate, completeDate;
         private String requestName, action, completeName;
         private int priority;
@@ -32,6 +33,21 @@ public class Logs {
         Event() {
             complete = false;
         }
+        Event(Event e){
+            workType=e.workType;
+            complete=e.complete;
+            startDate=e.startDate;
+            completeDate=e.completeDate;
+            requestName=e.requestName;
+            action=e.action;
+            completeName=e.completeName;
+            priority=e.priority;
+            title=e.title;
+            host=e.host;
+            where=e.where;
+            discription=e.discription;
+            date=e.date;
+        }
 
         public String returnDataGroup() {
             if (workType) {
@@ -41,46 +57,74 @@ public class Logs {
             }
         }
 
+        @Override
+        public int compareTo(Event o) {
+            if(workType&& !complete){
+                if(this.priority>o.priority){
+                    return 1;
+                }else if(this.priority==o.priority){
+                    if(this.startDate.before(o.startDate)){
+                        return 1;
+                    }else{
+                        return -1;
+                    }
+                }else{
+                    return -1;
+                }
+            }else if(workType && complete){
+                if(this.completeDate.after(o.completeDate)){
+                    return 1;
+                }else{
+                    return -1;
+                }
+            }else if(!workType && !complete){
+                if(this.date.before(o.date)){
+                    return 1;
+                }else{
+                    return -1;
+                }
+            }else{//!workType && complete
+                if(this.date.after(o.date)){
+                    return 1;
+                }else{
+                    return -1;
+                }
+            }
+        }
+
     }
+    
+    boolean eeee,llll;
     
     Logs(){
         try {
             readEvents();
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
+            eeee=false;
         }
         try {
             readLogs();
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
+            llll=false;
         }
         
     }
 
     //may need fixing
-    PriorityQueue<Event> workLog = new PriorityQueue<>(50, (Event o1, Event o2) -> {
-        if (o1.priority > o2.priority) {
-            return 1;
-        } else if (o1.priority == o2.priority) {
-            if (o1.startDate.after(o2.startDate)) {
-                return 1;
-            } else {
-                return -1;
-            }
-        } else {
-            return -1;
-        }
-    });//Only store currently active requests
+    ArrayList<Event> workLog = new ArrayList<>();//Only store currently active requests
+    ArrayList<Event> completedWorkLog = new ArrayList<>();
 
-    PriorityQueue<Event> eventLog = new PriorityQueue<>(50, (Event o1, Event o2) -> {
-        if (o1.date.after(o2.date)) {
-            return 1;
-        } else {
-            return -1;
+    ArrayList<Event> eventLog = new ArrayList<>();//only store currently active requests
+    ArrayList<Event> completedEventLog = new ArrayList<>();
+    
+    void addWorkLog(int priority, Date startDate, String requestName, String action) throws IOException {
+        try {
+            readLogs();
+        } catch (ClassNotFoundException ex) {
+            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
         }
-    });//only store currently active requests
-
-    void addWorkLog(int priority, Date startDate, String requestName, String action) {
         Event w = new Event();
         w.workType = true;
         w.priority = priority;
@@ -88,15 +132,42 @@ public class Logs {
         w.requestName = requestName;
         w.action = action;
         workLog.add(w);
+        writeLogs();
     }
-
-    void completedTask(Event e, String completeName, Date completeDate) {
-        if (deleteTask(e)) {
-
+    
+    Event searchLogs(String[] x){
+        try {
+            readLogs();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        e.completeDate = completeDate;
-        e.completeName = completeName;
-        e.complete = true;
+        
+        for(int i=0;i<workLog.size();i++){
+            if(x[0].equals(workLog.get(i).startDate.toString()) && x[1].equals(workLog.get(i).requestName) && x[2].equals(workLog.get(i).action)){
+                return workLog.get(i);
+            }
+        }
+        return null;         
+    }
+    
+    
+
+    boolean completedTask(Event e, String completeName, Date completeDate) {
+        try {
+            readEvents();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        if (deleteTask(e)) {
+            e.completeDate = completeDate;
+            e.completeName = completeName;
+            e.complete = true;
+            
+            return true;
+        }
+        return false;
     }
 
     boolean deleteTask(Event e) {
@@ -108,7 +179,19 @@ public class Logs {
     }
 
     void clearLog() {
+        try {
+            readLogs();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
         workLog.clear();
+        
+        try {
+            writeLogs();
+        } catch (IOException ex) {
+            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void writeLogs() throws IOException{
@@ -124,58 +207,14 @@ public class Logs {
         WR r = new WR();
         FileInputStream fis = new FileInputStream(new File(r.returnWorkLogsPath()));
         ObjectInputStream ois = new ObjectInputStream(fis);
-        workLog = (PriorityQueue<Event>) ois.readObject();
+        workLog = (ArrayList<Event>) ois.readObject();
         ois.close();
         fis.close();
     }
     
-    private void dumpLogs(Event e) throws IOException{
-        WR paths = new WR();
-        File folder = new File(paths.returnLogFolderPath());
-        File[] files = folder.listFiles();
-        int i=0;
-        int count=0;
-        File f = null;
-        while(i<files.length){
-            if(files[i].getName().contains("WL")){
-               f = files[i];
-               count++;
-            }
-            i++;
-        }
-        if(f==null){
-            f = new File(paths.returnLogFolderPath()+"\\WL"+count);
-        }else{
-            int p = 0;
-            Scanner s = new Scanner(f);
-            while(s.hasNextLine()){
-                p++;
-            }
-            if(p>4999){
-                f = new File(paths.returnLogFolderPath()+"\\WL"+f.getName().substring(2));
-                f.createNewFile();
-            }
-        }
-        
-        PrintWriter pw = new PrintWriter(f);
-        pw.println(e.returnDataGroup());
-        
-    }
-    private void deleteDumpLogs(){
-        WR paths = new WR();
-        File folder = new File(paths.returnLogFolderPath());
-        File[] files = folder.listFiles();
-        int i=0;
-        while(i<files.length){
-            if(files[i].getName().contains("WL")){
-                files[i].delete();
-            }
-            i++;
-        }
-    }
-    
 
-    void addEvent(Date date, String title, String host, String where, String discription) {
+    
+    void addEvent(Date date, String title, String host, String where, String discription) throws IOException {
         Event e = new Event();
         e.workType = false;
         e.date = date;
@@ -184,19 +223,35 @@ public class Logs {
         e.where = where;
         e.discription = discription;
         eventLog.add(e);
+        writeEvents();
     }
-
-    void editEvent(Event e, String x) {
-        if (x.toLowerCase().equals("cancelled")) {
-            completedEvent(e);
-        } else {
-            e.discription = x;
+    
+    Event searchEvents(String[] x){
+        try {
+            readEvents();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
+        for(int i=0;i<eventLog.size();i++){
+            if(x[0].equals(eventLog.get(i).date) && x[1].equals(eventLog.get(i).title) && x[2].equals(eventLog.get(i).host) 
+                && x[3].equals(eventLog.get(i).where) && x[4].equals(eventLog.get(i).discription)){
+                return eventLog.get(i);
+            }
+        }
+        return null;    
     }
 
     boolean deleteEvent(Event e) {
         if (eventLog.contains(e)) {
-            return eventLog.remove(e);
+            eventLog.remove(e);
+            try {
+                writeEvents();
+                return true;
+            } catch (IOException ex) {
+                //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
         } else {
             return false;
         }
@@ -224,53 +279,9 @@ public class Logs {
         WR r = new WR();
         FileInputStream fis = new FileInputStream(new File(r.returnEventsPath()));
         ObjectInputStream ois = new ObjectInputStream(fis);
-        workLog = (PriorityQueue<Event>) ois.readObject();
+        workLog = (ArrayList<Event>) ois.readObject();
         ois.close();
         fis.close();
     }
     
-    private void dumpEvents(Event e) throws IOException{
-        WR paths = new WR();
-        File folder = new File(paths.returnLogFolderPath());
-        File[] files = folder.listFiles();
-        int i=0;
-        int count=0;
-        File f = null;
-        while(i<files.length){
-            if(files[i].getName().contains("E")){
-               f = files[i];
-               count++;
-            }
-        }
-        if(f==null){
-            f = new File(paths.returnLogFolderPath()+"\\E"+count);
-        }else{
-            int p = 0;
-            Scanner s = new Scanner(f);
-            while(s.hasNextLine()){
-                p++;
-            }
-            if(p>4999){
-                f = new File(paths.returnLogFolderPath()+"\\E"+f.getName().substring(1));
-                f.createNewFile();
-            }
-        }
-        
-        PrintWriter pw = new PrintWriter(f);
-        pw.print(e.returnDataGroup());
-    }
-    
-    private void deleteDumpEvents(){
-        WR paths = new WR();
-        File folder = new File(paths.returnLogFolderPath());
-        File[] files = folder.listFiles();
-        int i=0;
-        while(i<files.length){
-            if(files[i].getName().contains("E")){
-                files[i].delete();
-            }
-            i++;
-        }
-    }
-
 }

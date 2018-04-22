@@ -8,10 +8,8 @@ package library;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -91,6 +89,50 @@ public class Logs {
                 }
             }
         }
+        
+        @Override
+        public boolean equals(Object obj){
+            if (obj == this) {
+                return true;
+            }
+            if (obj == null || this.getClass() != obj.getClass()) {
+                return false;
+            }
+            /*if (this.getClass() != obj.getClass()) {
+                return false;
+            }*/
+            Event t = (Event) obj;
+            if (t.workType && !t.complete) {
+                if(!this.action.equals(t.action) || !this.requestName.equals(t.requestName)){
+                    return false;
+                }
+                if(!this.startDate.equals(t.startDate)){
+                    return false;
+                }
+                if(this.priority!=t.priority){
+                    return false;
+                }
+            }else if (t.workType && t.complete) {
+                if(this.priority!=t.priority){
+                    return false;
+                }
+                if(!this.startDate.equals(t.startDate)||!this.completeDate.equals(t.completeDate)){
+                    return false;
+                }
+                if(!this.action.equals(t.action) || !this.requestName.equals(t.requestName) || !this.completeName.equals(t.completeName)){
+                    return false;
+                }
+            }else if(!t.workType){
+                if(!this.date.equals(t.date)){
+                    return false;
+                }
+                if(!this.title.equals(t.title) || !this.host.equals(t.host) || !this.where.equals(t.where) || !this.discription.equals(t.discription)){
+                    return false;
+                }
+            }
+            
+            return true;
+        }
 
     }
     
@@ -135,19 +177,25 @@ public class Logs {
         writeLogs();
     }
     
-    Event searchLogs(String[] x){
+    Event searchLog(int priority, Date start, String name, String action){
         try {
             readLogs();
         } catch (IOException | ClassNotFoundException ex) {
             //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-        
+        Event fake = new Event();
+        fake.priority=priority;
+        fake.startDate=start;
+        fake.requestName=name;
+        fake.action=action;
         for(int i=0;i<workLog.size();i++){
-            if(x[0].equals(workLog.get(i).startDate.toString()) && x[1].equals(workLog.get(i).requestName) && x[2].equals(workLog.get(i).action)){
+            if(workLog.get(i).equals(fake)){
                 return workLog.get(i);
             }
         }
+        
+        
         return null;         
     }
     
@@ -212,6 +260,23 @@ public class Logs {
         fis.close();
     }
     
+    private void writeCompletedLogs() throws IOException{
+        WR r = new WR();
+        FileOutputStream fos = new FileOutputStream(new File(r.returnCompletedLogsPath()),false);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(completedWorkLog);
+        oos.close();
+        fos.close();
+    }
+    private void readCompletedLogs() throws IOException, ClassNotFoundException{
+        WR r = new WR();
+        FileInputStream fis = new FileInputStream(new File(r.returnCompletedLogsPath()));
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        completedWorkLog = (ArrayList<Event>) ois.readObject();
+        ois.close();
+        fis.close();
+    }
+    
 
     
     void addEvent(Date date, String title, String host, String where, String discription) throws IOException {
@@ -226,20 +291,26 @@ public class Logs {
         writeEvents();
     }
     
-    Event searchEvents(String[] x){
+    Event searchEvent(Date d, String title, String host, String where, String dis){
         try {
             readEvents();
         } catch (IOException | ClassNotFoundException ex) {
             //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+        Event fake = new Event();
+        fake.date=d;
+        fake.title=title;
+        fake.host=host;
+        fake.discription=dis;
+        fake.where=where;
         for(int i=0;i<eventLog.size();i++){
-            if(x[0].equals(eventLog.get(i).date) && x[1].equals(eventLog.get(i).title) && x[2].equals(eventLog.get(i).host) 
-                && x[3].equals(eventLog.get(i).where) && x[4].equals(eventLog.get(i).discription)){
+            if(eventLog.get(i).equals(fake)){
                 return eventLog.get(i);
             }
         }
-        return null;    
+        
+        return null;
     }
 
     boolean deleteEvent(Event e) {
@@ -257,13 +328,11 @@ public class Logs {
         }
     }
 
-    void clearEvents() {
-        eventLog.clear();
-    }
-
     void completedEvent(Event e) {
         e.complete = true;
         deleteEvent(e);
+        
+        completedEventLog.add(e);
     }
     
     private void writeEvents() throws IOException{
@@ -280,6 +349,23 @@ public class Logs {
         FileInputStream fis = new FileInputStream(new File(r.returnEventsPath()));
         ObjectInputStream ois = new ObjectInputStream(fis);
         workLog = (ArrayList<Event>) ois.readObject();
+        ois.close();
+        fis.close();
+    }
+    
+    private void writeCompletedEvents() throws IOException{
+        WR r = new WR();
+        FileOutputStream fos = new FileOutputStream(new File(r.returnCompletedEventsPath()),false);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(completedEventLog);
+        oos.close();
+        fos.close();
+    }
+    private void readCompletedEvents() throws IOException, ClassNotFoundException{
+        WR r = new WR();
+        FileInputStream fis = new FileInputStream(new File(r.returnCompletedEventsPath()));
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        completedEventLog = (ArrayList<Event>) ois.readObject();
         ois.close();
         fis.close();
     }

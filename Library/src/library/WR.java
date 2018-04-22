@@ -39,7 +39,6 @@ public class WR {
     public String returnCompletedEventsPath(){
         return CE;
     }
-    
     public String returnBookDataPath(){
         return BD;
     }

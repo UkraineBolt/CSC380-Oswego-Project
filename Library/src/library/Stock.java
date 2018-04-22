@@ -7,24 +7,29 @@ package library;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-enum Availability implements java.io.Serializable{
-    CheckedOut,Reserved,InStock
+enum Availability implements java.io.Serializable {
+    CheckedOut, Reserved, InStock
 }
-enum Condition implements java.io.Serializable{
-    New,Good,Worned,Poor,Unacceptable,InRepair
+
+enum Condition implements java.io.Serializable {
+    New, Good, Worned, Poor, Unacceptable, InRepair
 }
-enum Genres implements java.io.Serializable{
-Science,Fiction,Satire,Drama,Action,Adventure,Romance,
-Mystery,Horror,SelfHelp,Health,Guide,Travel,Childrens,
-Religion,Spirituality,NewAge,History,Math, Anthology,
-Poetry,Encyclopedias,Dictionaries,Comics,Art,CookBooks,
-Diaries,Journals,PrayerBooks,Series,Trilogy,Biographies,
-Autobiographies,Fantasy,Realism,Mythology,Tragedy,Comedy,
-Classic,Folklore,PictureBook,Thiller,Maginzies
+
+enum Genres implements java.io.Serializable {
+    Science, Fiction, Satire, Drama, Action, Adventure, Romance,
+    Mystery, Horror, SelfHelp, Health, Guide, Travel, Childrens,
+    Religion, Spirituality, NewAge, History, Math, Anthology,
+    Poetry, Encyclopedias, Dictionaries, Comics, Art, CookBooks,
+    Diaries, Journals, PrayerBooks, Series, Trilogy, Biographies,
+    Autobiographies, Fantasy, Realism, Mythology, Tragedy, Comedy,
+    Classic, Folklore, PictureBook, Thiller, Maginzies
 }
-enum Location implements java.io.Serializable{
-    Childrens, YoungAdult,Reference,Periodical, AdultFiction, AdultNonFiction,Archieves
+
+enum Location implements java.io.Serializable {
+    Childrens, YoungAdult, Reference, Periodical, AdultFiction, AdultNonFiction, Archieves
 }
 
 /**
@@ -32,63 +37,128 @@ enum Location implements java.io.Serializable{
  * @author alex
  */
 class Stock {
-    class Book implements java.io.Serializable{
-        private String title,author;
-        private ArrayList<Genres> genres = new ArrayList<>();
+
+    class Book implements java.io.Serializable {
+
+        private String title, author;
+        private ArrayList<Genres> genres;
         private int crn;
         private int year;
         private Availability av;
         private Condition condition;
-        private double value;
-        Book(String t,String a,int c,int y,Condition con,ArrayList<Genres>g,double v){
-            title=t;
-            author=a;
-            crn=c;
-            year=y;
-            condition=con;
-            av=Availability.InStock;
-            value=v;
+
+        Book(String t, String a, int c, int y, Condition con, ArrayList<Genres> g) {
+            title = t;
+            author = a;
+            crn = c;
+            year = y;
+            condition = con;
+            av = Availability.InStock;
         }
-        void ChangeAvailability(Availability a){
-            av=a;
+
+        void ChangeAvailability(Availability a) {
+            av = a;
         }
-        void ChangeCondition(Condition c){
-            condition=c;
+
+        void ChangeCondition(Condition c) {
+            condition = c;
         }
-        public String toString(){
-            return "Title: "+title+" Author: "+author+" Year: "+year+"\nCRN#: "+crn+" Condition: "+condition+"\nGenres: "+genres.toString();
+
+        public String toString() {
+            return "Title: " + title + " Author: " + author + " Year: " + year + "\nCRN#: " + crn + " Condition: " + condition + "\nGenres: " + genres.toString();
         }
-        
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) {
+                return true;
+            }
+            if (obj == null || this.getClass() != obj.getClass()) {
+                return false;
+            }
+            /*if (this.getClass() != obj.getClass()) {
+                return false;
+            }*/
+            Book t = (Book) obj;
+            if (!this.title.equals(t.title) || !this.author.equals(t.author)) {
+                return false;
+            }
+            /*if (!this.author.equals(t.author)) {
+                return false;
+            }*/
+            if (this.crn!=t.crn || this.year!=t.year) {
+                return false;
+            }
+            /*if (this.year!=t.year) {
+                return false;
+            }*/
+            return true;
+        }
     }
     ArrayList<Book> books = new ArrayList<>();
     
-    void addBook(String t,String a,int year, int crn,Condition c,ArrayList<Genres> genres,double v){
-        
-        
-        Book b = new Book(t,a,crn,year,c,genres,v);
+    Book searchBook(String title, String author, int crn, int year){
+        try {
+            readBooks();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Stock.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        Book fake = new Book(title,author,crn,year,null,null);
+        for(int i=0;i<books.size();i++){
+            if(books.get(i).equals(fake)){
+                return books.get(i);
+            }
+        }
+        return null;
+    }
+
+    void addBook(String t, String a, int year, int crn, Condition c, ArrayList<Genres> genres, double v) {
+        try {
+            readBooks();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Stock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Book b = new Book(t, a, crn, year, c, genres);
         books.add(b);
+
+        try {
+            writeBooks();
+        } catch (IOException ex) {
+            //Logger.getLogger(Stock.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    void removeBook(Book b){
+
+    void removeBook(Book b) {
+        try {
+            readBooks();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Stock.class.getName()).log(Level.SEVERE, null, ex);
+        }
         books.remove(b);
+        try {
+            writeBooks();
+        } catch (IOException ex) {
+            //Logger.getLogger(Stock.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
-    private void writeBooks() throws FileNotFoundException, IOException{
+
+    private void writeBooks() throws IOException {
         WR r = new WR();
-        FileOutputStream fos = new FileOutputStream(new File(r.returnBookDataPath()),false);
+        FileOutputStream fos = new FileOutputStream(new File(r.returnBookDataPath()), false);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(books);
         oos.close();
         fos.close();
     }
-    
-    private void readBooks() throws FileNotFoundException, IOException, ClassNotFoundException{
+
+    private void readBooks() throws IOException, ClassNotFoundException {
         WR r = new WR();
         FileInputStream fis = new FileInputStream(new File(r.returnAccountsPath()));
         ObjectInputStream ois = new ObjectInputStream(fis);
         books = (ArrayList<Book>) ois.readObject();
         ois.close();
         fis.close();
-    } 
-    
-    
+    }
+
 }

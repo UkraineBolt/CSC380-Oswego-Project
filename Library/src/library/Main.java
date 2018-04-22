@@ -93,7 +93,7 @@ public class Main {
         
         System.out.println("making account");
         Account a = new Account(AccountType.Employer,fn,ln,address,city,
-        email,phone,zipcode,state,id,100);
+        email,phone,zipcode,state,id,100,0);
         System.out.println("account object made");
         
         System.out.println("adding account to database");

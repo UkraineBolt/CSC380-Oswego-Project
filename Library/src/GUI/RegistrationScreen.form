@@ -511,9 +511,6 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel13">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\tok\Documents\NetBeansProjects\CSC380-Oswego-Project\Library\src\my\LoginScreen\black2.jpg"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="jLabel13"/>
       </Properties>
     </Component>

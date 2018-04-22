@@ -15,7 +15,10 @@ import javax.swing.JOptionPane;
  * @author Tok
  */
 public class RegistrationScreen extends javax.swing.JFrame {
-    Handler handler = new Handler();
+    LoginScreen ls;
+    void callFrame(LoginScreen e){
+        ls=e;
+    }
     /**
      * Creates new form RegistrationScreen
      */
@@ -438,14 +441,11 @@ public class RegistrationScreen extends javax.swing.JFrame {
         jPasswordField2.getText();
         String state = jTextField9.getText();
         
-        if(jPasswordField1.getText().equals(jPasswordField2.getText())&&userName.length()>4&&password.length()>4) {
-            handler.create(userName, password, fname, lname, address, city, email, phone, zipcode,state);
-            
-            this.setVisible(false);
-            //new LoginScreen().setVisible(true);
-            LoginScreen ls = new LoginScreen();
-            ls.getdata(handler);
+        if(jPasswordField1.getText().equals(jPasswordField2.getText())&&userName.length()>4&&password.length()>4 && !fname.equals("") && !lname.equals("")
+                && !address.equals("") && !city.equals("") && !state.equals("") && !zipcode.equals("") && !email.equals("") && !phone.equals("")) {
+            ls.handler.create(userName, password, fname, lname, address, city, email, phone, zipcode,state);
             ls.setVisible(true);
+            this.dispose();
         }else{
            RegistrationError re= new RegistrationError();
            re.setVisible(true);

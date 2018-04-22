@@ -20,6 +20,7 @@ public class WR {
     static String E;
     static String CL;
     static String CE;
+    static String LN;
     
     WR(){
     String projectPath=Paths.get(".").toAbsolutePath().normalize().toString();
@@ -31,10 +32,14 @@ public class WR {
     E=packagePath+"\\Events.txt";
     CL=packagePath+"\\CompletedLogs.txt";
     CE=packagePath+"\\CompletedEvents.txt";
+    LN=packagePath+"\\LibraryNumbers.txt";
     }
     
     public String returnCompletedLogsPath(){
         return CL;
+    }
+    public String returnLibraryNumberPath(){
+        return LN;
     }
     public String returnCompletedEventsPath(){
         return CE;

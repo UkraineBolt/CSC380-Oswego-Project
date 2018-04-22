@@ -43,7 +43,7 @@ class Account implements java.io.Serializable{
         private double fee = 0;
 
         AdminPage ap = new AdminPage();
-        Account( AccountType at, String fname, String lname,String a,String c,String em, String ph, String zip,String st,String u) {
+        Account( AccountType at, String fname, String lname,String a,String c,String em, String ph, String zip,String st,String u,int checkOutSize) {
             state=st;
             address = a;
             firstName=fname;
@@ -54,7 +54,7 @@ class Account implements java.io.Serializable{
             zipCode=zip;
             checked=0;
             accountType=at;
-            checkouts = new Checkout[ap.getCheckOutSize()];
+            checkouts = new Checkout[checkOutSize];
             username=u;
         }
         int gettype(){
@@ -109,6 +109,6 @@ class Account implements java.io.Serializable{
         }
         @Override
         public String toString(){
-            return firstName+" "+lastName+" "+city+" "+state+" "+zipCode+" "+phoneNumber+" "+email+" "+Arrays.toString(checkouts)+" "+username;
+            return firstName+"\n"+lastName+"\n"+city+"\n"+state+"%"+zipCode+"%"+phoneNumber+"%"+email+"%"+Arrays.toString(checkouts)+"%"+username;
         }
     }

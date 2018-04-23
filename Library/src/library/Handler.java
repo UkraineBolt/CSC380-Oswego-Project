@@ -6,6 +6,7 @@
 package library;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +43,42 @@ public class Handler {
     public boolean changePassword(String user, String pass){
         return as.changePassword(user, pass);
     }
+    
+    
+    public boolean makeBook(String title, String author, int year, int crn,ArrayList<String> g){
+        return s.addBook(title, author, year, crn, Condition.New, g);
+    }
+    
+    public ArrayList<Stock.Book> callAllBooks(){
+        return s.callAll();
+    }
+    
+    
+    
+    
+    public boolean returnBook(boolean dmg,int crn,int libnum){
+        Account a = as.callByLibNum(libnum);
+        if(dmg){
+            a.AddFee(ap.getDMGFees(),crn);
+        }
+        return a.ReturnBook(s.searchByCRN(crn));
+    }
+    public boolean checkOutBook(int crn,int libnum){
+        if(!s.load()){
+            return false;
+        }
+        Account a = as.callByLibNum(libnum);
+        boolean d=a.CheckOutBook(s.searchByCRN(crn));
+        if(d){
+            s.save();
+            return true;
+        }
+        return d;
+    }
+    
+    
+    
+    
     public boolean signIn(String user,String pass){
         current=as.callAccount(user, pass);
         if(current!=null){

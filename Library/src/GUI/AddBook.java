@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package GUI;
-
+import java.util.ArrayList;
 /**
  *
  * @author Tok
@@ -123,7 +123,7 @@ public class AddBook extends javax.swing.JFrame {
                                 .addComponent(jLabel8)
                                 .addGap(10, 10, 10)
                                 .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,7 +163,7 @@ public class AddBook extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
@@ -173,19 +173,26 @@ public class AddBook extends javax.swing.JFrame {
         String year = jTextField3.getText();
         String crn = jTextField4.getText();
         String genre = jTextField5.getText();
-
-        if (title == null && author == null && crn == null && year == null) {
-            this.dispose();
-        } else {
-           e.jTable1.setValueAt(genre, 0, 0);
-            e.jTable1.setValueAt(title, 0, 1);
-             e.jTable1.setValueAt(author, 0, 2);
-              e.jTable1.setValueAt(year, 0, 3);             
-               e.jTable1.setValueAt(crn, 0, 4);
-               e.jTable1.setValueAt("New", 0, 5);
-                e.jTable1.setValueAt("Available", 0, 6);
-            this.dispose();
-        }      
+        String[] genres = genre.split(",");
+       if (title != null && author != null && crn != null && year != null && genre !=null) {
+            ArrayList<String> gen = new ArrayList();
+            for (int i = 0; i < genres.length; i++) {
+                gen.add(genres[i].trim().toLowerCase());
+            }
+            try {
+                int x = Integer.parseInt(crn);
+                int y = Integer.parseInt(year);
+                e.li.handler.makeBook(title, author, y, x, gen);
+                e.callRefresh();
+            } catch (Exception e) {
+                LoginScreenError lse = new LoginScreenError();
+                lse.jLabel1.setText("Failure to parse or other ERROR");
+                lse.setVisible(true);
+            }
+        }else{
+           LoginScreenError lse = new LoginScreenError();
+           lse.jLabel1.setText("One of the required fields were empty");
+       }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**

@@ -45,7 +45,20 @@ public class Accounts {
         }
         
     }
-    
+    Account callByLibNum(int libnum){
+        try {
+            readAccounts();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        for(int k :accounts.keySet()){
+            if(accounts.get(k).getLibNum()==libnum){
+                return accounts.get(k);
+            }
+        }
+        return null;
+    }
     boolean checkNumber(int x){//checks for dup lib#
         return !libraryNumbers.contains(x);
     }

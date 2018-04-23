@@ -18,7 +18,7 @@ enum Condition implements java.io.Serializable {
     New, Good, Worned, Poor, Unacceptable, InRepair
 }
 
-enum Genres implements java.io.Serializable {
+/*enum Genres implements java.io.Serializable {
     Science, Fiction, Satire, Drama, Action, Adventure, Romance,
     Mystery, Horror, SelfHelp, Health, Guide, Travel, Childrens,
     Religion, Spirituality, NewAge, History, Math, Anthology,
@@ -26,46 +26,53 @@ enum Genres implements java.io.Serializable {
     Diaries, Journals, PrayerBooks, Series, Trilogy, Biographies,
     Autobiographies, Fantasy, Realism, Mythology, Tragedy, Comedy,
     Classic, Folklore, PictureBook, Thiller, Maginzies
-}
+}*/
 
-enum Location implements java.io.Serializable {
+/*enum Location implements java.io.Serializable {
     Childrens, YoungAdult, Reference, Periodical, AdultFiction, AdultNonFiction, Archieves
-}
+}*/
 
 /**
  *
  * @author alex
  */
-class Stock {
+public class Stock {
 
-    class Book implements java.io.Serializable {
+    public class Book implements java.io.Serializable, Comparable<Book> {
 
         private String title, author;
-        private ArrayList<Genres> genres;
+        //private ArrayList<Genres> genres;
+        private ArrayList<String> genres;
         private int crn;
         private int year;
         private Availability av;
         private Condition condition;
 
-        Book(String t, String a, int c, int y, Condition con, ArrayList<Genres> g) {
+        Book(String t, String a, int c, int y, Condition con, /*ArrayList<Genres> g*/ ArrayList<String> genre) {
             title = t;
             author = a;
             crn = c;
             year = y;
             condition = con;
             av = Availability.InStock;
+            genres=genre;
         }
 
         void ChangeAvailability(Availability a) {
             av = a;
+        }
+        
+        int getCRN(){
+            return crn;
         }
 
         void ChangeCondition(Condition c) {
             condition = c;
         }
 
+        @Override
         public String toString() {
-            return "Title: " + title + " Author: " + author + " Year: " + year + "\nCRN#: " + crn + " Condition: " + condition + "\nGenres: " + genres.toString();
+            return title + ":::" + author + ":::" + year + ":::" + crn + ":::" + condition + ":::" + genres.toString();
         }
 
         @Override
@@ -94,16 +101,44 @@ class Stock {
             }*/
             return true;
         }
+
+        @Override
+        public int compareTo(Book o) {
+            if(this.title.compareTo(o.title)>0){
+                return 1;
+            }else if(this.title.compareTo(o.title)<0){
+                return -1;
+            }else{
+               if(this.author.compareTo(o.author)>0){
+                   return 1;
+               }else if(this.author.compareTo(o.author)<0){
+                   return -1;
+               }else{
+                   return -1;
+               }
+            }
+        }
     }
     ArrayList<Book> books = new ArrayList<>();
     
-    Book searchBook(String title, String author, int crn, int year){
-        try {
-            readBooks();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Stock.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+    boolean editAvilibility(Availability a, Book b){
+        load();
+        for(int i=0;i<books.size();i++){
+            if(books.get(i).equals(b)){
+                books.get(i).av=a;
+                break;
+            }
         }
+        
+        return save();
+    }
+    ArrayList<Book> callAll(){
+        load();
+        return books;
+    }
+    
+    Book searchBook(String title, String author, int crn, int year){
+        load();
         Book fake = new Book(title,author,crn,year,null,null);
         for(int i=0;i<books.size();i++){
             if(books.get(i).equals(fake)){
@@ -112,34 +147,45 @@ class Stock {
         }
         return null;
     }
-
-    void addBook(String t, String a, int year, int crn, Condition c, ArrayList<Genres> genres, double v) {
-        try {
-            readBooks();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Stock.class.getName()).log(Level.SEVERE, null, ex);
+    
+    Book searchByCRN(int crn){
+        load();
+        for(int i=0;i<books.size();i++){
+            if(books.get(i).crn==crn){
+                return books.get(i);
+            }
         }
+        return null;
+    }
+
+    boolean addBook(String t, String a, int year, int crn, Condition c, /*ArrayList<Genres> genres*/ArrayList<String> genres) {
+        load();
         Book b = new Book(t, a, crn, year, c, genres);
         books.add(b);
-
-        try {
-            writeBooks();
-        } catch (IOException ex) {
-            //Logger.getLogger(Stock.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        return save();
     }
 
     void removeBook(Book b) {
-        try {
-            readBooks();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Stock.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        load();
         books.remove(b);
+        save();
+    }
+    public boolean save(){
         try {
             writeBooks();
+            return true;
         } catch (IOException ex) {
             //Logger.getLogger(Stock.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    public boolean load(){
+        try {
+            readBooks();
+            return true;
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Stock.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
     }
 
@@ -154,7 +200,7 @@ class Stock {
 
     private void readBooks() throws IOException, ClassNotFoundException {
         WR r = new WR();
-        FileInputStream fis = new FileInputStream(new File(r.returnAccountsPath()));
+        FileInputStream fis = new FileInputStream(new File(r.returnBookDataPath()));
         ObjectInputStream ois = new ObjectInputStream(fis);
         books = (ArrayList<Book>) ois.readObject();
         ois.close();

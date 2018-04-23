@@ -53,17 +53,17 @@ public class Main {
         System.out.println("Changes Saved");
         
         
-        String fn = null;
-        String ln = null;   
-        String address = null;
-        String city = null;
-        String state = null;
-        String zipcode = null;
-        String email=null;
-        String phone=null;
-        String id = null;
-        String pass = null;
-        String repass = null;
+        String fn;
+        String ln;   
+        String address;
+        String city;
+        String state;
+        String zipcode;
+        String email;
+        String phone;
+        String id;
+        String pass;
+        String repass;
         
         do{
         System.out.println("Time to make your admin account");

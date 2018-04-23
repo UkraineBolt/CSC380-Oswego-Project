@@ -22,7 +22,7 @@ enum AccountType implements java.io.Serializable{
 public class Accounts {
 
     HashMap<String, String> user;
-    HashMap<Integer, Account> accounts;
+    HashMap<String, Account> accounts;
     ArrayList<Integer> libraryNumbers = new ArrayList<>();
     
     Accounts() {
@@ -52,7 +52,7 @@ public class Accounts {
             //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-        for(int k :accounts.keySet()){
+        for(String k :accounts.keySet()){
             if(accounts.get(k).getLibNum()==libnum){
                 return accounts.get(k);
             }
@@ -61,6 +61,14 @@ public class Accounts {
     }
     boolean checkNumber(int x){//checks for dup lib#
         return !libraryNumbers.contains(x);
+    }
+    
+    boolean realterCheckoutSize(){
+        for(String key:accounts.keySet()){
+            Account temp = accounts.get(key);
+            temp.updateKeepLimit();
+        }
+        return true;
     }
 
     boolean makeAccount(String uname, String pass, Account a) {
@@ -83,8 +91,8 @@ public class Accounts {
         
         try {
             user.put(uname, pass);
-            int accountMarker = uname.hashCode() + pass.hashCode();
-            accounts.put(accountMarker, a);
+            String accountkey = uname.trim()+pass.trim();
+            accounts.put(accountkey, a);
             writeLibraryNumbers();
             writeAccounts();
             return true;
@@ -102,7 +110,7 @@ public class Accounts {
             //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-        for(Integer key: accounts.keySet()){
+        for(String key: accounts.keySet()){
             Account temp = accounts.get(key);
             if(temp.compareEmail(x)){
                 return temp.getUsername();
@@ -145,7 +153,7 @@ public class Accounts {
         try {
             String temp = user.get(name);
             if (temp.equals(pass)) {
-                int accountMarker = name.hashCode() + pass.hashCode();
+                String accountMarker = name.trim() + pass.trim();
                 return accounts.get(accountMarker);
             } else {
                 return null;
@@ -203,7 +211,7 @@ public class Accounts {
         WR r = new WR();
         FileInputStream fis = new FileInputStream(new File(r.returnAccountsPath()));
         ObjectInputStream ois = new ObjectInputStream(fis);
-        accounts = (HashMap<Integer, Account>) ois.readObject();
+        accounts = (HashMap<String, Account>) ois.readObject();
         user = (HashMap<String, String>) ois.readObject();
         ois.close();
         fis.close();

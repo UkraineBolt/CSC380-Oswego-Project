@@ -10,11 +10,7 @@ package GUI;
  * @author Tok
  */
 public class ProfileConfirm extends javax.swing.JFrame {
-    LibraryInterface li;
     Profile p;
-    void callFrame(LibraryInterface e){
-        li=e;
-    }
     void callFrame(Profile e){
         p=e;
     }
@@ -94,8 +90,9 @@ public class ProfileConfirm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        //need to remove account from here
-       if(li.handler.delete()){
-       System.exit(0);
+       if(p.li.handler.delete()){
+           p.callDispose();
+           this.dispose();
        }else{
            LoginScreenError lse = new LoginScreenError();
            lse.setVisible(true);
@@ -104,6 +101,7 @@ public class ProfileConfirm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        p.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 

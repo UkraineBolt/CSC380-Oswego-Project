@@ -28,6 +28,11 @@ class Account implements java.io.Serializable {
             startDay = sd;
             b.ChangeAvailability(Availability.CheckedOut);
         }
+        Checkout(Checkout x){
+            book=x.book;
+            dueDay=x.dueDay;
+            startDay=x.startDay;
+        }
 
         @Override
         public String toString() {
@@ -131,6 +136,23 @@ class Account implements java.io.Serializable {
             p++;
         }
         fee = fee + (ap.getFee() * p) + dmg;
+        return true;
+    }
+    
+    public boolean updateKeepLimit(){
+        loadC();
+        int newLimit = ap.getCheckOutSize();
+        if(newLimit!=checkouts.length && newLimit>1&& libraryNumber>0){
+            Checkout[] c = new Checkout[newLimit];
+            int dex = 0;
+            for(int i=0;i<checkouts.length;i++){
+                if(checkouts[i]!=null){
+                    c[dex]= new Checkout(checkouts[i]);
+                    dex++;
+                }
+            }
+            checkouts=c;
+        }
         return true;
     }
 

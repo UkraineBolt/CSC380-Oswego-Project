@@ -27,16 +27,17 @@ public class Main {
         AdminPage ap = new AdminPage();
         System.out.println("Set Constants:");
         System.out.println("keepTime");
-        ap.setKeepTime(Integer.parseInt(s.nextLine()));
+        int aa = Integer.parseInt(s.nextLine());
         
         System.out.println("lateFeePayment");
-        ap.setFeePayment(Double.parseDouble(s.nextLine()));
+        double fee = Double.parseDouble(s.nextLine());
         
         System.out.println("checkOutSize");
-        ap.setCheckOutSize(Integer.parseInt(s.nextLine()));
+        int cos =Integer.parseInt(s.nextLine());
         
         System.out.println("dmgfees");
-        ap.setDmgFees(Double.parseDouble(s.nextLine()));
+        double sdf=Double.parseDouble(s.nextLine());
+        ap.setConstants(aa, fee, cos, sdf);
         
         System.out.println("Saving");
         WR r = new WR();

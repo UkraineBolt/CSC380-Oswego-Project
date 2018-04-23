@@ -219,11 +219,14 @@ public class Profile extends javax.swing.JFrame {
         li.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    public void callDispose(){
+        li.callDispose();
+        this.dispose();
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
      
             ProfileConfirm pc = new ProfileConfirm();
-            pc.callFrame(li);
+            pc.callFrame(this);
             pc.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 

@@ -121,6 +121,15 @@ public class Stock {
     }
     ArrayList<Book> books = new ArrayList<>();
     
+    Stock(){
+        try {
+            readBooks();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Stock.class.getName()).log(Level.SEVERE, null, ex);
+            books=null;
+        }
+    }
+    
     boolean editAvilibility(Availability a, Book b){
         load();
         for(int i=0;i<books.size();i++){

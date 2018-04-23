@@ -14,7 +14,6 @@ import library.Handler;
 public class LibraryInterface extends javax.swing.JFrame {
 
     Handler handler;
-
     /**
      * Creates new form LibraryInterface
      */
@@ -232,9 +231,14 @@ public class LibraryInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        System.exit(0);//log out button;
+        LoginScreen ls = new LoginScreen();
+        ls.setVisible(true);
+        ls.handler=new Handler();
+        this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
-
+    public void callDispose(){
+        jButton7ActionPerformed(null);
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.setVisible(false);
         CheckInOut cio = new CheckInOut();
@@ -245,6 +249,7 @@ public class LibraryInterface extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         this.setVisible(false);
         AdminPage ap = new AdminPage();
+        ap.callFrame(this);
         ap.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -290,6 +295,7 @@ public class LibraryInterface extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         ContactUs cu = new ContactUs();
+        cu.callFrame(this);
         cu.setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 

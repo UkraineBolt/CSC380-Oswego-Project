@@ -5,12 +5,17 @@
  */
 package GUI;
 
+
 /**
  *
  * @author Tok
  */
 public class AdminPage extends javax.swing.JFrame {
-
+    LibraryInterface li;
+    public void callFrame(LibraryInterface ab) {
+        li = ab;
+        
+    }
     /**
      * Creates new form AdminPage
      */
@@ -146,18 +151,21 @@ public class AdminPage extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // Takes employer to setfee page
-        this.setVisible(false);
+            this.setVisible(false);
             SetFee sf = new SetFee();
+            sf.callFrame(this);
+            sf.setLableText();
             sf.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // Takes employer to main interface
-            this.setVisible(false);
-            LibraryInterface ls = new LibraryInterface();
-            ls.setVisible(true);
+        li.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
-
+    
+    public void callDispose(){
+        jButton4ActionPerformed(null);
+    }
     /**
      * @param args the command line arguments
      */

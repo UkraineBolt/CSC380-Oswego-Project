@@ -34,7 +34,7 @@ public class AddOrDeleteError extends javax.swing.JFrame {
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
-        jLabel1.setText("Invalid CRN");
+        jLabel1.setText("Must check one box ONLY");
 
         jButton1.setText("Okay");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -48,13 +48,14 @@ public class AddOrDeleteError extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jButton1))
-                    .addComponent(jLabel1))
-                .addContainerGap(19, Short.MAX_VALUE))
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addComponent(jButton1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,6 +112,6 @@ public class AddOrDeleteError extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
+    javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -14,7 +14,7 @@ enum Availability implements java.io.Serializable {
 }
 
 enum Condition implements java.io.Serializable {
-    New, Good, Worned, Poor, Unacceptable, InRepair
+    New, Good, Worned, Poor, Unacceptable
 }
 
 /*enum Genres implements java.io.Serializable {
@@ -122,6 +122,24 @@ public class Stock {
     
     Stock(){
         books = new ArrayList<>();
+    }
+    
+    Condition callCondition(String x){
+        //New, Good, Worned, Poor, Unacceptable, InRepair
+        switch (x.trim().toLowerCase()) {
+            case "new":
+                return Condition.New;
+            case "good":
+                return Condition.Good;
+            case "worned":
+                return Condition.Worned;
+            case "poor":
+                return Condition.Poor;
+            case "unacceptable":
+                return Condition.Unacceptable;
+            default:
+                return null;
+        }
     }
     
     boolean editAvilibility(Availability a, Book b){

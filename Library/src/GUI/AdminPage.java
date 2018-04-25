@@ -150,6 +150,8 @@ public class AdminPage extends javax.swing.JFrame {
         // Takes employer to add/delete page
         this.setVisible(false);
         AddOrDelete aod = new AddOrDelete();
+        aod.callFrame(this);
+        aod.callVisible();
         aod.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 

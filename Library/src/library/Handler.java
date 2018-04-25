@@ -7,7 +7,9 @@ package library;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +28,7 @@ public class Handler {
     public Handler() {
         try {
             loadAccounts();
-            if(as==null){
+            if (as == null) {
                 as = new Accounts();
             }
             try {
@@ -43,10 +45,10 @@ public class Handler {
                 //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
-        
+
         try {
             loadBooks();
-            if(s==null){
+            if (s == null) {
                 s = new Stock();
             }
             try {
@@ -63,10 +65,10 @@ public class Handler {
                 //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
-        
+
         try {
             loadLogs();
-            if(log == null){
+            if (log == null) {
                 log = new Logs();
             }
             try {
@@ -83,8 +85,7 @@ public class Handler {
                 //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
-        
-        
+
         try {
             loadConstants();
             if (ap == null) {
@@ -111,8 +112,8 @@ public class Handler {
     public String getAccountData() {
         return current.toString();
     }
-    
-    public ArrayList<Account> callAllAccounts(){
+
+    public ArrayList<Account> callAllAccounts() {
         try {
             loadAccounts();
             return as.getListOfAccounts();
@@ -188,8 +189,8 @@ public class Handler {
             return false;
         }
     }
-    
-    public boolean editAllCheckoutSizes(){
+
+    public boolean editAllCheckoutSizes() {
         try {
             loadAccounts();
         } catch (IOException | ClassNotFoundException ex) {
@@ -236,7 +237,7 @@ public class Handler {
         if (dmg) {
             a.AddFee(ap.getDMGFees(), crn);
         }
-        boolean x =  a.ReturnBook(s.searchByCRN(crn));
+        boolean x = a.ReturnBook(s.searchByCRN(crn));
         try {
             saveAccounts();
             saveBooks();
@@ -265,7 +266,7 @@ public class Handler {
             //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-        
+
     }
 
     public boolean signIn(String user, String pass) {
@@ -282,8 +283,8 @@ public class Handler {
             return false;
         }
     }
-    
-    public boolean createAdmin(String u, String p, String fn, String ln, String add, String c, String em, String ph, String zip, String st){
+
+    public boolean createAdmin(String u, String p, String fn, String ln, String add, String c, String em, String ph, String zip, String st) {
         try {
             loadAccounts();
         } catch (IOException | ClassNotFoundException ex) {
@@ -328,7 +329,48 @@ public class Handler {
         }
     }
     
-    public Account callAccountByLibNum(int num){
+    public void deleteListOfBooks(ArrayList<String> x){
+        
+    }
+
+    public boolean readFileOfBooks(String x) {
+        try {
+            loadBooks();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            File f = new File(x);
+            Scanner sss = new Scanner(f);
+            while (sss.hasNextLine()) {
+                String[] db = sss.nextLine().split(":::");
+                if (db.length==6) {
+                    try {
+                        int year = Integer.parseInt(db[2]);
+                        int crn = Integer.parseInt(db[3]);
+                        String[] genres = db[5].split(",");
+                        ArrayList<String> g = new ArrayList<>();
+                        g.addAll(Arrays.asList(genres));
+                        Condition cod = s.callCondition(db[4]);
+                        s.addBook(db[0], db[1], year, crn, cod, g);
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+            saveBooks();
+            return true;
+        } catch (FileNotFoundException e) {
+            return false;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    public Account callAccountByLibNum(int num) {
         try {
             loadAccounts();
         } catch (IOException | ClassNotFoundException ex) {
@@ -337,7 +379,7 @@ public class Handler {
         }
         return as.callByLibNum(num);
     }
-    
+
     public boolean delete(Account o) {
         try {
             loadAccounts();
@@ -355,8 +397,8 @@ public class Handler {
             return false;
         }
     }
-    
-    public boolean changeStatus(String x){
+
+    public boolean changeStatus(String x) {
         try {
             loadAccounts();
         } catch (IOException | ClassNotFoundException ex) {
@@ -390,8 +432,7 @@ public class Handler {
             return false;
         }
     }
-    
-    
+
     //eveything below this point are read and write methods
     private void saveConstants() throws IOException {
         WR r = new WR();
@@ -401,6 +442,7 @@ public class Handler {
         oos.close();
         fos.close();
     }
+
     private void loadConstants() throws IOException, ClassNotFoundException {
         WR r = new WR();
         FileInputStream fis = new FileInputStream(new File(r.returnConstantsPath()));
@@ -410,7 +452,7 @@ public class Handler {
         fis.close();
 
     }
-    
+
     private void saveAccounts() throws IOException {
         WR r = new WR();
         FileOutputStream fos = new FileOutputStream(new File(r.returnAccountsPath()), false);
@@ -419,6 +461,7 @@ public class Handler {
         oos.close();
         fos.close();
     }
+
     private void loadAccounts() throws IOException, ClassNotFoundException {
         WR r = new WR();
         FileInputStream fis = new FileInputStream(new File(r.returnAccountsPath()));
@@ -428,7 +471,7 @@ public class Handler {
         fis.close();
 
     }
-    
+
     private void saveBooks() throws IOException {
         WR r = new WR();
         FileOutputStream fos = new FileOutputStream(new File(r.returnBookDataPath()), false);
@@ -437,6 +480,7 @@ public class Handler {
         oos.close();
         fos.close();
     }
+
     private void loadBooks() throws IOException, ClassNotFoundException {
         WR r = new WR();
         FileInputStream fis = new FileInputStream(new File(r.returnBookDataPath()));
@@ -446,7 +490,7 @@ public class Handler {
         fis.close();
 
     }
-    
+
     private void saveLogs() throws IOException {
         WR r = new WR();
         FileOutputStream fos = new FileOutputStream(new File(r.returnWorkLogsPath()), false);
@@ -455,6 +499,7 @@ public class Handler {
         oos.close();
         fos.close();
     }
+
     private void loadLogs() throws IOException, ClassNotFoundException {
         WR r = new WR();
         FileInputStream fis = new FileInputStream(new File(r.returnWorkLogsPath()));

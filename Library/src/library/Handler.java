@@ -17,15 +17,74 @@ import java.util.logging.Logger;
  */
 public class Handler {
 
-    private Account current;
+    public Account current;
     Accounts as;
     Logs log;
     Stock s;
     public AdminPage ap;
 
     public Handler() {
-        as = new Accounts();
-        s = new Stock();
+        try {
+            loadAccounts();
+            if(as==null){
+                as = new Accounts();
+            }
+            try {
+                saveAccounts();
+            } catch (IOException ex1) {
+                //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            as = new Accounts();
+            try {
+                saveAccounts();
+            } catch (IOException ex1) {
+                //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        
+        try {
+            loadBooks();
+            if(s==null){
+                s = new Stock();
+            }
+            try {
+                saveBooks();
+            } catch (IOException ex1) {
+                //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            s = new Stock();
+            try {
+                saveBooks();
+            } catch (IOException ex1) {
+                //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        
+        try {
+            loadLogs();
+            if(log == null){
+                log = new Logs();
+            }
+            try {
+                saveLogs();
+            } catch (IOException ex1) {
+                //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            log = new Logs();
+            try {
+                saveLogs();
+            } catch (IOException ex1) {
+                //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        
+        
         try {
             loadConstants();
             if (ap == null) {
@@ -52,24 +111,71 @@ public class Handler {
     public String getAccountData() {
         return current.toString();
     }
+    
+    public ArrayList<Account> callAllAccounts(){
+        try {
+            loadAccounts();
+            return as.getListOfAccounts();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 
     public int aType() {
         return current.gettype();
     }
 
     public String getID(String x) {
+        try {
+            loadAccounts();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
         return as.emailToUserID(x);
     }
 
     public boolean changePassword(String user, String pass) {
-        return as.changePassword(user, pass);
+        try {
+            loadAccounts();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        boolean x = as.changePassword(user, pass);
+        try {
+            saveAccounts();
+            return x;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 
     public boolean makeBook(String title, String author, int year, int crn, ArrayList<String> g) {
-        return s.addBook(title, author, year, crn, Condition.New, g);
+        try {
+            loadBooks();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        boolean x = s.addBook(title, author, year, crn, Condition.New, g);
+        try {
+            saveBooks();
+            return x;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 
     public ArrayList<Stock.Book> callAllBooks() {
+        try {
+            loadBooks();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
         return s.callAll();
     }
 
@@ -84,7 +190,20 @@ public class Handler {
     }
     
     public boolean editAllCheckoutSizes(){
-        return as.realterCheckoutSize();
+        try {
+            loadAccounts();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        boolean x = as.realterCheckoutSize();
+        try {
+            saveAccounts();
+            return x;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 
     public boolean saveConstants(int l, double f, int c, double d) {
@@ -105,27 +224,57 @@ public class Handler {
     }
 
     public boolean returnBook(boolean dmg, int crn, int libnum) {
+        try {
+            loadAccounts();
+            loadConstants();
+            loadBooks();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
         Account a = as.callByLibNum(libnum);
         if (dmg) {
             a.AddFee(ap.getDMGFees(), crn);
         }
-        return a.ReturnBook(s.searchByCRN(crn));
+        boolean x =  a.ReturnBook(s.searchByCRN(crn));
+        try {
+            saveAccounts();
+            saveBooks();
+            return x;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 
     public boolean checkOutBook(int crn, int libnum) {
-        if (!s.load()) {
+        try {
+            loadAccounts();
+            loadBooks();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         Account a = as.callByLibNum(libnum);
         boolean d = a.CheckOutBook(s.searchByCRN(crn));
-        if (d) {
-            s.save();
-            return true;
+        try {
+            saveBooks();
+            saveAccounts();
+            return d;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
-        return d;
+        
     }
 
     public boolean signIn(String user, String pass) {
+        try {
+            loadAccounts();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
         current = as.callAccount(user, pass);
         if (current != null) {
             return true;
@@ -133,27 +282,117 @@ public class Handler {
             return false;
         }
     }
+    
+    public boolean createAdmin(String u, String p, String fn, String ln, String add, String c, String em, String ph, String zip, String st){
+        try {
+            loadAccounts();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Account a = new Account(AccountType.Employer, fn, ln, add, c, em, ph, zip, st, u, 100, 0);
+        as.checkForNull();
+        boolean x = as.makeAccount(u, p, a);
+        try {
+            saveAccounts();
+            return x;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
 
     public boolean create(String u, String p, String fn, String ln, String add, String c, String em, String ph, String zip, String st) {
+        try {
+            loadAccounts();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Random r = new Random();
         boolean temp = true;
         int libnum;
         do {//possible inf loop
-            libnum = r.nextInt();
+            libnum = Math.abs(r.nextInt());
             if (as.checkNumber(libnum)) {
                 temp = false;
             }
         } while (temp);
 
         Account a = new Account(AccountType.Client, fn, ln, add, c, em, ph, zip, st, u, ap.getCheckOutSize(), libnum);
-        return as.makeAccount(u, p, a);
+        boolean x = as.makeAccount(u, p, a);
+        try {
+            saveAccounts();
+            return x;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    public Account callAccountByLibNum(int num){
+        try {
+            loadAccounts();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        return as.callByLibNum(num);
+    }
+    
+    public boolean delete(Account o) {
+        try {
+            loadAccounts();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        String u = o.getUsername();
+        boolean x = as.deleteAccount(u, as.user.get(u));
+        try {
+            saveAccounts();
+            return x;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    public boolean changeStatus(String x){
+        try {
+            loadAccounts();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        boolean eo = as.changeStatus(x);
+        try {
+            saveAccounts();
+            return eo;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 
     public boolean delete() {
+        try {
+            loadAccounts();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
         String u = current.getUsername();
-        return as.deleteAccount(u, as.user.get(u));
+        boolean x = as.deleteAccount(u, as.user.get(u));
+        try {
+            saveAccounts();
+            return x;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
-
+    
+    
+    //eveything below this point are read and write methods
     private void saveConstants() throws IOException {
         WR r = new WR();
         FileOutputStream fos = new FileOutputStream(new File(r.returnConstantsPath()), false);
@@ -162,12 +401,65 @@ public class Handler {
         oos.close();
         fos.close();
     }
-
     private void loadConstants() throws IOException, ClassNotFoundException {
         WR r = new WR();
         FileInputStream fis = new FileInputStream(new File(r.returnConstantsPath()));
         ObjectInputStream ois = new ObjectInputStream(fis);
         ap = (AdminPage) ois.readObject();
+        ois.close();
+        fis.close();
+
+    }
+    
+    private void saveAccounts() throws IOException {
+        WR r = new WR();
+        FileOutputStream fos = new FileOutputStream(new File(r.returnAccountsPath()), false);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(as);
+        oos.close();
+        fos.close();
+    }
+    private void loadAccounts() throws IOException, ClassNotFoundException {
+        WR r = new WR();
+        FileInputStream fis = new FileInputStream(new File(r.returnAccountsPath()));
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        as = (Accounts) ois.readObject();
+        ois.close();
+        fis.close();
+
+    }
+    
+    private void saveBooks() throws IOException {
+        WR r = new WR();
+        FileOutputStream fos = new FileOutputStream(new File(r.returnBookDataPath()), false);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(s);
+        oos.close();
+        fos.close();
+    }
+    private void loadBooks() throws IOException, ClassNotFoundException {
+        WR r = new WR();
+        FileInputStream fis = new FileInputStream(new File(r.returnBookDataPath()));
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        s = (Stock) ois.readObject();
+        ois.close();
+        fis.close();
+
+    }
+    
+    private void saveLogs() throws IOException {
+        WR r = new WR();
+        FileOutputStream fos = new FileOutputStream(new File(r.returnWorkLogsPath()), false);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(log);
+        oos.close();
+        fos.close();
+    }
+    private void loadLogs() throws IOException, ClassNotFoundException {
+        WR r = new WR();
+        FileInputStream fis = new FileInputStream(new File(r.returnWorkLogsPath()));
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        log = (Logs) ois.readObject();
         ois.close();
         fis.close();
 

@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package GUI;
-import library.Handler;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,10 +14,13 @@ import javax.swing.JOptionPane;
  * @author Tok
  */
 public class RegistrationScreen extends javax.swing.JFrame {
+
     LoginScreen ls;
-    void callFrame(LoginScreen e){
-        ls=e;
+
+    void callFrame(LoginScreen e) {
+        ls = e;
     }
+
     /**
      * Creates new form RegistrationScreen
      */
@@ -429,32 +431,36 @@ public class RegistrationScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String fname=jTextField1.getText();
-        String lname=jTextField2.getText();
-        String address=jTextField3.getText();
-        String city=jTextField4.getText();
-        String zipcode=jTextField5.getText();
-        String email=jTextField6.getText();
-        String phone=jTextField7.getText();
-        String userName=jTextField8.getText();
-        String password=jPasswordField1.getText();
+        String fname = jTextField1.getText();
+        String lname = jTextField2.getText();
+        String address = jTextField3.getText();
+        String city = jTextField4.getText();
+        String zipcode = jTextField5.getText();
+        String email = jTextField6.getText();
+        String phone = jTextField7.getText();
+        String userName = jTextField8.getText();
+        String password = jPasswordField1.getText();
         jPasswordField2.getText();
         String state = jTextField9.getText();
-        
-        if(jPasswordField1.getText().equals(jPasswordField2.getText())&&userName.length()>4&&password.length()>4 && !fname.equals("") && !lname.equals("")
+
+        if (jPasswordField1.getText().equals(jPasswordField2.getText()) && userName.length() > 4 && password.length() > 4 && !fname.equals("") && !lname.equals("")
                 && !address.equals("") && !city.equals("") && !state.equals("") && !zipcode.equals("") && !email.equals("") && !phone.equals("")) {
-            ls.handler.create(userName, password, fname, lname, address, city, email, phone, zipcode,state);
-            ls.setVisible(true);
-            this.dispose();
-        }else{
-           RegistrationError re= new RegistrationError();
-           re.setVisible(true);
+            boolean x = ls.handler.create(userName, password, fname, lname, address, city, email, phone, zipcode, state);
+            if (x) {
+                ls.setVisible(true);
+                this.dispose();
+            } else {
+                RegistrationError re = new RegistrationError();
+                re.setVisible(true);
+            }
+        } else {
+            RegistrationError re = new RegistrationError();
+            re.setVisible(true);
         }
-        
-        
+
         // call function to add new user to account database. :)
         //read textfields of all their info.
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
@@ -519,7 +525,7 @@ public class RegistrationScreen extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(RegistrationScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-final JFrame parent = new JFrame();
+        final JFrame parent = new JFrame();
         JButton button = new JButton();
 
         button.setText("Click me to show dialog!");
@@ -530,9 +536,9 @@ final JFrame parent = new JFrame();
         button.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                String name = JOptionPane.showInputDialog(parent,"What is your name?", null);
+                String name = JOptionPane.showInputDialog(parent, "What is your name?", null);
             }
-            });
+        });
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

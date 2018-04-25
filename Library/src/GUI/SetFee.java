@@ -261,28 +261,29 @@ public class SetFee extends javax.swing.JFrame {
         jTextField4.setText("");
 
         if (dmg != null && latefee != null && keeptime != null && booklimit != null) {
-            int keept = Integer.parseInt(keeptime);
-            double late = Double.parseDouble(latefee);
-            int limit = Integer.parseInt(booklimit);
-            double d = Double.parseDouble(dmg);
-            int oldL = ap.li.handler.ap.getCheckOutSize();
-            if (limit>1) {
-                try {
+            try {
+                int keept = Integer.parseInt(keeptime);
+                double late = Double.parseDouble(latefee);
+                int limit = Integer.parseInt(booklimit);
+                double d = Double.parseDouble(dmg);
+                int oldL = ap.li.handler.ap.getCheckOutSize();
+                if (limit > 1) {
                     ap.li.handler.saveConstants(keept, late, limit, d);
                     setLableText();
-                    if(oldL!=limit){
+                    if (oldL != limit) {
                         ap.li.handler.editAllCheckoutSizes();
                     }
-                } catch (Exception e) {
+
+                } else {
+                    LoginScreenError lse = new LoginScreenError();
+                    lse.jLabel1.setText("Size of checkoutLimit is two small");
+                    lse.setVisible(true);
+                }
+            }catch (Exception e) {
                     LoginScreenError lse = new LoginScreenError();
                     lse.jLabel1.setText("Only digits are accepted");
                     lse.setVisible(true);
                 }
-            } else {
-                LoginScreenError lse = new LoginScreenError();
-                lse.jLabel1.setText("Size of checkoutLimit is two small");
-                lse.setVisible(true);
-            }
         } else {
             LoginScreenError lse = new LoginScreenError();
             lse.jLabel1.setText("A field was left empty");

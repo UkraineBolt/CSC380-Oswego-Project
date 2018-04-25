@@ -5,26 +5,24 @@
  */
 package library;
 
-import java.io.*;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author alex
  */
 public class Main {
-    AdminPage ap = new AdminPage();
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Handler x = new Handler();
         System.out.println("Start up protocal");
         System.out.println("This protocal is easily breakable as unique inputs are required"
         +"\nDivergence of type will cause program to fail");
         Scanner s = new Scanner(System.in);
-        AdminPage ap = new AdminPage();
+        System.out.println("do you want to set constants: y or n?");
+        if(s.nextLine().contains("y")){
         System.out.println("Set Constants:");
         System.out.println("keepTime");
         int aa = Integer.parseInt(s.nextLine());
@@ -37,22 +35,10 @@ public class Main {
         
         System.out.println("dmgfees");
         double sdf=Double.parseDouble(s.nextLine());
-        ap.setConstants(aa, fee, cos, sdf);
-        
+        x.saveConstants(aa, sdf, cos, sdf);
         System.out.println("Saving");
-        WR r = new WR();
-        try{
-        FileOutputStream fos = new FileOutputStream(new File(r.returnConstantsPath()),false);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(ap);
-        oos.close();
-        fos.close();
-        }catch(IOException e){
-            Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, e);
-            System.exit(-827);
-        }
         System.out.println("Changes Saved");
-        
+        }
         
         String fn;
         String ln;   
@@ -93,13 +79,10 @@ public class Main {
         }while(!pass.equals(repass));
         
         System.out.println("making account");
-        Account a = new Account(AccountType.Employer,fn,ln,address,city,
-        email,phone,zipcode,state,id,100,0);
+        x.createAdmin(id, pass, fn, ln, address, city, email, phone, zipcode, state);
         System.out.println("account object made");
         
         System.out.println("adding account to database");
-        Accounts as = new Accounts();
-        as.makeAccount(id,pass,a);
         System.out.println("account has been added");
         System.out.println("basic admin set up has been confirmed");
         System.out.println("Run program through LoginScreen");
@@ -107,23 +90,4 @@ public class Main {
         
         
     }
-    /*
-    private void save() throws IOException{
-        WR r = new WR();
-        FileOutputStream fos = new FileOutputStream(new File(r.returnConstantsPath()),false);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(ap);
-        oos.close();
-        fos.close();
-    }
-    
-    private void load() throws IOException, ClassNotFoundException{
-        WR r = new WR();
-        FileInputStream fis = new FileInputStream(new File(r.returnConstantsPath()));
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        ap = (AdminPage) ois.readObject();
-        ois.close();
-        fis.close();
-    }
-    */
 }

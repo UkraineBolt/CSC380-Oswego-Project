@@ -5,7 +5,6 @@
  */
 package library;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -136,54 +135,31 @@ public class Logs {
 
     }
     
-    boolean eeee,llll;
-    
     Logs(){
-        try {
-            readEvents();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
-            eeee=false;
-        }
-        try {
-            readLogs();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
-            llll=false;
-        }
-        
+        workLog = new ArrayList<>();
+        completedWorkLog = new ArrayList<>();
+        eventLog = new ArrayList<>();
+        completedEventLog = new ArrayList<>();
     }
 
     //may need fixing
-    ArrayList<Event> workLog = new ArrayList<>();//Only store currently active requests
-    ArrayList<Event> completedWorkLog = new ArrayList<>();
+    ArrayList<Event> workLog;//Only store currently active requests
+    ArrayList<Event> completedWorkLog;
 
-    ArrayList<Event> eventLog = new ArrayList<>();//only store currently active requests
-    ArrayList<Event> completedEventLog = new ArrayList<>();
+    ArrayList<Event> eventLog;//only store currently active requests
+    ArrayList<Event> completedEventLog;
     
-    void addWorkLog(int priority, Date startDate, String requestName, String action) throws IOException {
-        try {
-            readLogs();
-        } catch (ClassNotFoundException ex) {
-            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    boolean addWorkLog(int priority, Date startDate, String requestName, String action) {
         Event w = new Event();
         w.workType = true;
         w.priority = priority;
         w.startDate = startDate;
         w.requestName = requestName;
         w.action = action;
-        workLog.add(w);
-        writeLogs();
+        return workLog.add(w);
     }
     
     Event searchLog(int priority, Date start, String name, String action){
-        try {
-            readLogs();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
         Event fake = new Event();
         fake.priority=priority;
         fake.startDate=start;
@@ -194,26 +170,15 @@ public class Logs {
                 return workLog.get(i);
             }
         }
-        
-        
         return null;         
     }
     
-    
-
     boolean completedTask(Event e, String completeName, Date completeDate) {
-        try {
-            readEvents();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
         if (deleteTask(e)) {
             e.completeDate = completeDate;
             e.completeName = completeName;
             e.complete = true;
-            
-            return true;
+            return completedWorkLog.add(e);
         }
         return false;
     }
@@ -226,60 +191,14 @@ public class Logs {
         }
     }
 
-    void clearLog() {
-        try {
-            readLogs();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
-            
-        }
+    boolean clearLog() {
         workLog.clear();
-        
-        try {
-            writeLogs();
-        } catch (IOException ex) {
-            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    private void writeLogs() throws IOException{
-        WR r = new WR();
-        FileOutputStream fos = new FileOutputStream(new File(r.returnWorkLogsPath()),false);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(workLog);
-        oos.close();
-        fos.close();
-    }
-    
-    private void readLogs() throws IOException, ClassNotFoundException{
-        WR r = new WR();
-        FileInputStream fis = new FileInputStream(new File(r.returnWorkLogsPath()));
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        workLog = (ArrayList<Event>) ois.readObject();
-        ois.close();
-        fis.close();
-    }
-    
-    private void writeCompletedLogs() throws IOException{
-        WR r = new WR();
-        FileOutputStream fos = new FileOutputStream(new File(r.returnCompletedLogsPath()),false);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(completedWorkLog);
-        oos.close();
-        fos.close();
-    }
-    private void readCompletedLogs() throws IOException, ClassNotFoundException{
-        WR r = new WR();
-        FileInputStream fis = new FileInputStream(new File(r.returnCompletedLogsPath()));
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        completedWorkLog = (ArrayList<Event>) ois.readObject();
-        ois.close();
-        fis.close();
+        return workLog.isEmpty();
     }
     
 
     
-    void addEvent(Date date, String title, String host, String where, String discription) throws IOException {
+    boolean addEvent(Date date, String title, String host, String where, String discription){
         Event e = new Event();
         e.workType = false;
         e.date = date;
@@ -287,17 +206,10 @@ public class Logs {
         e.host = host;
         e.where = where;
         e.discription = discription;
-        eventLog.add(e);
-        writeEvents();
+        return eventLog.add(e);
     }
     
     Event searchEvent(Date d, String title, String host, String where, String dis){
-        try {
-            readEvents();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
         Event fake = new Event();
         fake.date=d;
         fake.title=title;
@@ -315,59 +227,15 @@ public class Logs {
 
     boolean deleteEvent(Event e) {
         if (eventLog.contains(e)) {
-            eventLog.remove(e);
-            try {
-                writeEvents();
-                return true;
-            } catch (IOException ex) {
-                //Logger.getLogger(Logs.class.getName()).log(Level.SEVERE, null, ex);
-                return false;
-            }
+            return eventLog.remove(e);
         } else {
             return false;
         }
     }
 
-    void completedEvent(Event e) {
+    boolean  completedEvent(Event e) {
         e.complete = true;
         deleteEvent(e);
-        
-        completedEventLog.add(e);
+        return completedEventLog.add(e);
     }
-    
-    private void writeEvents() throws IOException{
-        WR r = new WR();
-        FileOutputStream fos = new FileOutputStream(new File(r.returnEventsPath()),false);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(eventLog);
-        oos.close();
-        fos.close();
-    }
-    
-    private void readEvents() throws IOException, ClassNotFoundException{
-        WR r = new WR();
-        FileInputStream fis = new FileInputStream(new File(r.returnEventsPath()));
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        workLog = (ArrayList<Event>) ois.readObject();
-        ois.close();
-        fis.close();
-    }
-    
-    private void writeCompletedEvents() throws IOException{
-        WR r = new WR();
-        FileOutputStream fos = new FileOutputStream(new File(r.returnCompletedEventsPath()),false);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(completedEventLog);
-        oos.close();
-        fos.close();
-    }
-    private void readCompletedEvents() throws IOException, ClassNotFoundException{
-        WR r = new WR();
-        FileInputStream fis = new FileInputStream(new File(r.returnCompletedEventsPath()));
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        completedEventLog = (ArrayList<Event>) ois.readObject();
-        ois.close();
-        fis.close();
-    }
-    
 }

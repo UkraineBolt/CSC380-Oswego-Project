@@ -5,7 +5,6 @@
  */
 package library;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -119,35 +118,27 @@ public class Stock {
             }
         }
     }
-    ArrayList<Book> books = new ArrayList<>();
+    ArrayList<Book> books;
     
     Stock(){
-        try {
-            readBooks();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Stock.class.getName()).log(Level.SEVERE, null, ex);
-            books=null;
-        }
+        books = new ArrayList<>();
     }
     
     boolean editAvilibility(Availability a, Book b){
-        load();
         for(int i=0;i<books.size();i++){
             if(books.get(i).equals(b)){
                 books.get(i).av=a;
-                break;
+                return true;
             }
         }
         
-        return save();
+        return false;
     }
     ArrayList<Book> callAll(){
-        load();
         return books;
     }
     
     Book searchBook(String title, String author, int crn, int year){
-        load();
         Book fake = new Book(title,author,crn,year,null,null);
         for(int i=0;i<books.size();i++){
             if(books.get(i).equals(fake)){
@@ -158,7 +149,6 @@ public class Stock {
     }
     
     Book searchByCRN(int crn){
-        load();
         for(int i=0;i<books.size();i++){
             if(books.get(i).crn==crn){
                 return books.get(i);
@@ -167,18 +157,15 @@ public class Stock {
         return null;
     }
 
-    boolean addBook(String t, String a, int year, int crn, Condition c, /*ArrayList<Genres> genres*/ArrayList<String> genres) {
-        load();
+    boolean addBook(String t, String a, int year, int crn, Condition c, ArrayList<String> genres) {
         Book b = new Book(t, a, crn, year, c, genres);
-        books.add(b);
-        return save();
+        return books.add(b);
     }
 
     void removeBook(Book b) {
-        load();
         books.remove(b);
-        save();
     }
+    /*
     public boolean save(){
         try {
             writeBooks();
@@ -214,6 +201,6 @@ public class Stock {
         books = (ArrayList<Book>) ois.readObject();
         ois.close();
         fis.close();
-    }
+    }*/
 
 }

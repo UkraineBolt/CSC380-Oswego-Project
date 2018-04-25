@@ -11,9 +11,13 @@ package GUI;
  */
 public class Profile extends javax.swing.JFrame {
     LibraryInterface li;
+    //SearchPage sp;
     void callFrame(LibraryInterface e){
         li=e;
     }
+    /*void callFrame(SearchPage sp){
+        this.sp = sp;
+    }*/
     /**
      * Creates new form Profile
      */

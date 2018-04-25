@@ -14,7 +14,24 @@ import java.util.logging.Logger;
  *
  * @author alex
  */
-class Account implements java.io.Serializable {
+public class Account implements java.io.Serializable, Comparable<Account> {
+
+    @Override
+    public int compareTo(Account o) {
+        if(this.firstName.compareTo(o.firstName)>0){
+            return 1;
+        }else if(this.firstName.compareTo(o.firstName)<0){
+            return -1;
+        }else{
+            if(this.lastName.compareTo(o.lastName)>0){
+                return 1;
+            }else if(this.lastName.compareTo(o.lastName)<0){
+                return -1;
+            }else{
+                return 0;
+            }
+        }
+    }
 
     private class Checkout implements java.io.Serializable {
 
@@ -88,8 +105,12 @@ class Account implements java.io.Serializable {
         username = x.username;
         libraryNumber = x.libraryNumber;
     }
-
-    void loadC() {
+    
+    boolean checkouts(){
+        return checked==0;
+    }
+    
+    private void loadC() {
         WR r = new WR();
         try {
             FileOutputStream fos = new FileOutputStream(new File(r.returnConstantsPath()), false);
@@ -173,7 +194,7 @@ class Account implements java.io.Serializable {
     }
 
     boolean CheckOutBook(Stock.Book b) {
-        if (checked == checkouts.length) {
+        if (checked == checkouts.length || b==null) {
             return false;
         }
         LocalDate ld = LocalDate.now();
@@ -211,6 +232,20 @@ class Account implements java.io.Serializable {
 
     String getUsername() {
         return username;
+    }
+    
+    boolean changeType(){
+        switch (accountType) {
+            case Employee:
+                accountType = AccountType.Client;
+                break;
+            case Employer:
+                return false;
+            default:
+                accountType = AccountType.Employee;
+                break;
+        }
+        return true;
     }
 
     @Override

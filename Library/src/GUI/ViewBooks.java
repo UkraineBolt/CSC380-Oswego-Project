@@ -305,25 +305,27 @@ public class ViewBooks extends javax.swing.JFrame {
         ArrayList<Stock.Book> all = li.handler.callAllBooks();
         ArrayList<String[][]> pages = new ArrayList<>();
         String[][] page = new String[10][6]; //y=10, x=6
-        Collections.sort(all);
-        int row = 0;//[]
-        for (int i = 0; i < all.size(); i++) {
-            for (int y = 0; y < page.length; y++) {
-                String output = all.get(i).toString();
-                String[] parts = output.split(":::");
-                for (int x = 0; x < page[y].length; x++) {
-                    page[y][x] = parts[x];
+        if (all!=null) {
+            Collections.sort(all);
+            int row = 0;//[]
+            for (int i = 0; i < all.size(); i++) {
+                for (int y = 0; y < page.length; y++) {
+                    String output = all.get(i).toString();
+                    String[] parts = output.split(":::");
+                    for (int x = 0; x < page[y].length; x++) {
+                        page[y][x] = parts[x];
+                    }
+                }
+                row++;
+                if (row == 10) {
+                    row = 0;
+                    pages.add(page);
+                    page = new String[10][6];
                 }
             }
-            row++;
-            if (row == 10) {
-                row = 0;
-                pages.add(page);
-                page = new String[10][6];
-            }
+            sortedTables = pages;
+            refreshVisual(0);
         }
-        sortedTables = pages;
-        refreshVisual(0);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void refreshVisual(int page) {

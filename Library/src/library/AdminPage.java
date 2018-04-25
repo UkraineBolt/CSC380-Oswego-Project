@@ -14,7 +14,14 @@ public class AdminPage implements java.io.Serializable{
     private double lateFeePayment;
     private int checkOutSize;
     private double dmgfees;
- 
+    
+    AdminPage(){
+        keepTime=7;
+        lateFeePayment=.5;
+        checkOutSize=2;
+        dmgfees=10;
+    }
+    
     public void setConstants(int l,double f,int c,double d){
         keepTime=l;lateFeePayment=f;checkOutSize=c;dmgfees=d;
     }

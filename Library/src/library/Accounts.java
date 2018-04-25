@@ -5,7 +5,6 @@
  */
 package library;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -19,39 +18,31 @@ enum AccountType implements java.io.Serializable{
  *
  * @author alex
  */
-public class Accounts {
+public class Accounts implements java.io.Serializable{
 
     HashMap<String, String> user;
     HashMap<String, Account> accounts;
-    ArrayList<Integer> libraryNumbers = new ArrayList<>();
+    ArrayList<Integer> libraryNumbers;
     
     Accounts() {
-        try{
-            readAccounts();
-        }catch(ClassNotFoundException | IOException e){
-            user = new HashMap();
-            accounts = new HashMap();
-            try {
-                writeAccounts();
-            } catch (IOException ex) {
-                //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        user = new HashMap<>();
+        accounts = new HashMap<>();
+        libraryNumbers=new ArrayList<>();
+    }
+    boolean checkForNull(){
+        if(user==null){
+            user = new HashMap<>();
         }
-        try {
-            readLibraryNumbers();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
+        if(accounts==null){
+            accounts = new HashMap<>();
+        }
+        if(libraryNumbers==null){
             libraryNumbers=new ArrayList<>();
         }
-        
+        return true;
     }
+    
     Account callByLibNum(int libnum){
-        try {
-            readAccounts();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
         for(String k :accounts.keySet()){
             if(accounts.get(k).getLibNum()==libnum){
                 return accounts.get(k);
@@ -63,6 +54,14 @@ public class Accounts {
         return !libraryNumbers.contains(x);
     }
     
+    ArrayList<Account> getListOfAccounts(){
+        ArrayList<Account> t = new ArrayList<>();
+        for(String x:accounts.keySet()){
+            t.add(accounts.get(x));
+        }
+        return t;
+    }
+    
     boolean realterCheckoutSize(){
         for(String key:accounts.keySet()){
             Account temp = accounts.get(key);
@@ -72,20 +71,9 @@ public class Accounts {
     }
 
     boolean makeAccount(String uname, String pass, Account a) {
-        try {
-            readLibraryNumbers();
-        } catch (IOException|ClassNotFoundException ex) {
-            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
-        }
         libraryNumbers.add(a.getLibNum());
         
-        try {
-            readAccounts();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        if(callAccount(uname,pass)!=null){//checks if the account exists
+        if(user.get(uname)!=null){//checks if the username exists
             return false;
         }
         
@@ -93,23 +81,21 @@ public class Accounts {
             user.put(uname, pass);
             String accountkey = uname.trim()+pass.trim();
             accounts.put(accountkey, a);
-            writeLibraryNumbers();
-            writeAccounts();
             return true;
-        } catch (NullPointerException | IOException e) {
+        } catch (NullPointerException e) {
             System.out.println("Unable to make account. Null-Pointer exception occurred");
             return false;
         }
         
     }
     
+    boolean changeStatus(String u){
+        String pass = user.get(u);
+        Account x = callAccount(u,pass);
+        return x.changeType();
+    }
+    
     String emailToUserID(String x){
-        try {
-            readAccounts();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
         for(String key: accounts.keySet()){
             Account temp = accounts.get(key);
             if(temp.compareEmail(x)){
@@ -121,12 +107,6 @@ public class Accounts {
     }
     
     boolean changePassword(String username,String newpass){
-        try {
-            readAccounts();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
         String oldp = user.get(username);
         Account oldAccount=callAccount(username,oldp);
         Account newAccount = new Account(oldAccount);
@@ -143,12 +123,6 @@ public class Accounts {
     }
 
     Account callAccount(String name, String pass) {
-        try {
-            readAccounts();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
         
         try {
             String temp = user.get(name);
@@ -165,73 +139,27 @@ public class Accounts {
         
     }
 
-    boolean deleteAccount(String name, String pass) {     
-        try {
-            readAccounts();
-            readLibraryNumbers();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
+    boolean deleteAccount(String name, String pass) {  
         
         try {
             Account temp = callAccount(name, pass);
-            if (temp != null) {
-                int key = name.hashCode() + pass.hashCode();
-                libraryNumbers.remove(accounts.get(key).getLibNum());
-                accounts.remove(key, temp);
+            if (temp != null && temp.checkouts()) {
+                String key = name + pass;
+                for(int i=0;i<libraryNumbers.size();i++){
+                    if(libraryNumbers.get(i)==temp.getLibNum()){
+                        libraryNumbers.remove(i);
+                    }
+                }
+                accounts.remove(key);
                 user.remove(name);
-                
+                return true;
             }
+            return false;
         } catch (NullPointerException e) {
             System.out.println("Unable to delete account. Null-Pointer exception occurred");
             return false;
         }
         
-        try {
-            writeAccounts();
-            return true;
-        } catch (IOException ex) {
-            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-    }
-    
-    private void writeAccounts() throws IOException{
-        WR r = new WR();
-        FileOutputStream fos = new FileOutputStream(new File(r.returnAccountsPath()),false);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(accounts);
-        oos.writeObject(user);
-        oos.close();
-        fos.close();
-    }
-    
-    private void readAccounts() throws IOException, ClassNotFoundException{
-        WR r = new WR();
-        FileInputStream fis = new FileInputStream(new File(r.returnAccountsPath()));
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        accounts = (HashMap<String, Account>) ois.readObject();
-        user = (HashMap<String, String>) ois.readObject();
-        ois.close();
-        fis.close();
-    }
-    private void writeLibraryNumbers() throws IOException{
-        WR r = new WR();
-        FileOutputStream fos = new FileOutputStream(new File(r.returnLibraryNumberPath()),false);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(libraryNumbers);
-        oos.close();
-        fos.close();
-    }
-    
-    private void readLibraryNumbers() throws IOException, ClassNotFoundException{
-        WR r = new WR();
-        FileInputStream fis = new FileInputStream(new File(r.returnLibraryNumberPath()));
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        libraryNumbers = (ArrayList<Integer>) ois.readObject();
-        ois.close();
-        fis.close();
     }
 
 }

@@ -5,17 +5,19 @@
  */
 package GUI;
 
-
 /**
  *
  * @author Tok
  */
 public class AdminPage extends javax.swing.JFrame {
+
     LibraryInterface li;
+
     public void callFrame(LibraryInterface ab) {
         li = ab;
-        
+
     }
+
     /**
      * Creates new form AdminPage
      */
@@ -138,34 +140,37 @@ public class AdminPage extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // Takes employer to search page
         this.setVisible(false);
-            SearchPage sp = new SearchPage();
-            sp.setVisible(true);
+        SearchPage sp = new SearchPage();
+        sp.callFrame(this);
+        sp.callVisual();
+        sp.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // Takes employer to add/delete page
         this.setVisible(false);
-            AddOrDelete aod = new AddOrDelete();
-            aod.setVisible(true);
+        AddOrDelete aod = new AddOrDelete();
+        aod.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // Takes employer to setfee page
-            this.setVisible(false);
-            SetFee sf = new SetFee();
-            sf.callFrame(this);
-            sf.setLableText();
-            sf.setVisible(true);
+        this.setVisible(false);
+        SetFee sf = new SetFee();
+        sf.callFrame(this);
+        sf.setLableText();
+        sf.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         li.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
-    
-    public void callDispose(){
+
+    public void callDispose() {
         jButton4ActionPerformed(null);
     }
+
     /**
      * @param args the command line arguments
      */

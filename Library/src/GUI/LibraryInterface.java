@@ -256,6 +256,7 @@ public class LibraryInterface extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         this.setVisible(false);
         WorkLog wl = new WorkLog();
+        wl.callFrame(this);
         wl.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -290,6 +291,8 @@ public class LibraryInterface extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         this.setVisible(false);
         Events e = new Events();
+        e.callFrame(this);
+        e.callRefresh();
         e.setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 

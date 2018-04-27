@@ -8,6 +8,7 @@ package library;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -35,6 +36,7 @@ public class Handler {
                 saveAccounts();
             } catch (IOException ex1) {
                 //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex1);
+
             }
         } catch (IOException | ClassNotFoundException ex) {
             //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
@@ -107,6 +109,10 @@ public class Handler {
                 //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
+    }
+
+    public String getCurrentName() {
+        return current.getname();
     }
 
     public String getAccountData() {
@@ -328,12 +334,19 @@ public class Handler {
             return false;
         }
     }
-    
-    public void deleteListOfBooks(ArrayList<String> x){
+
+    /*public void deleteListOfBooks(ArrayList<String> x){
+        p
+        try {
+            loadBooks();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
 
     public boolean readFileOfBooks(String x) {
+        p
         try {
             loadBooks();
         } catch (IOException | ClassNotFoundException ex) {
@@ -368,8 +381,7 @@ public class Handler {
             //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-    }
-
+    }*/
     public Account callAccountByLibNum(int num) {
         try {
             loadAccounts();
@@ -427,6 +439,116 @@ public class Handler {
         try {
             saveAccounts();
             return x;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    public boolean addEvent(Date d, String title, String host, String where, String dis) {
+        try {
+            loadLogs();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        log.addEvent(d, title, host, where, dis);
+
+        try {
+            saveLogs();
+            return true;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    public ArrayList<Logs.Event> callAllEvents() {
+        try {
+            loadLogs();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        log.checkForCompletedEvents();
+        return log.eventLog;
+    }
+
+    public boolean deleteEvent(Date d, String title, String host, String where, String dis) {
+        try {
+            loadLogs();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+
+        log.deleteEvent(log.searchEvent(d, title, host, where, dis));
+
+        try {
+            saveLogs();
+            return true;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    public boolean checkExpiredEvents() {
+        try {
+            loadLogs();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        log.checkForCompletedEvents();
+
+        try {
+            saveLogs();
+            return true;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    public ArrayList<Logs.Event> allWorkLogs(){
+        try {
+            loadLogs();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        return log.workLog;
+    }
+    public boolean addWork(int priority, Date sd, String name, String action) {
+        try {
+            loadLogs();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        log.addWorkLog(priority, sd, name, action);
+        
+        try {
+            saveLogs();
+            return true;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    public boolean completeRequest(int p, Date s, String name, String action){
+        try {
+            loadLogs();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        
+        log.completeLog(log.searchLog(p, s, name, action));
+        
+        try {
+            saveLogs();
+            return true;
         } catch (IOException ex) {
             //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
             return false;

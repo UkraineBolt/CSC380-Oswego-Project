@@ -110,6 +110,10 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         return checked==0;
     }
     
+    String getname(){
+        return firstName + " " + lastName;
+    }
+    
     private void loadC() {
         WR r = new WR();
         try {
@@ -123,7 +127,7 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         }
     }
 
-    int gettype() {
+    public int gettype() {
         if (null == accountType) {
             return -1;
         } else {

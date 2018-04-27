@@ -229,11 +229,11 @@ public class AddOrDelete extends javax.swing.JFrame {
                 }
             } else {
                 String filePath = jTextField1.getText();
-                if (!p.li.handler.readFileOfBooks(filePath)) {
+                /*if () {
                     AddOrDeleteError aor = new AddOrDeleteError();
                     aor.jLabel1.setText("couldnt read file");
                     aor.setVisible(true);
-                }
+                }*/
             }
         } else {
             AddOrDeleteError aor = new AddOrDeleteError();

@@ -5,11 +5,36 @@
  */
 package GUI;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ListModel;
+import javax.swing.event.ListDataListener;
+import library.Logs.Event;
+
 /**
  *
  * @author Tok
  */
 public class Events extends javax.swing.JFrame {
+
+    LibraryInterface li;
+
+    void callFrame(LibraryInterface li) {
+        this.li = li;
+        checkType();
+    }
+
+    void checkType() {
+        if (li.handler.current.gettype() == 2) {
+            jButton3.setVisible(false);
+            jButton4.setVisible(false);
+        }
+    }
 
     /**
      * Creates new form Events
@@ -17,7 +42,7 @@ public class Events extends javax.swing.JFrame {
     public Events() {
         initComponents();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,6 +59,7 @@ public class Events extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -76,25 +102,17 @@ public class Events extends javax.swing.JFrame {
             String[] strings = {null};
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
-            public void deleteElementAt(int i){ strings[i]=null;}
-            public void reorder() {
-                int count = 0;
-                for(int y=0;y<strings.length;y++){
-                    if(strings[y]!=null){
-                        count++;
-                    }
-                } String[] temp = new String[count];
-                int tc = 0;
-                for(int i=0;i<strings.length;i++){
-                    if(strings[i]!=null){
-                        temp[tc]=strings[i];
-                        tc++;
-                    }
-                }
-                strings=temp;
-            }
         });
         jScrollPane2.setViewportView(jList1);
+
+        jButton4.setBackground(new java.awt.Color(0, 0, 0));
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4.setText("Delete Event");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -104,20 +122,22 @@ public class Events extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addComponent(jButton3)
-                        .addGap(185, 185, 185)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(570, 570, 570)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(650, 650, 650)
-                        .addComponent(jButton2)))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(336, 336, 336)
+                        .addComponent(jButton1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton4)
+                .addGap(104, 104, 104)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,16 +146,19 @@ public class Events extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addComponent(jButton3))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton3)
+                            .addComponent(jButton2)
+                            .addComponent(jButton4)))
                     .addComponent(jLabel1))
                 .addGap(17, 17, 17)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jButton2))
-            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -143,21 +166,73 @@ public class Events extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       this.setVisible(false);
-            LibraryInterface ls = new LibraryInterface();
-            ls.setVisible(true);
+        li.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       
-            AddEdit ae = new AddEdit();
-            ae.callFrame(this);
-            ae.setVisible(true);
+        AddEdit ae = new AddEdit();
+        ae.callFrame(this);
+        ae.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        //refresh Button
+        li.handler.checkExpiredEvents();
+        ArrayList<Event> x = li.handler.callAllEvents();
+        Collections.sort(x);
+        if (x!=null) {
+            String[] list = new String[x.size()];
+            for (int i = 0; i < x.size(); i++) {
+                list[i] = x.get(i).toString();
+            }
+            ListModel lm = new ListModel<String>() {
+                public String[] strings = list;
+
+                @Override
+                public int getSize() {
+                    return strings.length;
+                }
+
+                @Override
+                public String getElementAt(int index) {
+                    return strings[index];
+                }
+
+                @Override
+                public void addListDataListener(ListDataListener l) {
+                }
+
+                @Override
+                public void removeListDataListener(ListDataListener l) {
+                }
+            };
+            jList1.setModel(lm);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // delete event
+        int[] dexs = jList1.getSelectedIndices();
+        for(int i=0;i<dexs.length;i++){
+            try {
+                String[] group = jList1.getModel().getElementAt(dexs[i]).split(":::");
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                Date d = sdf.parse(group[0]);
+                String title = group[1];
+                String host=group[2];
+                String where=group[3];
+                String dis=group[4];
+                li.handler.deleteEvent(d, title, host, where, dis);
+            } catch (ParseException ex) {
+                //Logger.getLogger(Events.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        callRefresh();
+    }//GEN-LAST:event_jButton4ActionPerformed
+    public void callRefresh() {
+        jButton2ActionPerformed(null);
+    }
 
     /**
      * @param args the command line arguments
@@ -198,6 +273,7 @@ public class Events extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     public javax.swing.JList<String> jList1;

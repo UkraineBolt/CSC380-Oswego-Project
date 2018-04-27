@@ -35,7 +35,7 @@ enum Condition implements java.io.Serializable {
  *
  * @author alex
  */
-public class Stock {
+public class Stock implements java.io.Serializable{
 
     public class Book implements java.io.Serializable, Comparable<Book> {
 

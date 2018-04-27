@@ -5,6 +5,8 @@
  */
 package library;
 
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -14,8 +16,8 @@ import java.util.logging.Logger;
  *
  * @author alex
  */
-public class Logs {
-    private class Event implements java.io.Serializable, Comparable<Event>{
+public class Logs implements java.io.Serializable{
+    public class Event implements java.io.Serializable, Comparable<Event>{
 
         private boolean workType;
         private boolean complete;
@@ -46,11 +48,13 @@ public class Logs {
             date=e.date;
         }
 
-        public String returnDataGroup() {
+        @Override
+        public String toString() {
+            SimpleDateFormat at = new SimpleDateFormat("MM/dd/yyyy HH:mm");
             if (workType) {
-                return priority + " " + startDate.toString() + " " + requestName + " " + action + " " + completeName + " " + completeDate.toString();
+                return priority + ":::" + at.format(startDate) + ":::" + requestName + ":::" + action + ":::" + completeName + ":::" + at.format(completeDate);
             } else {
-                return date.toString() + " " + title + " " + host + " " + where + " " + discription;
+                return at.format(date) + ":::" + title + ":::" + host + ":::" + where + ":::" + discription;
             }
         }
 
@@ -165,6 +169,7 @@ public class Logs {
         fake.startDate=start;
         fake.requestName=name;
         fake.action=action;
+        fake.workType=true;
         for(int i=0;i<workLog.size();i++){
             if(workLog.get(i).equals(fake)){
                 return workLog.get(i);
@@ -173,28 +178,16 @@ public class Logs {
         return null;         
     }
     
-    boolean completedTask(Event e, String completeName, Date completeDate) {
-        if (deleteTask(e)) {
-            e.completeDate = completeDate;
-            e.completeName = completeName;
-            e.complete = true;
-            return completedWorkLog.add(e);
-        }
-        return false;
-    }
-
-    boolean deleteTask(Event e) {
-        if (workLog.contains(e)) {
-            return workLog.remove(e);
-        } else {
+    boolean completeLog(Event e){
+        if(e==null){
             return false;
         }
+        workLog.remove(e);
+        e.complete=true;
+        completedWorkLog.add(e);
+        return true;
     }
-
-    boolean clearLog() {
-        workLog.clear();
-        return workLog.isEmpty();
-    }
+   
     
 
     
@@ -216,6 +209,7 @@ public class Logs {
         fake.host=host;
         fake.discription=dis;
         fake.where=where;
+        fake.workType=false;
         for(int i=0;i<eventLog.size();i++){
             if(eventLog.get(i).equals(fake)){
                 return eventLog.get(i);
@@ -226,16 +220,20 @@ public class Logs {
     }
 
     boolean deleteEvent(Event e) {
-        if (eventLog.contains(e)) {
-            return eventLog.remove(e);
-        } else {
-            return false;
+        if(e!=null){
+            eventLog.remove(e);
+            return true;
         }
+        return false;
     }
-
-    boolean  completedEvent(Event e) {
-        e.complete = true;
-        deleteEvent(e);
-        return completedEventLog.add(e);
+    
+    boolean checkForCompletedEvents(){
+        Date d = new Date();  
+        for(int i=0;i<eventLog.size();i++){
+            if(eventLog.get(i).date.before(d)){
+                completedEventLog.add(eventLog.remove(i));
+            }
+        }
+        return true;
     }
 }

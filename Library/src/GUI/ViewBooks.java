@@ -27,12 +27,19 @@ public class ViewBooks extends javax.swing.JFrame {
     }
 
     public void callRefresh() {
-        ActionEvent e = null;
-        jButton3ActionPerformed(e);
+        jButton3ActionPerformed(null);
     }
+    public void checkVisual(){
+        if(li.handler.current.gettype()==2){
+            jButton4.setVisible(false);
+            jButton5.setVisible(false);
+        }
+    }
+    
 
     public void callFrame(LibraryInterface ab) {
         li = ab;
+        checkVisual();
     }
 
     /**
@@ -330,12 +337,7 @@ public class ViewBooks extends javax.swing.JFrame {
 
     private void refreshVisual(int page) {
         if (!sortedTables.isEmpty()) {
-            String[][] temp = sortedTables.get(page);
-            for (int y = 0; y < temp.length; y++) {
-                for (int x = 0; x < temp[y].length; x++) {
-                    jTable1.setValueAt(temp[y][x], y, x);
-                }
-            }
+            
         }
     }
 

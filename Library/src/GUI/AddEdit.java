@@ -201,9 +201,16 @@ public class AddEdit extends javax.swing.JFrame {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
             try {
                 Date d = simpleDateFormat.parse(date);
+                Date current = new Date();
+                if(d.after(current)){
                 e.li.handler.addEvent(d, title, host, location, description);
                 e.callRefresh();
                 this.dispose();
+                }else{
+                    LoginScreenError lse = new LoginScreenError();
+                    lse.jLabel1.setText("date has passed");
+                    lse.setVisible(true);
+                }
             } catch (ParseException ex) {
                 //Logger.getLogger(AddEdit.class.getName()).log(Level.SEVERE, null, ex);
                 LoginScreenError lse = new LoginScreenError();

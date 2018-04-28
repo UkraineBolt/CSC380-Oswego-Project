@@ -6,6 +6,8 @@
 package library;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -518,6 +520,15 @@ public class Handler {
         }
         return log.workLog;
     }
+    public ArrayList<Logs.Event> allCompletedWorkLogs(){
+        try {
+            loadLogs();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        return log.completedWorkLog;
+    }
     public boolean addWork(int priority, Date sd, String name, String action) {
         try {
             loadLogs();
@@ -538,22 +549,31 @@ public class Handler {
     
     public boolean completeRequest(int p, Date s, String name, String action){
         try {
-            loadLogs();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-        
-        log.completeLog(log.searchLog(p, s, name, action));
-        
-        try {
-            saveLogs();
-            return true;
-        } catch (IOException ex) {
+            try {
+                loadLogs();
+            } catch (IOException | ClassNotFoundException ex) {
+                //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+            Date d = new Date();
+            SimpleDateFormat at = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+            String t = at.format(d);
+            log.completeLog(log.searchLog(p, s, name, action),current.getname(),at.parse(t));
+            
+            try {
+                saveLogs();
+                return true;
+            } catch (IOException ex) {
+                //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        } catch (ParseException ex) {
             //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
+    
+    
 
     //eveything below this point are read and write methods
     private void saveConstants() throws IOException {

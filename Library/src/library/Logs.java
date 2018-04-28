@@ -180,12 +180,14 @@ public class Logs implements java.io.Serializable{
         return null;         
     }
     
-    boolean completeLog(Event e){
+    boolean completeLog(Event e,String name, Date d){
         if(e==null){
             return false;
         }
         workLog.remove(e);
         e.complete=true;
+        e.completeName=name;
+        e.completeDate=d;
         completedWorkLog.add(e);
         return true;
     }

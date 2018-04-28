@@ -8,6 +8,7 @@ package GUI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -214,19 +215,26 @@ public class WorkLog extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        //add
-        String s = (String) jComboBox1.getModel().getSelectedItem();
-        int priority = Integer.parseInt(s);
-        String action = jTextField1.getText();
-        Date d = new Date();//new date gives current date
-        String name = li.handler.getCurrentName();
-        if(!action.equals("")){
-        li.handler.addWork(priority, d, name, action);
-        callRefresh();
-        }else{
-            LoginScreenError lse = new LoginScreenError();
-            lse.jLabel1.setText("left request box blank");
-            lse.setVisible(true);
+        try {
+            //add
+            String s = (String) jComboBox1.getModel().getSelectedItem();
+            int priority = Integer.parseInt(s);
+            String action = jTextField1.getText();
+            Date d = new Date();//new date gives current date
+            SimpleDateFormat at = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+            Date fin = at.parse(at.format(d));
+            String name = li.handler.getCurrentName();
+            if(!action.equals("")){
+                li.handler.addWork(priority, fin, name, action);
+                callRefresh();
+            }else{
+                LoginScreenError lse = new LoginScreenError();
+                lse.jLabel1.setText("left request box blank");
+                lse.setVisible(true);
+            }
+        } catch (ParseException ex) {
+            //Logger.getLogger(WorkLog.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("didnt parse");
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -257,6 +265,7 @@ public class WorkLog extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // this is the visual
         ArrayList<Logs.Event> x = li.handler.allWorkLogs();
+        Collections.sort(x);
         if (!x.isEmpty()) {
             String[] list = new String[x.size()];
             for(int i=0;i<x.size();i++){
@@ -285,6 +294,29 @@ public class WorkLog extends javax.swing.JFrame {
             };
             jList3.setModel(lm);
             jList3.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        }else{
+            ListModel lm = new ListModel<String>() {
+                public String[] strings = {};
+
+                @Override
+                public int getSize() {
+                    return strings.length;
+                }
+
+                @Override
+                public String getElementAt(int index) {
+                    return strings[index];
+                }
+
+                @Override
+                public void addListDataListener(ListDataListener l) {
+                }
+
+                @Override
+                public void removeListDataListener(ListDataListener l) {
+                }
+            };
+            jList3.setModel(lm);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
     public void callRefresh() {

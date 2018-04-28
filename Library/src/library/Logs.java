@@ -66,7 +66,7 @@ public class Logs implements java.io.Serializable{
                 if(this.priority>o.priority){
                     return 1;
                 }else if(this.priority==o.priority){
-                    if(this.startDate.before(o.startDate)){
+                    if(this.startDate.after(o.startDate)){
                         return 1;
                     }else{
                         return -1;

@@ -220,7 +220,7 @@ public class WorkLog extends javax.swing.JFrame {
         String action = jTextField1.getText();
         Date d = new Date();//new date gives current date
         String name = li.handler.getCurrentName();
-        if(!s.equals("")){
+        if(!action.equals("")){
         li.handler.addWork(priority, d, name, action);
         callRefresh();
         }else{
@@ -257,7 +257,7 @@ public class WorkLog extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // this is the visual
         ArrayList<Logs.Event> x = li.handler.allWorkLogs();
-        if (x!=null) {
+        if (!x.isEmpty()) {
             String[] list = new String[x.size()];
             for(int i=0;i<x.size();i++){
                 list[i]=x.get(i).toString();

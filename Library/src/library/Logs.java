@@ -51,9 +51,11 @@ public class Logs implements java.io.Serializable{
         @Override
         public String toString() {
             SimpleDateFormat at = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-            if (workType) {
+            if (workType && complete) {
                 return priority + ":::" + at.format(startDate) + ":::" + requestName + ":::" + action + ":::" + completeName + ":::" + at.format(completeDate);
-            } else {
+            } else if(workType && !complete){
+                return priority + ":::" + at.format(startDate) + ":::" + requestName + ":::" + action;
+            }else {
                 return at.format(date) + ":::" + title + ":::" + host + ":::" + where + ":::" + discription;
             }
         }

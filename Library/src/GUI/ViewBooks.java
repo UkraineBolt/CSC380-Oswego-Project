@@ -5,9 +5,10 @@
  */
 package GUI;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 import library.Stock;
 
 /**
@@ -17,7 +18,6 @@ import library.Stock;
 public class ViewBooks extends javax.swing.JFrame {
 
     LibraryInterface li;
-    ArrayList<String[][]> sortedTables = new ArrayList<>();
 
     /**
      * Creates new form ViewBooks
@@ -29,17 +29,18 @@ public class ViewBooks extends javax.swing.JFrame {
     public void callRefresh() {
         jButton3ActionPerformed(null);
     }
-    public void checkVisual(){
-        if(li.handler.current.gettype()==2){
+
+    public void checkVisual() {
+        if (li.handler.current.gettype() == 2) {
             jButton4.setVisible(false);
             jButton5.setVisible(false);
         }
     }
-    
 
     public void callFrame(LibraryInterface ab) {
         li = ab;
         checkVisual();
+        jButton3ActionPerformed(null);
     }
 
     /**
@@ -206,25 +207,23 @@ public class ViewBooks extends javax.swing.JFrame {
                         .addGap(450, 450, 450)
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(410, 410, 410)
+                        .addComponent(jLabel4)
+                        .addGap(11, 11, 11)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(450, 450, 450)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(470, 470, 470)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(238, 238, 238)
-                                .addComponent(jLabel4)
-                                .addGap(11, 11, 11)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(278, 278, 278)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(298, 298, 298)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(298, 298, 298)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(228, 228, 228)
-                                .addComponent(jLabel5)))))
+                        .addGap(298, 298, 298)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(400, 400, 400)
+                        .addComponent(jLabel5)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -265,11 +264,9 @@ public class ViewBooks extends javax.swing.JFrame {
                         .addGap(170, 170, 170)
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(140, 140, 140)
-                                .addComponent(jLabel5)))
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(82, 82, 82)
+                        .addComponent(jLabel5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(296, 296, 296)
@@ -300,44 +297,73 @@ public class ViewBooks extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-        //if(/*column is selected */ )
-        //remove from jTable1();
-        //jTable1.is
+        if (jTable1.getSelectedRow()>-1) {
+            ArrayList<String> books = new ArrayList<>();
+            String temp = "";
+            for (int x = 0; x < 7; x++) {
+                temp = temp + (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), x) + ":::";
+            }
+            temp = temp.substring(0, temp.length()-3);
+            String[] bs = temp.split(":::");
+            li.handler.deleteBook(bs[1], bs[2], bs[3], bs[4]);           
+            jButton3ActionPerformed(null);
+        }
 
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //refreash table
         ArrayList<Stock.Book> all = li.handler.callAllBooks();
-        ArrayList<String[][]> pages = new ArrayList<>();
-        String[][] page = new String[10][6]; //y=10, x=6
-        if (all!=null) {
+        if (!all.isEmpty()) {
+            String[][] page = new String[all.size()][7];
             Collections.sort(all);
-            int row = 0;//[]
             for (int i = 0; i < all.size(); i++) {
                 for (int y = 0; y < page.length; y++) {
                     String output = all.get(i).toString();
                     String[] parts = output.split(":::");
-                    for (int x = 0; x < page[y].length; x++) {
+                    for (int x = 0; x < parts.length; x++) {
                         page[y][x] = parts[x];
                     }
                 }
-                row++;
-                if (row == 10) {
-                    row = 0;
-                    pages.add(page);
-                    page = new String[10][6];
-                }
             }
-            sortedTables = pages;
-            refreshVisual(0);
+            refreshVisual(page);
+        } else {
+            refreshVisual(null);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void refreshVisual(int page) {
-        if (!sortedTables.isEmpty()) {
-            
+    private void refreshVisual(String[][] sortedTables) {
+
+        if (sortedTables != null) {
+            DefaultTableModel t = new DefaultTableModel(sortedTables,
+                    new String[]{
+                        "Genre", "Title", "Author", "Year", "CRN", "Condition", "Availability"
+                    }) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;//This causes all cells to be not editable
+                }
+            };
+            jTable1.setModel(t);
+            jTable1.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            jTable1.setColumnSelectionAllowed(false);
+            jTable1.setRowSelectionAllowed(true);
+            jTable1.setCellSelectionEnabled(false);
+        } else {
+            DefaultTableModel t = new DefaultTableModel(new String[][]{},
+                    new String[]{
+                        "Genre", "Title", "Author", "Year", "CRN", "Condition", "Availability"
+                    }) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;//This causes all cells to be not editable
+                }
+            };
+            jTable1.setModel(t);
+            jTable1.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            jTable1.setColumnSelectionAllowed(false);
+            jTable1.setRowSelectionAllowed(true);
+            jTable1.setCellSelectionEnabled(false);
         }
     }
 

@@ -162,7 +162,7 @@ public class Handler {
         }
     }
 
-    public boolean makeBook(String title, String author, int year, int crn, ArrayList<String> g) {
+    public boolean makeBook(String title, String author, int year, String crn, ArrayList<String> g) {
         try {
             loadBooks();
         } catch (IOException | ClassNotFoundException ex) {
@@ -186,6 +186,23 @@ public class Handler {
             return null;
         }
         return s.callAll();
+    }
+    
+    public void deleteBook(String title, String author, String crn, String year){
+        try {
+            loadBooks();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        s.removeBook(s.searchBook(title, author,Integer.parseInt(year),crn));
+        
+        
+        try {
+            saveBooks();
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public boolean reloadConstants() {
@@ -232,7 +249,7 @@ public class Handler {
         }
     }
 
-    public boolean returnBook(boolean dmg, int crn, int libnum) {
+    public boolean returnBook(boolean dmg, String crn, int libnum) {
         try {
             loadAccounts();
             loadConstants();
@@ -256,7 +273,7 @@ public class Handler {
         }
     }
 
-    public boolean checkOutBook(int crn, int libnum) {
+    public boolean checkOutBook(String crn, int libnum) {
         try {
             loadAccounts();
             loadBooks();

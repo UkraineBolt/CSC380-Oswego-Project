@@ -5,6 +5,8 @@
  */
 package GUI;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 /**
  *
  * @author Tok
@@ -173,18 +175,24 @@ public class AddBook extends javax.swing.JFrame {
         String year = jTextField3.getText();
         String crn = jTextField4.getText();
         String genre = jTextField5.getText();
-        String[] genres = genre.split(",");
-       if (title != null && author != null && crn != null && year != null && genre !=null) {
+       if (!title.equals("") && !author.equals("") && !crn.equals("") && !year.equals("") && !genre.equals("")) {
             ArrayList<String> gen = new ArrayList();
+            String[] genres = genre.split(",");
             for (int i = 0; i < genres.length; i++) {
                 gen.add(genres[i].trim().toLowerCase());
             }
             try {
-                int x = Integer.parseInt(crn);
                 int y = Integer.parseInt(year);
-                e.li.handler.makeBook(title, author, y, x, gen);
+                int limit = Calendar.getInstance().get(Calendar.YEAR);
+                if(y<limit){
+                e.li.handler.makeBook(title, author, y, crn, gen);
                 e.callRefresh();
-            } catch (Exception e) {
+                }else{
+                    LoginScreenError lse = new LoginScreenError();
+                    lse.jLabel1.setText("Not a valid year");
+                    lse.setVisible(true);
+                }
+            } catch (NumberFormatException e) {
                 LoginScreenError lse = new LoginScreenError();
                 lse.jLabel1.setText("Failure to parse or other ERROR");
                 lse.setVisible(true);
@@ -192,6 +200,7 @@ public class AddBook extends javax.swing.JFrame {
         }else{
            LoginScreenError lse = new LoginScreenError();
            lse.jLabel1.setText("One of the required fields were empty");
+           lse.setVisible(true);
        }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 

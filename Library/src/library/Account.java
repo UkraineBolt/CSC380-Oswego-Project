@@ -43,7 +43,6 @@ public class Account implements java.io.Serializable, Comparable<Account> {
             book = b;
             dueDay = dd;
             startDay = sd;
-            b.ChangeAvailability(Availability.CheckedOut);
         }
         Checkout(Checkout x){
             book=x.book;
@@ -142,10 +141,10 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         }
     }
 
-    boolean AddFee(double dmg, int crn) {
+    boolean AddFee(double dmg, String crn) {
         Checkout b = null;
         for (int i = 0; i < checkouts.length; i++) {
-            if (checkouts[i].book.getCRN() == crn) {
+            if (checkouts[i].book.getCRN().equals(crn)) {
                 b = checkouts[i];
                 break;
             }
@@ -219,7 +218,7 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         for (int i = 0; i < checkouts.length; i++) {
             if (b.equals(checkouts[i].book)) {
                 checkouts[i] = null;
-                b.ChangeAvailability(Availability.InStock);
+                b.ChangeAvailability();
                 temp = i;
                 checked--;
                 checker = true;
@@ -227,7 +226,7 @@ public class Account implements java.io.Serializable, Comparable<Account> {
             }
         }
         if (checker) {
-            for (int i = temp; i < checkouts.length - 1; i++) {
+            for (int i = checkouts.length; i>temp; i--) {
                 checkouts[i] = checkouts[i + 1];
             }
         }
@@ -243,10 +242,9 @@ public class Account implements java.io.Serializable, Comparable<Account> {
             case Employee:
                 accountType = AccountType.Client;
                 break;
-            case Employer:
-                return false;
-            default:
+            case Client:
                 accountType = AccountType.Employee;
+            default:
                 break;
         }
         return true;

@@ -293,6 +293,17 @@ public class Handler {
         }
 
     }
+    
+    public ArrayList<Stock.Book> limitedBookSearch(String title,String author, int year, String crn){
+        try {
+            loadBooks();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        
+        return s.limitedSearch(title,author,year,crn);
+    }
 
     public boolean signIn(String user, String pass) {
         try {

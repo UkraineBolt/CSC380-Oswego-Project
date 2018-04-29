@@ -176,6 +176,45 @@ public class Stock implements java.io.Serializable {
         return null;
     }
 
+    ArrayList<Book> limitedSearch(String title, String author, int year, String crn) {
+        ArrayList<Book> list = new ArrayList<>();
+        Book fake = new Book(title, author, year, crn, null, null);
+        for (int i = 0; i < books.size(); i++) {
+            if (compareBooksWithLimitedInfo(fake, books.get(i))) {
+                list.add(books.get(i));
+            }
+        }
+        return list;
+    }
+
+    boolean compareBooksWithLimitedInfo(Book a, Book b) {
+        if (a.equals(b)) {
+            return true;
+        }
+        if (!a.title.equals("")) {
+            if(!a.title.equals(b.title)){
+                return false;
+            }
+        }
+        if (!a.author.equals("")) {
+            if(!a.author.equals(b.author)){
+                return false;
+            }
+        }
+        if (a.year!=-1) {
+            if(a.year!=b.year){
+                return false;
+            }
+        }
+        if (!a.crn.equals("")) {
+            if(!a.crn.equals(b.crn)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     boolean addBook(String t, String a, int year, String crn, Condition c, ArrayList<String> genres) {
 
         Book b = new Book(t, a, year, crn, c, genres);
@@ -195,9 +234,9 @@ public class Stock implements java.io.Serializable {
 
     void removeBook(Book b) {
         for (int i = 0; i < books.size(); i++) {
-            if (books.get(i).equals(b)&&books.get(i).count>1) {
+            if (books.get(i).equals(b) && books.get(i).count > 1) {
                 books.get(i).count--;
-            }else{
+            } else {
                 books.remove(books.get(i));
             }
         }

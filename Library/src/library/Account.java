@@ -178,7 +178,7 @@ public class Account implements java.io.Serializable, Comparable<Account> {
     }
 
     public boolean CheckOutBook(Stock.Book b, int days) {
-        if (cos <= checkouts.size() || b == null || b.count == 0) {
+        if (cos >= checkouts.size() || b == null || b.count == 0) {
             return false;
         }
         Date today = new Date();
@@ -188,7 +188,6 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         Date due = c.getTime();
         Checkout co = new Checkout(b, due, today);
         checkouts.add(co);
-        b.editAvilibility(false);
         return true;
     }
 
@@ -202,7 +201,6 @@ public class Account implements java.io.Serializable, Comparable<Account> {
             }
         }
         if (te) {
-            b.editAvilibility(true);
             if (fees) {
                 addFee(dmg, b.getCRN(),checkoutfee);
             }

@@ -260,6 +260,7 @@ public class Handler {
         boolean x;
         if(a!=null){
             x = a.ReturnBook(s.searchByCRN(crn),dmg,ap.getDMGFees(),ap.getFee());
+            s.searchByCRN(crn).editAvilibility(true);
         }else{
             x=false;
         }
@@ -286,6 +287,7 @@ public class Handler {
         boolean d;
         if(a!=null){
             d = a.CheckOutBook(s.searchByCRN(crn),ap.getKeepTime());
+            s.searchByCRN(crn).editAvilibility(false);
         }else{
             d = false;
         }

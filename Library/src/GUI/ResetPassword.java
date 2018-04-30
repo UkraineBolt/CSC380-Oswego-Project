@@ -166,7 +166,7 @@ public class ResetPassword extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        
-        if(jPasswordField1.getText().equals(jPasswordField2.getText()) && jPasswordField1.getText().length()>4) {
+        if(jPasswordField1.getText().equals(jPasswordField2.getText()) && jPasswordField1.getText().length()>4 && !jPasswordField1.getText().equals("")) {
             boolean d = ls.handler.changePassword(jTextField1.getText(), jPasswordField1.getText());
             if(d){
                 ls.setVisible(true);

@@ -6,6 +6,7 @@
 package library;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -20,16 +21,16 @@ public class Account implements java.io.Serializable, Comparable<Account> {
 
     @Override
     public int compareTo(Account o) {
-        if(this.firstName.compareTo(o.firstName)>0){
+        if (this.firstName.compareTo(o.firstName) > 0) {
             return 1;
-        }else if(this.firstName.compareTo(o.firstName)<0){
+        } else if (this.firstName.compareTo(o.firstName) < 0) {
             return -1;
-        }else{
-            if(this.lastName.compareTo(o.lastName)>0){
+        } else {
+            if (this.lastName.compareTo(o.lastName) > 0) {
                 return 1;
-            }else if(this.lastName.compareTo(o.lastName)<0){
+            } else if (this.lastName.compareTo(o.lastName) < 0) {
                 return -1;
-            }else{
+            } else {
                 return 0;
             }
         }
@@ -46,10 +47,11 @@ public class Account implements java.io.Serializable, Comparable<Account> {
             dueDay = dd;
             startDay = sd;
         }
-        Checkout(Checkout x){
-            book=x.book;
-            dueDay=x.dueDay;
-            startDay=x.startDay;
+
+        Checkout(Checkout x) {
+            book = x.book;
+            dueDay = x.dueDay;
+            startDay = x.startDay;
         }
 
         @Override
@@ -67,9 +69,9 @@ public class Account implements java.io.Serializable, Comparable<Account> {
     private String email;
     private String phoneNumber;
     private String state;
-    private Checkout[] checkouts;
+    private ArrayList<Checkout> checkouts;
+    private int cos;
     private int libraryNumber;
-    private int checked;
     private double fee = 0;
 
     AdminPage ap;
@@ -83,11 +85,11 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         email = em;
         phoneNumber = ph;
         zipCode = zip;
-        checked = 0;
         accountType = at;
-        checkouts = new Checkout[checkOutSize];
         username = u;
+        cos = checkOutSize;
         libraryNumber = lbnum;
+        checkouts = new ArrayList<>();
         loadC();
     }
 
@@ -100,21 +102,19 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         email = x.email;
         phoneNumber = x.phoneNumber;
         zipCode = x.zipCode;
-        checked = x.checked;
         accountType = x.accountType;
         checkouts = x.checkouts;
         username = x.username;
         libraryNumber = x.libraryNumber;
     }
-    
-    boolean checkouts(){
-        return checked==0;
-    }
-    
-    String getname(){
+
+    String getname() {
         return firstName + " " + lastName;
     }
-    
+    boolean checkoutIsEmpty(){
+        return checkouts.isEmpty();
+    }
+
     private void loadC() {
         WR r = new WR();
         try {
@@ -145,9 +145,9 @@ public class Account implements java.io.Serializable, Comparable<Account> {
 
     boolean addFee(double dmg, String crn) {
         Checkout b = null;
-        for (int i = 0; i < checkouts.length; i++) {
-            if (checkouts[i].book.getCRN().equals(crn)) {
-                b = checkouts[i];
+        for (int i = 0; i < checkouts.size(); i++) {
+            if (checkouts.get(i).book.getCRN().equals(crn)) {
+                b = checkouts.get(i);
                 break;
             }
         }
@@ -156,7 +156,7 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         }
         Date today = new Date();
         int p = 0;
-        if(today.after(b.dueDay)){
+        if (today.after(b.dueDay)) {
             long temp = today.getTime() - b.dueDay.getTime();
             temp = TimeUnit.DAYS.convert(temp, TimeUnit.MILLISECONDS);
             p = (int) temp;
@@ -164,20 +164,12 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         fee = fee + (ap.getFee() * p) + dmg;
         return true;
     }
-    
-    public boolean updateKeepLimit(){
+
+    public boolean updateKeepLimit() {
         loadC();
         int newLimit = ap.getCheckOutSize();
-        if(newLimit!=checkouts.length && newLimit>1&& libraryNumber>0){
-            Checkout[] c = new Checkout[newLimit];
-            int dex = 0;
-            for(int i=0;i<checkouts.length;i++){
-                if(checkouts[i]!=null){
-                    c[dex]= new Checkout(checkouts[i]);
-                    dex++;
-                }
-            }
-            checkouts=c;
+        if (newLimit != checkouts.size() && newLimit > 1 && libraryNumber > 0) {
+            cos = newLimit;
         }
         return true;
     }
@@ -198,8 +190,8 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         return fee;
     }
 
-    public boolean CheckOutBook(Stock.Book b , int days) {
-        if (checked == checkouts.length || b==null || b.count==0) {
+    public boolean CheckOutBook(Stock.Book b, int days) {
+        if (cos <= checkouts.size() || b == null || b.count == 0) {
             return false;
         }
         Date today = new Date();
@@ -208,49 +200,35 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         c.add(Calendar.DATE, days);
         Date due = c.getTime();
         Checkout co = new Checkout(b, due, today);
-        checkouts[checked] = co;
-        checked++;
+        checkouts.add(co);
         b.editAvilibility(false);
         return true;
     }
 
-    public boolean ReturnBook(Stock.Book b,boolean fees, double dmg) {
-        int temp = 0;
-        boolean checker = false;
-        for (int i = 0; i < checkouts.length; i++) {
-            if (b.equals(checkouts[i].book)) {
-                checkouts[i] = null;
-                temp = i;
-                checked--;
-                checker = true;
+    public boolean ReturnBook(Stock.Book b, boolean fees, double dmg) {
+        boolean te = false;
+        for (int i = 0; i < checkouts.size(); i++) {
+            if (b.equals(checkouts.get(i).book)) {
+                checkouts.remove(i);
+                te = true;
                 break;
             }
         }
-        if (checker) {
-            for (int i = temp; i<checkouts.length-1; i++) {
-                if(checkouts[i+1]!=null){
-                checkouts[i] = checkouts[i+1];
-                }else{
-                    temp = i;
-                    break;
-                }
+        if (te) {
+            b.editAvilibility(true);
+            if (fees) {
+                addFee(dmg, b.getCRN());
             }
-            checkouts[temp+1]=null;
-        }else{
-            return false;
+            return true;
         }
-        b.editAvilibility(true);
-        if(fees){
-            addFee(dmg,b.getCRN());
-        }
-        return true;
+        return false;
     }
 
     String getUsername() {
         return username;
     }
-    
-    boolean changeType(){
+
+    boolean changeType() {
         switch (accountType) {
             case Employee:
                 accountType = AccountType.Client;

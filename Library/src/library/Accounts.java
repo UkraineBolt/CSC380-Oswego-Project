@@ -143,7 +143,7 @@ public class Accounts implements java.io.Serializable{
         
         try {
             Account temp = callAccount(name, pass);
-            if (temp != null && temp.checkouts()) {
+            if (temp != null && temp.checkoutIsEmpty()) {
                 String key = name + pass;
                 for(int i=0;i<libraryNumbers.size();i++){
                     if(libraryNumbers.get(i)==temp.getLibNum()){

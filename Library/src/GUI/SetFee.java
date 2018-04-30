@@ -279,7 +279,7 @@ public class SetFee extends javax.swing.JFrame {
                     lse.jLabel1.setText("Size of checkoutLimit is two small");
                     lse.setVisible(true);
                 }
-            }catch (Exception e) {
+            }catch (NumberFormatException e) {
                     LoginScreenError lse = new LoginScreenError();
                     lse.jLabel1.setText("Only digits are accepted");
                     lse.setVisible(true);

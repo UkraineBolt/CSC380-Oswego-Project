@@ -216,7 +216,7 @@ public class LibraryInterface extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(607, 607, 607)
                 .addComponent(jButton6))
-            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();

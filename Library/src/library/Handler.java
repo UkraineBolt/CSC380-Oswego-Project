@@ -371,53 +371,6 @@ public class Handler {
         }
     }
 
-    /*public void deleteListOfBooks(ArrayList<String> x){
-        p
-        try {
-            loadBooks();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-
-    public boolean readFileOfBooks(String x) {
-        p
-        try {
-            loadBooks();
-        } catch (IOException | ClassNotFoundException ex) {
-            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            File f = new File(x);
-            Scanner sss = new Scanner(f);
-            while (sss.hasNextLine()) {
-                String[] db = sss.nextLine().split(":::");
-                if (db.length==6) {
-                    try {
-                        int year = Integer.parseInt(db[2]);
-                        int crn = Integer.parseInt(db[3]);
-                        String[] genres = db[5].split(",");
-                        ArrayList<String> g = new ArrayList<>();
-                        g.addAll(Arrays.asList(genres));
-                        Condition cod = s.callCondition(db[4]);
-                        s.addBook(db[0], db[1], year, crn, cod, g);
-                    } catch (NumberFormatException e) {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            }
-            saveBooks();
-            return true;
-        } catch (FileNotFoundException e) {
-            return false;
-        } catch (IOException ex) {
-            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-    }*/
     public Account callAccountByLibNum(int num) {
         try {
             loadAccounts();

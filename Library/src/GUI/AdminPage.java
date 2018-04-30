@@ -15,7 +15,7 @@ public class AdminPage extends javax.swing.JFrame {
 
     public void callFrame(LibraryInterface ab) {
         li = ab;
-
+        jButton2.setVisible(false);//add this after demo
     }
 
     /**

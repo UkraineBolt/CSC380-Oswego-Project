@@ -131,7 +131,7 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         }
     }
 
-    boolean addFee(double dmg, String crn, double f) {
+    boolean addFee(double dmg,boolean d, String crn, double f) {
         Checkout b = null;
         for (int i = 0; i < checkouts.size(); i++) {
             if (checkouts.get(i).book.getCRN().equals(crn)) {
@@ -148,6 +148,9 @@ public class Account implements java.io.Serializable, Comparable<Account> {
             long temp = today.getTime() - b.dueDay.getTime();
             temp = TimeUnit.DAYS.convert(temp, TimeUnit.MILLISECONDS);
             p = (int) temp;
+        }
+        if(!d){
+            dmg=0;
         }
         fee = fee + (f * p) + dmg;
         return true;
@@ -178,7 +181,7 @@ public class Account implements java.io.Serializable, Comparable<Account> {
     }
 
     public boolean CheckOutBook(Stock.Book b, int days) {
-        if (cos >= checkouts.size() || b == null || b.count == 0) {
+        if (cos <= checkouts.size() || b == null || b.count == 0) {
             return false;
         }
         Date today = new Date();
@@ -192,19 +195,12 @@ public class Account implements java.io.Serializable, Comparable<Account> {
     }
 
     public boolean ReturnBook(Stock.Book b, boolean fees, double dmg, double checkoutfee) {
-        boolean te = false;
         for (int i = 0; i < checkouts.size(); i++) {
             if (b.equals(checkouts.get(i).book)) {
                 checkouts.remove(i);
-                te = true;
-                break;
+                addFee(dmg,fees, b.getCRN(),checkoutfee);
+                return true;
             }
-        }
-        if (te) {
-            if (fees) {
-                addFee(dmg, b.getCRN(),checkoutfee);
-            }
-            return true;
         }
         return false;
     }

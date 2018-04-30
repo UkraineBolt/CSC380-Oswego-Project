@@ -247,7 +247,7 @@ public class Handler {
         }
     }
 
-    public boolean returnBook(boolean dmg, String crn, int libnum) {
+    public boolean returnBook(String crn, int libnum,boolean xpou) {
         try {
             loadAccounts();
             loadConstants();
@@ -259,8 +259,10 @@ public class Handler {
         Account a = as.callByLibNum(libnum);
         boolean x;
         if(a!=null){
-            x = a.ReturnBook(s.searchByCRN(crn),dmg,ap.getDMGFees(),ap.getFee());
-            s.searchByCRN(crn).editAvilibility(true);
+                x = a.ReturnBook(s.searchByCRN(crn),xpou,ap.getDMGFees(),ap.getFee());
+            if(x){
+                 s.searchByCRN(crn).editAvilibility(true);
+            }
         }else{
             x=false;
         }
@@ -287,7 +289,9 @@ public class Handler {
         boolean d;
         if(a!=null){
             d = a.CheckOutBook(s.searchByCRN(crn),ap.getKeepTime());
-            s.searchByCRN(crn).editAvilibility(false);
+            if(d){
+                s.searchByCRN(crn).editAvilibility(false);
+            }         
         }else{
             d = false;
         }

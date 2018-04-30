@@ -139,9 +139,11 @@ public class Stock implements java.io.Serializable {
         }
     }
     ArrayList<Book> books;
+    ArrayList<String> crnList;
 
     Stock() {
         books = new ArrayList<>();
+        crnList = new ArrayList<>();
     }
 
     Condition callCondition(String x) {
@@ -225,19 +227,22 @@ public class Stock implements java.io.Serializable {
     }
 
     boolean addBook(String t, String a, int year, String crn, Condition c, ArrayList<String> genres) {
-
         Book b = new Book(t, a, year, crn, c, genres);
         Book temp = searchBook(t, a, year, crn);
-        if (temp == null) {
+        if (temp == null && !crnList.contains(crn)) {
+            crnList.add(crn);
             return books.add(b);
-        } else {
+        } else if(temp != null &&crnList.contains(crn)){
             for (int i = 0; i < books.size(); i++) {
                 if (books.get(i).equals(temp)) {
                     books.get(i).count++;
                 }
             }
             return true;
+        }else{
+            return false;
         }
+        
 
     }
 

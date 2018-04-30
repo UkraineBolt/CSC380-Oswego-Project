@@ -389,7 +389,7 @@ public class ViewBooks extends javax.swing.JFrame {
         String author = jTextField2.getText();
         String crn = jTextField3.getText();
         String yea = jTextField4.getText();
-        if (!title.equals("") && !author.equals("") && !crn.equals("") && !yea.equals("")) {
+        
             int year;
             try {
                 year = Integer.parseInt(yea);
@@ -401,15 +401,14 @@ public class ViewBooks extends javax.swing.JFrame {
                 if (!all.isEmpty()) {
                     String[][] page = new String[all.size()][7];
                     Collections.sort(all);
-                    for (int i = 0; i < all.size(); i++) {
-                        for (int y = 0; y < page.length; y++) {
-                            String output = all.get(i).toString();
+                        for (int y = 0; y < all.size(); y++) {
+                            String output = all.get(y).toString();
                             String[] parts = output.split(":::");
                             for (int x = 0; x < parts.length; x++) {
                                 page[y][x] = parts[x];
                             }
                         }
-                    }
+                    
                     refreshVisual(page);
                 } else {
                     refreshVisual(null);
@@ -417,9 +416,7 @@ public class ViewBooks extends javax.swing.JFrame {
             } catch (NullPointerException e) {
                 refreshVisual(null);
             }
-        } else {
-            jButton3ActionPerformed(null);
-        }
+       
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -436,6 +433,7 @@ public class ViewBooks extends javax.swing.JFrame {
             temp = temp.substring(0, temp.length() - 3);
             String[] s = temp.split(":::");
             li.handler.checkOutBook(s[4], libnum);
+            jButton3ActionPerformed(null);
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
@@ -453,7 +451,8 @@ public class ViewBooks extends javax.swing.JFrame {
             }
             temp = temp.substring(0, temp.length() - 3);
             String[] s = temp.split(":::");
-            li.handler.returnBook(dmg, s[4], libnum);
+            li.handler.returnBook(s[4], libnum,dmg);
+            jButton3ActionPerformed(null);
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -470,10 +469,7 @@ public class ViewBooks extends javax.swing.JFrame {
                 }
             };
             jTable1.setModel(t);
-            jTable1.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-            jTable1.setColumnSelectionAllowed(false);
-            jTable1.setRowSelectionAllowed(true);
-            jTable1.setCellSelectionEnabled(false);
+            jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         } else {
             DefaultTableModel t = new DefaultTableModel(new String[][]{},
                     new String[]{
@@ -485,10 +481,7 @@ public class ViewBooks extends javax.swing.JFrame {
                 }
             };
             jTable1.setModel(t);
-            jTable1.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-            jTable1.setColumnSelectionAllowed(false);
-            jTable1.setRowSelectionAllowed(true);
-            jTable1.setCellSelectionEnabled(false);
+            jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         }
     }
 

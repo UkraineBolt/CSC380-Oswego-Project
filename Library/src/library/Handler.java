@@ -186,7 +186,7 @@ public class Handler {
         return s.callAll();
     }
     
-    public void deleteBook(String title, String author, String crn, String year){
+    public void deleteBook(String title, String author, String year, String crn){
         try {
             loadBooks();
         } catch (IOException | ClassNotFoundException ex) {

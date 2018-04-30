@@ -184,7 +184,7 @@ public class AddBook extends javax.swing.JFrame {
             try {
                 int y = Integer.parseInt(year);
                 int limit = Calendar.getInstance().get(Calendar.YEAR);
-                if(y<limit){
+                if(y<=limit){
                 e.li.handler.makeBook(title, author, y, crn, gen);
                 e.callRefresh();
                 }else{

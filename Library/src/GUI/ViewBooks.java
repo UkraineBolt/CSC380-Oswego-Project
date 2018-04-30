@@ -39,7 +39,7 @@ public class ViewBooks extends javax.swing.JFrame {
             jButton7.setVisible(false);
             jLabel2.setVisible(false);
             jTextField5.setVisible(false);
-            
+
         }
     }
 
@@ -371,13 +371,11 @@ public class ViewBooks extends javax.swing.JFrame {
         if (!all.isEmpty()) {
             String[][] page = new String[all.size()][7];
             Collections.sort(all);
-            for (int i = 0; i < all.size(); i++) {
-                for (int y = 0; y < page.length; y++) {
-                    String output = all.get(i).toString();
-                    String[] parts = output.split(":::");
-                    for (int x = 0; x < parts.length; x++) {
-                        page[y][x] = parts[x];
-                    }
+            for (int y = 0; y < all.size(); y++) {
+                String output = all.get(y).toString();
+                String[] parts = output.split(":::");
+                for (int x = 0; x < parts.length; x++) {
+                    page[y][x] = parts[x];
                 }
             }
             refreshVisual(page);
@@ -392,41 +390,45 @@ public class ViewBooks extends javax.swing.JFrame {
         String author = jTextField2.getText();
         String crn = jTextField3.getText();
         String yea = jTextField4.getText();
-        int year;
-        try {
-            year = Integer.parseInt(yea);
-        } catch (NumberFormatException e) {
-            year = -1;
-        }
-        ArrayList<Stock.Book> all = li.handler.limitedBookSearch(title, author, year, crn);
-        try {
-            if (!all.isEmpty()) {
-                String[][] page = new String[all.size()][7];
-                Collections.sort(all);
-                for (int i = 0; i < all.size(); i++) {
-                    for (int y = 0; y < page.length; y++) {
-                        String output = all.get(i).toString();
-                        String[] parts = output.split(":::");
-                        for (int x = 0; x < parts.length; x++) {
-                            page[y][x] = parts[x];
+        if (!title.equals("") && !author.equals("") && !crn.equals("") && !yea.equals("")) {
+            int year;
+            try {
+                year = Integer.parseInt(yea);
+            } catch (NumberFormatException e) {
+                year = -1;
+            }
+            ArrayList<Stock.Book> all = li.handler.limitedBookSearch(title, author, year, crn);
+            try {
+                if (!all.isEmpty()) {
+                    String[][] page = new String[all.size()][7];
+                    Collections.sort(all);
+                    for (int i = 0; i < all.size(); i++) {
+                        for (int y = 0; y < page.length; y++) {
+                            String output = all.get(i).toString();
+                            String[] parts = output.split(":::");
+                            for (int x = 0; x < parts.length; x++) {
+                                page[y][x] = parts[x];
+                            }
                         }
                     }
+                    refreshVisual(page);
+                } else {
+                    refreshVisual(null);
                 }
-                refreshVisual(page);
-            } else {
+            } catch (NullPointerException e) {
                 refreshVisual(null);
             }
-        } catch (NullPointerException e) {
-            refreshVisual(null);
+        } else {
+            jButton3ActionPerformed(null);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // checkOut
-        String l = jTextField5.getText();        
-        if(l.equals("") || jTable1.getSelectedRow() == -1){
-            
-        }else{
+        String l = jTextField5.getText();
+        if (l.equals("") || jTable1.getSelectedRow() == -1) {
+
+        } else {
             int libnum = Integer.parseInt(l);
             String temp = "";
             for (int x = 0; x < 7; x++) {
@@ -441,9 +443,9 @@ public class ViewBooks extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // checkIn
         String l = jTextField5.getText();
-        if(l.equals("") || jTable1.getSelectedRow() == -1){
-            
-        }else{
+        if (l.equals("") || jTable1.getSelectedRow() == -1) {
+
+        } else {
             int libnum = Integer.parseInt(l);
             boolean dmg = jCheckBox1.isSelected();
             String temp = "";

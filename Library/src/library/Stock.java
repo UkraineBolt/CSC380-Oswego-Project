@@ -162,25 +162,6 @@ public class Stock implements java.io.Serializable {
         }
     }
 
-    /*boolean editAvilibility(Book b, boolean add) {
-        for (int i = 0; i < books.size(); i++) {
-            if (books.get(i).equals(b)) {
-                if (books.get(i).count<=1) {
-                    books.get(i).ChangeAvailability();
-                    return true;
-                } else {
-                    if(add){
-                        books.get(i).count++;
-                    }else{
-                        books.get(i).count--;
-                    }
-                    break;
-                }
-            }
-        }
-
-        return false;
-    }*/
     ArrayList<Book> callAll() {
         return books;
     }

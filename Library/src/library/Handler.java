@@ -220,7 +220,7 @@ public class Handler {
             //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-        boolean x = as.realterCheckoutSize();
+        boolean x = as.realterCheckoutSize(ap.getCheckOutSize());
         try {
             saveAccounts();
             return x;
@@ -259,7 +259,7 @@ public class Handler {
         Account a = as.callByLibNum(libnum);
         boolean x;
         if(a!=null){
-            x = a.ReturnBook(s.searchByCRN(crn),dmg,ap.getDMGFees());
+            x = a.ReturnBook(s.searchByCRN(crn),dmg,ap.getDMGFees(),ap.getFee());
         }else{
             x=false;
         }

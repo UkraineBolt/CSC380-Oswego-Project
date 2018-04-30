@@ -74,7 +74,7 @@ public class Account implements java.io.Serializable, Comparable<Account> {
     private int libraryNumber;
     private double fee = 0;
 
-    AdminPage ap;
+    //AdminPage ap;
 
     Account(AccountType at, String fname, String lname, String a, String c, String em, String ph, String zip, String st, String u, int checkOutSize, int lbnum) {
         state = st;
@@ -90,7 +90,6 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         cos = checkOutSize;
         libraryNumber = lbnum;
         checkouts = new ArrayList<>();
-        loadC();
     }
 
     Account(Account x) {
@@ -115,18 +114,7 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         return checkouts.isEmpty();
     }
 
-    private void loadC() {
-        WR r = new WR();
-        try {
-            FileOutputStream fos = new FileOutputStream(new File(r.returnConstantsPath()), false);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(ap);
-            oos.close();
-            fos.close();
-        } catch (IOException e) {
-            //Logger.getLogger(Accounts.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
+
 
     public int gettype() {
         if (null == accountType) {
@@ -143,7 +131,7 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         }
     }
 
-    boolean addFee(double dmg, String crn) {
+    boolean addFee(double dmg, String crn, double f) {
         Checkout b = null;
         for (int i = 0; i < checkouts.size(); i++) {
             if (checkouts.get(i).book.getCRN().equals(crn)) {
@@ -161,13 +149,12 @@ public class Account implements java.io.Serializable, Comparable<Account> {
             temp = TimeUnit.DAYS.convert(temp, TimeUnit.MILLISECONDS);
             p = (int) temp;
         }
-        fee = fee + (ap.getFee() * p) + dmg;
+        fee = fee + (f * p) + dmg;
         return true;
     }
 
-    public boolean updateKeepLimit() {
-        loadC();
-        int newLimit = ap.getCheckOutSize();
+    public boolean updateKeepLimit(int x) {
+        int newLimit = x;
         if (newLimit != checkouts.size() && newLimit > 1 && libraryNumber > 0) {
             cos = newLimit;
         }
@@ -205,7 +192,7 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         return true;
     }
 
-    public boolean ReturnBook(Stock.Book b, boolean fees, double dmg) {
+    public boolean ReturnBook(Stock.Book b, boolean fees, double dmg, double checkoutfee) {
         boolean te = false;
         for (int i = 0; i < checkouts.size(); i++) {
             if (b.equals(checkouts.get(i).book)) {
@@ -217,7 +204,7 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         if (te) {
             b.editAvilibility(true);
             if (fees) {
-                addFee(dmg, b.getCRN());
+                addFee(dmg, b.getCRN(),checkoutfee);
             }
             return true;
         }

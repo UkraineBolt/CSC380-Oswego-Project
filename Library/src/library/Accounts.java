@@ -62,10 +62,10 @@ public class Accounts implements java.io.Serializable{
         return t;
     }
     
-    boolean realterCheckoutSize(){
+    boolean realterCheckoutSize(int checkoutSize){
         for(String key:accounts.keySet()){
             Account temp = accounts.get(key);
-            temp.updateKeepLimit();
+            temp.updateKeepLimit(checkoutSize);
         }
         return true;
     }

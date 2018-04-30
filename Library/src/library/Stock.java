@@ -58,12 +58,32 @@ public class Stock implements java.io.Serializable {
             count = 1;
         }
 
-        void ChangeAvailability() {
+        private void changeAvailability() {
             if (av == Availability.InStock) {
                 av = Availability.CheckedOut;
             } else {
                 av = Availability.InStock;
             }
+        }
+
+        boolean editAvilibility(boolean add) {
+            if(add){
+                if(count>0){
+                    count++;
+                }else{
+                    count++;
+                    changeAvailability();
+                }
+            }else{
+                if(count>1){
+                    count--;
+                }else{
+                    count--;
+                    changeAvailability();
+                }
+            }
+            return true;
+            
         }
 
         String getCRN() {
@@ -92,10 +112,10 @@ public class Stock implements java.io.Serializable {
                 return false;
             }
             Book t = (Book) obj;
-            if (!this.title.equals(t.title) || !this.author.equals(t.author)) {
+            if (!this.title.equals(t.title) || !this.author.equals(t.author) || !this.crn.equals(t.crn)) {
                 return false;
             }
-            if (this.crn != t.crn || this.year != t.year) {
+            if (this.year != t.year) {
                 return false;
             }
             return true;
@@ -142,17 +162,25 @@ public class Stock implements java.io.Serializable {
         }
     }
 
-    boolean editAvilibility(Book b) {
+    /*boolean editAvilibility(Book b, boolean add) {
         for (int i = 0; i < books.size(); i++) {
             if (books.get(i).equals(b)) {
-                books.get(i).ChangeAvailability();
-                return true;
+                if (books.get(i).count<=1) {
+                    books.get(i).ChangeAvailability();
+                    return true;
+                } else {
+                    if(add){
+                        books.get(i).count++;
+                    }else{
+                        books.get(i).count--;
+                    }
+                    break;
+                }
             }
         }
 
         return false;
-    }
-
+    }*/
     ArrayList<Book> callAll() {
         return books;
     }
@@ -192,22 +220,22 @@ public class Stock implements java.io.Serializable {
             return true;
         }
         if (!a.title.equals("")) {
-            if(!a.title.equals(b.title)){
+            if (!a.title.contains(b.title)) {
                 return false;
             }
         }
         if (!a.author.equals("")) {
-            if(!a.author.equals(b.author)){
+            if (!a.author.contains(b.author)) {
                 return false;
             }
         }
-        if (a.year!=-1) {
-            if(a.year!=b.year){
+        if (a.year != -1) {
+            if (a.year != b.year) {
                 return false;
             }
         }
         if (!a.crn.equals("")) {
-            if(!a.crn.equals(b.crn)){
+            if (!a.crn.contains(b.crn)) {
                 return false;
             }
         }

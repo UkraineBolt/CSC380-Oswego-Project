@@ -9,10 +9,8 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -259,10 +257,12 @@ public class Handler {
             return false;
         }
         Account a = as.callByLibNum(libnum);
-        if (dmg) {
-            a.AddFee(ap.getDMGFees(), crn);
+        boolean x;
+        if(a!=null){
+            x = a.ReturnBook(s.searchByCRN(crn),dmg,ap.getDMGFees());
+        }else{
+            x=false;
         }
-        boolean x = a.ReturnBook(s.searchByCRN(crn));
         try {
             saveAccounts();
             saveBooks();
@@ -277,12 +277,18 @@ public class Handler {
         try {
             loadAccounts();
             loadBooks();
+            loadConstants();
         } catch (IOException | ClassNotFoundException ex) {
             //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         Account a = as.callByLibNum(libnum);
-        boolean d = a.CheckOutBook(s.searchByCRN(crn));
+        boolean d;
+        if(a!=null){
+            d = a.CheckOutBook(s.searchByCRN(crn),ap.getKeepTime());
+        }else{
+            d = false;
+        }
         try {
             saveBooks();
             saveAccounts();

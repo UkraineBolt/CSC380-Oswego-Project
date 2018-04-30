@@ -6,7 +6,9 @@
 package library;
 
 import java.io.*;
-import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,10 +38,10 @@ public class Account implements java.io.Serializable, Comparable<Account> {
     private class Checkout implements java.io.Serializable {
 
         Stock.Book book;
-        int dueDay;
-        int startDay;
+        Date dueDay;
+        Date startDay;
 
-        Checkout(Stock.Book b, int dd, int sd) {
+        Checkout(Stock.Book b, Date dd, Date sd) {
             book = b;
             dueDay = dd;
             startDay = sd;
@@ -141,7 +143,7 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         }
     }
 
-    boolean AddFee(double dmg, String crn) {
+    boolean addFee(double dmg, String crn) {
         Checkout b = null;
         for (int i = 0; i < checkouts.length; i++) {
             if (checkouts[i].book.getCRN().equals(crn)) {
@@ -152,12 +154,12 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         if (b == null) {
             return false;
         }
-        LocalDate ld = LocalDate.now();
-        int p = b.dueDay - ld.getDayOfYear();
-        if (p <= 0) {
-            p = 1;
-        } else {
-            p++;
+        Date today = new Date();
+        int p = 0;
+        if(today.after(b.dueDay)){
+            long temp = today.getTime() - b.dueDay.getTime();
+            temp = TimeUnit.DAYS.convert(temp, TimeUnit.MILLISECONDS);
+            p = (int) temp;
         }
         fee = fee + (ap.getFee() * p) + dmg;
         return true;
@@ -196,29 +198,28 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         return fee;
     }
 
-    boolean CheckOutBook(Stock.Book b) {
-        if (checked == checkouts.length || b==null) {
+    public boolean CheckOutBook(Stock.Book b , int days) {
+        if (checked == checkouts.length || b==null || b.count==0) {
             return false;
         }
-        LocalDate ld = LocalDate.now();
-        int today = ld.getDayOfYear();
-        int due = ld.plusDays((long) ap.getKeepTime()).getDayOfYear();
-        if (due > 365) {
-            due = due - 365;
-        }
+        Date today = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(today);
+        c.add(Calendar.DATE, days);
+        Date due = c.getTime();
         Checkout co = new Checkout(b, due, today);
         checkouts[checked] = co;
         checked++;
+        b.editAvilibility(false);
         return true;
     }
 
-    boolean ReturnBook(Stock.Book b) {
+    public boolean ReturnBook(Stock.Book b,boolean fees, double dmg) {
         int temp = 0;
         boolean checker = false;
         for (int i = 0; i < checkouts.length; i++) {
             if (b.equals(checkouts[i].book)) {
                 checkouts[i] = null;
-                b.ChangeAvailability();
                 temp = i;
                 checked--;
                 checker = true;
@@ -226,9 +227,21 @@ public class Account implements java.io.Serializable, Comparable<Account> {
             }
         }
         if (checker) {
-            for (int i = checkouts.length; i>temp; i--) {
-                checkouts[i] = checkouts[i + 1];
+            for (int i = temp; i<checkouts.length-1; i++) {
+                if(checkouts[i+1]!=null){
+                checkouts[i] = checkouts[i+1];
+                }else{
+                    temp = i;
+                    break;
+                }
             }
+            checkouts[temp+1]=null;
+        }else{
+            return false;
+        }
+        b.editAvilibility(true);
+        if(fees){
+            addFee(dmg,b.getCRN());
         }
         return true;
     }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import library.Account;
 import library.Stock;
 
 /**
@@ -79,6 +80,7 @@ public class ViewBooks extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jTextField5 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -186,10 +188,22 @@ public class ViewBooks extends javax.swing.JFrame {
         jLabel8.setText("jLabel8");
 
         jButton6.setText("Out");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setText("return");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("LibraryNumber");
+
+        jCheckBox1.setText("Damage?");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -231,7 +245,9 @@ public class ViewBooks extends javax.swing.JFrame {
                                         .addGap(274, 274, 274)
                                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(224, 224, 224)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jCheckBox1)
+                                        .addGap(137, 137, 137)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel5)
                                             .addComponent(jLabel4))
@@ -291,7 +307,9 @@ public class ViewBooks extends javax.swing.JFrame {
                                 .addGap(48, 48, 48)
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jCheckBox1))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jButton6)
@@ -332,6 +350,7 @@ public class ViewBooks extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        //for delete
         if (jTable1.getSelectedRow() > -1) {
             ArrayList<String> books = new ArrayList<>();
             String temp = "";
@@ -401,6 +420,41 @@ public class ViewBooks extends javax.swing.JFrame {
             refreshVisual(null);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // checkOut
+        String l = jTextField5.getText();        
+        if(l.equals("") || jTable1.getSelectedRow() == -1){
+            
+        }else{
+            int libnum = Integer.parseInt(l);
+            String temp = "";
+            for (int x = 0; x < 7; x++) {
+                temp = temp + (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), x) + ":::";
+            }
+            temp = temp.substring(0, temp.length() - 3);
+            String[] s = temp.split(":::");
+            li.handler.checkOutBook(s[4], libnum);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // checkIn
+        String l = jTextField5.getText();
+        if(l.equals("") || jTable1.getSelectedRow() == -1){
+            
+        }else{
+            int libnum = Integer.parseInt(l);
+            boolean dmg = jCheckBox1.isSelected();
+            String temp = "";
+            for (int x = 0; x < 7; x++) {
+                temp = temp + (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), x) + ":::";
+            }
+            temp = temp.substring(0, temp.length() - 3);
+            String[] s = temp.split(":::");
+            li.handler.returnBook(dmg, s[4], libnum);
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     private void refreshVisual(String[][] sortedTables) {
 
@@ -480,6 +534,7 @@ public class ViewBooks extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -142,6 +142,22 @@ public class Handler {
         }
         return as.emailToUserID(x);
     }
+    
+    public void changeCondition(String crn,String condition){
+        try {
+            loadBooks();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        s.changeCondition(crn, s.callCondition(crn));
+        
+        try {
+            saveBooks();
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public boolean changePassword(String user, String pass) {
         try {

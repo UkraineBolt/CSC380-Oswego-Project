@@ -186,6 +186,15 @@ public class Stock implements java.io.Serializable {
         }
         return null;
     }
+    
+    boolean changeCondition(String crn,Condition c){
+        Book x = searchByCRN(crn);
+        if(x!=null&&c!=null){
+            x.ChangeCondition(c);
+            return true;
+        }
+        return false;
+    }
 
     ArrayList<Book> limitedSearch(String title, String author, int year, String crn) {
         ArrayList<Book> list = new ArrayList<>();

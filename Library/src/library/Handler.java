@@ -275,6 +275,21 @@ public class Handler {
             return false;
         }
     }
+    
+    public double vpFee(int libnum,boolean paid){
+        try {
+            loadAccounts();
+        } catch (IOException | ClassNotFoundException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+            return -1;
+        }
+        Account a = as.callByLibNum(libnum);
+        if(a!=null){
+        return a.returnFee(paid);
+        }else{
+            return -1;
+        }
+    }
 
     public boolean checkOutBook(String crn, int libnum) {
         try {

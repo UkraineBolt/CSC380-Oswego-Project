@@ -193,6 +193,19 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         checkouts.add(co);
         return true;
     }
+    
+    double returnFee(boolean paid){
+        if(paid){
+            fee=0;
+            return fee;
+        }else{
+            return fee;
+        }
+        
+    }
+    void payFee(){
+        fee=0;
+    }
 
     public boolean ReturnBook(Stock.Book b, boolean fees, double dmg, double checkoutfee) {
         for (int i = 0; i < checkouts.size(); i++) {

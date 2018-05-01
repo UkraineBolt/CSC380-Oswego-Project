@@ -150,7 +150,7 @@ public class Handler {
             //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        s.changeCondition(crn, s.callCondition(crn));
+        s.changeCondition(crn, s.callCondition(condition));
         
         try {
             saveBooks();

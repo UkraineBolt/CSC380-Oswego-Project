@@ -226,7 +226,8 @@ public class LibraryInterface extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         LoginScreen ls = new LoginScreen();
         ls.setVisible(true);
-        ls.handler=new Handler();
+        handler.current=null;
+        ls.handler=this.handler;
         this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
     public void callDispose(){

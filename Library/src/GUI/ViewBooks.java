@@ -40,6 +40,9 @@ public class ViewBooks extends javax.swing.JFrame {
             jTextField5.setVisible(false);
             jTextField6.setVisible(false);
             jButton9.setVisible(false);
+            jButton8.setVisible(false);
+            jLabel9.setVisible(false);
+            jCheckBox1.setVisible(false);
         }
     }
 

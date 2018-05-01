@@ -10,18 +10,22 @@ package GUI;
  * @author alex
  */
 public class DmgFees extends javax.swing.JFrame {
+
     ViewBooks vb;
-    void callFrame(ViewBooks vb){
+
+    void callFrame(ViewBooks vb) {
         this.vb = vb;
     }
-    void callVisual(int lib,boolean p){
+
+    void callVisual(int lib, boolean p) {
         Double x = vb.li.handler.vpFee(lib, p);
-        if(x==-1){
+        if (x == -1) {
             jTextField1.setText("No such account found");
-        }else{
+        } else {
             jTextField1.setText(Double.toString(x));
         }
     }
+
     /**
      * Creates new form DmgFees
      */
@@ -103,12 +107,15 @@ public class DmgFees extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // paid
-        String x = vb.jTextField5.getText();
-        try{
-            int lib = Integer.parseInt(x);
-            callVisual(lib,true);
-        }catch(NumberFormatException e){
-            jTextField1.setText("digits only");
+        
+        if (!jTextField1.getText().equals("0.0")) {
+            String x = vb.jTextField5.getText();
+            try {
+                int lib = Integer.parseInt(x);
+                callVisual(lib, true);
+            } catch (NumberFormatException e) {
+                jTextField1.setText("digits only");
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

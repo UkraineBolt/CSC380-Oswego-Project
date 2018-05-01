@@ -284,9 +284,18 @@ public class Handler {
             return -1;
         }
         Account a = as.callByLibNum(libnum);
+        double x;
         if(a!=null){
-        return a.returnFee(paid);
+        x = a.returnFee(paid);
         }else{
+            x= -1;
+        }
+        
+        try {
+            saveAccounts();
+            return x;
+        } catch (IOException ex) {
+            //Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
             return -1;
         }
     }

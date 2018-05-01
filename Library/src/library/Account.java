@@ -210,8 +210,8 @@ public class Account implements java.io.Serializable, Comparable<Account> {
     public boolean ReturnBook(Stock.Book b, boolean fees, double dmg, double checkoutfee) {
         for (int i = 0; i < checkouts.size(); i++) {
             if (b.equals(checkouts.get(i).book)) {
-                checkouts.remove(i);
                 addFee(dmg,fees, b.getCRN(),checkoutfee);
+                checkouts.remove(i);
                 return true;
             }
         }

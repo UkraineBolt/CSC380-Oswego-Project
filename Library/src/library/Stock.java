@@ -199,6 +199,9 @@ public class Stock implements java.io.Serializable {
     }
 
     boolean compareBooksWithLimitedInfo(Book a, Book b) {
+        if(a==null || b==null){
+            return false;
+        }
         if (a.equals(b)) {
             return true;
         }

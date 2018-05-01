@@ -5,6 +5,7 @@
  */
 package library;
 
+import library.Stock.Book;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -16,7 +17,7 @@ import static org.junit.Assert.*;
  * @author alex
  */
 public class AccountTest {
-    
+    Account x;
     public AccountTest() {
     }
     
@@ -26,6 +27,7 @@ public class AccountTest {
     
     @Before
     public void setUp() {
+        x = new Account(AccountType.Employer,"firstname","lastname","address","city","email","phonenum","zip","state","username",0,0);
     }
     
     @After
@@ -38,13 +40,12 @@ public class AccountTest {
     @org.junit.Test
     public void testCompareTo() {
         System.out.println("compareTo");
-        Account o = null;
-        Account instance = null;
+        Account instance = new Account(null,"firstname","lastname","address","city","email","phonenum","zip","state","username",0,0);
         int expResult = 0;
-        int result = instance.compareTo(o);
+        int result = instance.compareTo(x);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -53,12 +54,11 @@ public class AccountTest {
     @org.junit.Test
     public void testGetname() {
         System.out.println("getname");
-        Account instance = null;
-        String expResult = "";
-        String result = instance.getname();
+        String expResult = "firstname lastname";
+        String result = x.getname();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -67,12 +67,11 @@ public class AccountTest {
     @org.junit.Test
     public void testCheckoutIsEmpty() {
         System.out.println("checkoutIsEmpty");
-        Account instance = null;
-        boolean expResult = false;
-        boolean result = instance.checkoutIsEmpty();
+        boolean expResult = true;
+        boolean result = x.checkoutIsEmpty();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -81,12 +80,11 @@ public class AccountTest {
     @org.junit.Test
     public void testGettype() {
         System.out.println("gettype");
-        Account instance = null;
         int expResult = 0;
-        int result = instance.gettype();
+        int result = x.gettype();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -97,14 +95,13 @@ public class AccountTest {
         System.out.println("addFee");
         double dmg = 0.0;
         boolean d = false;
-        String crn = "";
+        String crn = "123456789";
         double f = 0.0;
-        Account instance = null;
         boolean expResult = false;
-        boolean result = instance.addFee(dmg, d, crn, f);
+        boolean result = x.addFee(dmg, d, crn, f);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -113,13 +110,11 @@ public class AccountTest {
     @org.junit.Test
     public void testUpdateKeepLimit() {
         System.out.println("updateKeepLimit");
-        int x = 0;
-        Account instance = null;
-        boolean expResult = false;
-        boolean result = instance.updateKeepLimit(x);
+        boolean expResult = true;
+        boolean result = x.updateKeepLimit(10);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -128,25 +123,13 @@ public class AccountTest {
     @org.junit.Test
     public void testGetLibNum() {
         System.out.println("getLibNum");
-        Account instance = null;
         int expResult = 0;
-        int result = instance.getLibNum();
+        int result = x.getLibNum();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of ClearFee method, of class Account.
-     */
-    @org.junit.Test
-    public void testClearFee() {
-        System.out.println("ClearFee");
-        Account instance = null;
-        instance.ClearFee();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
     /**
      * Test of compareEmail method, of class Account.
@@ -154,27 +137,11 @@ public class AccountTest {
     @org.junit.Test
     public void testCompareEmail() {
         System.out.println("compareEmail");
-        String x = "";
-        Account instance = null;
-        boolean expResult = false;
-        boolean result = instance.compareEmail(x);
+        boolean expResult = true;
+        boolean result = x.compareEmail("email");
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getBill method, of class Account.
-     */
-    @org.junit.Test
-    public void testGetBill() {
-        System.out.println("getBill");
-        Account instance = null;
-        double expResult = 0.0;
-        double result = instance.getBill();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -184,13 +151,12 @@ public class AccountTest {
     public void testCheckOutBook() {
         System.out.println("CheckOutBook");
         Stock.Book b = null;
-        int days = 0;
-        Account instance = null;
+        int days = 7;
         boolean expResult = false;
-        boolean result = instance.CheckOutBook(b, days);
+        boolean result = x.CheckOutBook(b, days);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -200,25 +166,13 @@ public class AccountTest {
     public void testReturnFee() {
         System.out.println("returnFee");
         boolean paid = false;
-        Account instance = null;
         double expResult = 0.0;
-        double result = instance.returnFee(paid);
+        double result = x.returnFee(paid);
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of payFee method, of class Account.
-     */
-    @org.junit.Test
-    public void testPayFee() {
-        System.out.println("payFee");
-        Account instance = null;
-        instance.payFee();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
     /**
      * Test of ReturnBook method, of class Account.
@@ -230,12 +184,11 @@ public class AccountTest {
         boolean fees = false;
         double dmg = 0.0;
         double checkoutfee = 0.0;
-        Account instance = null;
         boolean expResult = false;
-        boolean result = instance.ReturnBook(b, fees, dmg, checkoutfee);
+        boolean result = x.ReturnBook(b, fees, dmg, checkoutfee);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -244,12 +197,11 @@ public class AccountTest {
     @org.junit.Test
     public void testGetUsername() {
         System.out.println("getUsername");
-        Account instance = null;
-        String expResult = "";
-        String result = instance.getUsername();
+        String expResult = "username";
+        String result = x.getUsername();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -258,12 +210,11 @@ public class AccountTest {
     @org.junit.Test
     public void testChangeType() {
         System.out.println("changeType");
-        Account instance = null;
-        boolean expResult = false;
-        boolean result = instance.changeType();
+        boolean expResult = true;
+        boolean result = x.changeType();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -272,12 +223,11 @@ public class AccountTest {
     @org.junit.Test
     public void testToString() {
         System.out.println("toString");
-        Account instance = null;
-        String expResult = "";
-        String result = instance.toString();
+        String expResult = "firstname:::lastname:::address:::city:::state:::zip:::phonenum:::email:::Employer:::username:::0";
+        String result = x.toString();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
     
 }

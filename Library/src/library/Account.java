@@ -5,7 +5,7 @@
  */
 package library;
 
-import java.io.*;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -168,17 +168,11 @@ public class Account implements java.io.Serializable, Comparable<Account> {
         return libraryNumber;
     }
 
-    void ClearFee() {
-        fee = 0;
-    }
-
     boolean compareEmail(String x) {
         return x.equals(email);
     }
 
-    double getBill() {
-        return fee;
-    }
+    
 
     public boolean CheckOutBook(Stock.Book b, int days) {
         if (cos <= checkouts.size() || b == null || b.count == 0) {
@@ -202,9 +196,6 @@ public class Account implements java.io.Serializable, Comparable<Account> {
             return fee;
         }
         
-    }
-    void payFee(){
-        fee=0;
     }
 
     public boolean ReturnBook(Stock.Book b, boolean fees, double dmg, double checkoutfee) {

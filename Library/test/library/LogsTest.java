@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
  * @author alex
  */
 public class LogsTest {
-    
+    Logs x;
     public LogsTest() {
     }
     
@@ -27,6 +27,7 @@ public class LogsTest {
     
     @Before
     public void setUp() {
+        x = new Logs();
     }
     
     @After
@@ -40,15 +41,14 @@ public class LogsTest {
     public void testAddWorkLog() {
         System.out.println("addWorkLog");
         int priority = 0;
-        Date startDate = null;
-        String requestName = "";
-        String action = "";
-        Logs instance = new Logs();
-        boolean expResult = false;
-        boolean result = instance.addWorkLog(priority, startDate, requestName, action);
+        Date startDate = new Date();
+        String requestName = "alex";
+        String action = "test";
+        boolean expResult = true;
+        boolean result = x.addWorkLog(priority, startDate, requestName, action);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -57,16 +57,14 @@ public class LogsTest {
     @org.junit.Test
     public void testSearchLog() {
         System.out.println("searchLog");
-        int priority = 0;
-        Date start = null;
-        String name = "";
-        String action = "";
-        Logs instance = new Logs();
-        Logs.Event expResult = null;
-        Logs.Event result = instance.searchLog(priority, start, name, action);
-        assertEquals(expResult, result);
+        setUp();
+        Date d = new Date();
+        x.addWorkLog(0, d, "alex", "testing");
+        Logs.Event r = x.searchLog(0, d, "alex", "testing");
+        boolean result = r!=null;
+        assertEquals(true, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -75,15 +73,14 @@ public class LogsTest {
     @org.junit.Test
     public void testCompleteLog() {
         System.out.println("completeLog");
-        Logs.Event e = null;
-        String name = "";
-        Date d = null;
-        Logs instance = new Logs();
-        boolean expResult = false;
-        boolean result = instance.completeLog(e, name, d);
+        setUp();
+        Date d = new Date();
+        x.addWorkLog(0, d, "alex", "testing");
+        boolean expResult = true;
+        boolean result = x.completeLog(x.searchLog(0, d, "alex", "testing"), "alex", d);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -92,17 +89,13 @@ public class LogsTest {
     @org.junit.Test
     public void testAddEvent() {
         System.out.println("addEvent");
-        Date date = null;
-        String title = "";
-        String host = "";
-        String where = "";
-        String discription = "";
-        Logs instance = new Logs();
-        boolean expResult = false;
-        boolean result = instance.addEvent(date, title, host, where, discription);
+        setUp();
+        Date d = new Date();
+        boolean expResult = true;
+        boolean result = x.addEvent(d, "x", "x", "x", "x");
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -111,17 +104,13 @@ public class LogsTest {
     @org.junit.Test
     public void testSearchEvent() {
         System.out.println("searchEvent");
-        Date d = null;
-        String title = "";
-        String host = "";
-        String where = "";
-        String dis = "";
-        Logs instance = new Logs();
-        Logs.Event expResult = null;
-        Logs.Event result = instance.searchEvent(d, title, host, where, dis);
-        assertEquals(expResult, result);
+        setUp();
+        Date d = new Date();
+        x.addEvent(d, "x", "x", "x", "x");
+        boolean result = x.searchEvent(d, "x", "x", "x", "x")!=null;
+        assertEquals(true, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -130,13 +119,14 @@ public class LogsTest {
     @org.junit.Test
     public void testDeleteEvent() {
         System.out.println("deleteEvent");
-        Logs.Event e = null;
-        Logs instance = new Logs();
-        boolean expResult = false;
-        boolean result = instance.deleteEvent(e);
+        setUp();
+        Date d = new Date();
+        x.addEvent(d, "x", "x", "x", "x");
+        boolean expResult = true;
+        boolean result = x.deleteEvent(x.searchEvent(d, "x", "x", "x", "x"));
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -145,12 +135,11 @@ public class LogsTest {
     @org.junit.Test
     public void testCheckForCompletedEvents() {
         System.out.println("checkForCompletedEvents");
-        Logs instance = new Logs();
-        boolean expResult = false;
-        boolean result = instance.checkForCompletedEvents();
+        boolean expResult = true;
+        boolean result = x.checkForCompletedEvents();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
     
 }

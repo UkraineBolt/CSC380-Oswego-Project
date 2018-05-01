@@ -92,7 +92,11 @@ public class Accounts implements java.io.Serializable{
     boolean changeStatus(String u){
         String pass = user.get(u);
         Account x = callAccount(u,pass);
+        if(x!=null){
         return x.changeType();
+        }else{
+            return false;
+        }
     }
     
     String emailToUserID(String x){
@@ -111,11 +115,7 @@ public class Accounts implements java.io.Serializable{
         Account oldAccount=callAccount(username,oldp);
         Account newAccount = new Account(oldAccount);
         if(deleteAccount(username,oldp)){
-            if(makeAccount(username,newpass,newAccount)){
-                return true;
-            }else{
-                return false;
-            }
+            return makeAccount(username,newpass,newAccount);
             
         }else{
             return false;

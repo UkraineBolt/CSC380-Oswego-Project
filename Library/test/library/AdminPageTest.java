@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  * @author alex
  */
 public class AdminPageTest {
-    
+    AdminPage x;
     public AdminPageTest() {
     }
     
@@ -26,6 +26,8 @@ public class AdminPageTest {
     
     @Before
     public void setUp() {
+        x = new AdminPage();
+        x.setConstants(10, 10, 10, 10);
     }
     
     @After
@@ -38,14 +40,17 @@ public class AdminPageTest {
     @org.junit.Test
     public void testSetConstants() {
         System.out.println("setConstants");
-        int l = 0;
-        double f = 0.0;
-        int c = 0;
-        double d = 0.0;
-        AdminPage instance = new AdminPage();
-        instance.setConstants(l, f, c, d);
+        int l = 1;
+        double f = 1.0;
+        int c = 1;
+        double d = 1.0;
+        x.setConstants(l, f, c, d);
+        boolean z;
+        z = x.getCheckOutSize()==1&&x.getDMGFees()==1.0&&x.getFee()==1&&x.getKeepTime()==1;
+        assertEquals(true,z);
+        
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -54,12 +59,12 @@ public class AdminPageTest {
     @org.junit.Test
     public void testGetKeepTime() {
         System.out.println("getKeepTime");
-        AdminPage instance = new AdminPage();
-        int expResult = 0;
-        int result = instance.getKeepTime();
+        setUp();
+        int expResult = 10;
+        int result = x.getKeepTime();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -68,12 +73,12 @@ public class AdminPageTest {
     @org.junit.Test
     public void testGetFee() {
         System.out.println("getFee");
-        AdminPage instance = new AdminPage();
-        double expResult = 0.0;
-        double result = instance.getFee();
+        setUp();
+        double expResult = 10.0;
+        double result = x.getFee();
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -82,12 +87,12 @@ public class AdminPageTest {
     @org.junit.Test
     public void testGetCheckOutSize() {
         System.out.println("getCheckOutSize");
-        AdminPage instance = new AdminPage();
-        int expResult = 0;
-        int result = instance.getCheckOutSize();
+        setUp();
+        int expResult = 10;
+        int result = x.getCheckOutSize();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -96,12 +101,12 @@ public class AdminPageTest {
     @org.junit.Test
     public void testGetDMGFees() {
         System.out.println("getDMGFees");
-        AdminPage instance = new AdminPage();
-        double expResult = 0.0;
-        double result = instance.getDMGFees();
+        setUp();
+        double expResult = 10.0;
+        double result = x.getDMGFees();
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
     
 }

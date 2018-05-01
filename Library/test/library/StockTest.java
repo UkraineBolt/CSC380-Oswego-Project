@@ -6,6 +6,7 @@
 package library;
 
 import java.util.ArrayList;
+import library.Stock.Book;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -17,7 +18,7 @@ import static org.junit.Assert.*;
  * @author alex
  */
 public class StockTest {
-    
+    Stock x;
     public StockTest() {
     }
     
@@ -27,6 +28,7 @@ public class StockTest {
     
     @Before
     public void setUp() {
+        x = new Stock();
     }
     
     @After
@@ -39,13 +41,11 @@ public class StockTest {
     @org.junit.Test
     public void testCallCondition() {
         System.out.println("callCondition");
-        String x = "";
-        Stock instance = new Stock();
-        Condition expResult = null;
-        Condition result = instance.callCondition(x);
+        Condition expResult = Condition.New;
+        Condition result = x.callCondition("new");
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -54,12 +54,11 @@ public class StockTest {
     @org.junit.Test
     public void testCallAll() {
         System.out.println("callAll");
-        Stock instance = new Stock();
-        ArrayList<Stock.Book> expResult = null;
-        ArrayList<Stock.Book> result = instance.callAll();
-        assertEquals(expResult, result);
+        ArrayList<Stock.Book> r = x.callAll();
+        boolean result = r.isEmpty();
+        assertEquals(true, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -68,16 +67,15 @@ public class StockTest {
     @org.junit.Test
     public void testSearchBook() {
         System.out.println("searchBook");
-        String title = "";
-        String author = "";
-        int year = 0;
-        String crn = "";
-        Stock instance = new Stock();
-        Stock.Book expResult = null;
-        Stock.Book result = instance.searchBook(title, author, year, crn);
-        assertEquals(expResult, result);
+        setUp();
+        ArrayList<String> g = new ArrayList<>();
+        g.add("bark");
+        x.addBook("a", "a", 0, "a", Condition.New, g);
+        Stock.Book r = x.searchBook("a", "a", 0, "a");
+        boolean result = r!=null;
+        assertEquals(true, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -86,13 +84,15 @@ public class StockTest {
     @org.junit.Test
     public void testSearchByCRN() {
         System.out.println("searchByCRN");
-        String crn = "";
-        Stock instance = new Stock();
-        Stock.Book expResult = null;
-        Stock.Book result = instance.searchByCRN(crn);
-        assertEquals(expResult, result);
+         setUp();
+        ArrayList<String> g = new ArrayList<>();
+        g.add("bark");
+        x.addBook("a", "a", 0, "a", Condition.New, g);
+        Stock.Book r = x.searchByCRN("a");
+        boolean result = r!=null;
+        assertEquals(true, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -101,16 +101,15 @@ public class StockTest {
     @org.junit.Test
     public void testLimitedSearch() {
         System.out.println("limitedSearch");
-        String title = "";
-        String author = "";
-        int year = 0;
-        String crn = "";
-        Stock instance = new Stock();
-        ArrayList<Stock.Book> expResult = null;
-        ArrayList<Stock.Book> result = instance.limitedSearch(title, author, year, crn);
-        assertEquals(expResult, result);
+         setUp();
+        ArrayList<String> g = new ArrayList<>();
+        g.add("bark");
+        x.addBook("a", "a", 0, "a", Condition.New, g);
+        ArrayList<Stock.Book> r = x.limitedSearch("a", "a", 0, "a");
+        boolean result = !r.isEmpty();
+        assertEquals(true, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -119,14 +118,12 @@ public class StockTest {
     @org.junit.Test
     public void testCompareBooksWithLimitedInfo() {
         System.out.println("compareBooksWithLimitedInfo");
-        Stock.Book a = null;
-        Stock.Book b = null;
-        Stock instance = new Stock();
-        boolean expResult = false;
-        boolean result = instance.compareBooksWithLimitedInfo(a, b);
-        assertEquals(expResult, result);
+        Book a = null;
+        Book b = null;
+        boolean result = x.compareBooksWithLimitedInfo(a, b);
+        assertEquals(false, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -135,18 +132,14 @@ public class StockTest {
     @org.junit.Test
     public void testAddBook() {
         System.out.println("addBook");
-        String t = "";
-        String a = "";
-        int year = 0;
-        String crn = "";
-        Condition c = null;
-        ArrayList<String> genres = null;
-        Stock instance = new Stock();
-        boolean expResult = false;
-        boolean result = instance.addBook(t, a, year, crn, c, genres);
+         setUp();
+        ArrayList<String> g = new ArrayList<>();
+        g.add("bark");
+        boolean expResult = true;
+        boolean result = x.addBook("a", "a", 0, "a", Condition.New, g);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -155,11 +148,15 @@ public class StockTest {
     @org.junit.Test
     public void testRemoveBook() {
         System.out.println("removeBook");
-        Stock.Book b = null;
-        Stock instance = new Stock();
-        instance.removeBook(b);
+        setUp();
+        ArrayList<String> g = new ArrayList<>();
+        g.add("bark");
+        x.addBook("a", "a", 0, "a", Condition.New, g);
+        x.removeBook(x.searchByCRN("a"));
+        boolean result = x.books.isEmpty();
+        assertEquals(true, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
     
 }

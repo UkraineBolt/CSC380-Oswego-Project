@@ -131,7 +131,7 @@ public class SearchPage extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("(Optional)Enter a LibraryNumber:");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/LoginScreen/admin.jpg"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/LoginScreen/black2.jpg"))); // NOI18N
         jLabel4.setText("jLabel2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -127,7 +127,7 @@ public class SetFee extends javax.swing.JFrame {
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("jLabel12");
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/LoginScreen/admin.jpg"))); // NOI18N
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/LoginScreen/black2.jpg"))); // NOI18N
         jLabel8.setText("jLabel2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -278,7 +278,7 @@ public class SetFee extends javax.swing.JFrame {
         jTextField3.setText("");
         jTextField4.setText("");
 
-        if (dmg != null && latefee != null && keeptime != null && booklimit != null) {
+        if (dmg != null || latefee != null || keeptime != null || booklimit != null) {
             try {
                 int keept = Integer.parseInt(keeptime);
                 double late = Double.parseDouble(latefee);
@@ -291,17 +291,34 @@ public class SetFee extends javax.swing.JFrame {
                     if (oldL != limit) {
                         ap.li.handler.editAllCheckoutSizes();
                     }
-
+                } else if (keept > 1) {
+                    ap.li.handler.saveConstants(keept, late, limit, d);
+                    setLableText();
+                    if (oldL != keept) {
+                        ap.li.handler.editAllCheckoutSizes();
+                    }
+                } else if (late > 1) {
+                    ap.li.handler.saveConstants(keept, late, limit, d);
+                    setLableText();
+                    if (oldL != late) {
+                        ap.li.handler.editAllCheckoutSizes();
+                    }
+                } else if (d > 1) {
+                    ap.li.handler.saveConstants(keept, late, limit, d);
+                    setLableText();
+                    if (oldL != d) {
+                        ap.li.handler.editAllCheckoutSizes();
+                    }
                 } else {
                     LoginScreenError lse = new LoginScreenError();
                     lse.jLabel1.setText("Size of checkoutLimit is two small");
                     lse.setVisible(true);
                 }
-            }catch (NumberFormatException e) {
-                    LoginScreenError lse = new LoginScreenError();
-                    lse.jLabel1.setText("Only digits are accepted");
-                    lse.setVisible(true);
-                }
+            } catch (NumberFormatException e) {
+                LoginScreenError lse = new LoginScreenError();
+                lse.jLabel1.setText("Only digits are accepted");
+                lse.setVisible(true);
+            }
         } else {
             LoginScreenError lse = new LoginScreenError();
             lse.jLabel1.setText("A field was left empty");
@@ -338,16 +355,24 @@ public class SetFee extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SetFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SetFee.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SetFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SetFee.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SetFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SetFee.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SetFee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SetFee.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

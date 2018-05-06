@@ -82,7 +82,7 @@ public class ContactUs extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("585-321-5060");
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/LoginScreen/lightblut.jpg"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/LoginScreen/black2.jpg"))); // NOI18N
         jLabel7.setText("abel7");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

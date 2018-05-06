@@ -99,7 +99,7 @@ public class AddOrDelete extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/LoginScreen/admin.jpg"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/LoginScreen/black2.jpg"))); // NOI18N
         jLabel4.setText("jLabel2");
 
         jCheckBox1.setText("Delete Books");

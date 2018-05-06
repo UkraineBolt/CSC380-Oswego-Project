@@ -277,51 +277,29 @@ public class SetFee extends javax.swing.JFrame {
         jTextField2.setText("");
         jTextField3.setText("");
         jTextField4.setText("");
+        if (dmg.equals("")) {
+            dmg = jLabel9.getText();
+        }
+        if (latefee.equals("")) {
+            latefee = jLabel10.getText();
+        }
+        if (keeptime.equals("")) {
+            keeptime = jLabel11.getText();
+        }
+        if (booklimit.equals("")) {
+            booklimit = jLabel12.getText();
+        }
 
-        if (dmg != null || latefee != null || keeptime != null || booklimit != null) {
-            try {
-                int keept = Integer.parseInt(keeptime);
-                double late = Double.parseDouble(latefee);
-                int limit = Integer.parseInt(booklimit);
-                double d = Double.parseDouble(dmg);
-                int oldL = ap.li.handler.ap.getCheckOutSize();
-                if (limit > 1) {
-                    ap.li.handler.saveConstants(keept, late, limit, d);
-                    setLableText();
-                    if (oldL != limit) {
-                        ap.li.handler.editAllCheckoutSizes();
-                    }
-                } else if (keept > 1) {
-                    ap.li.handler.saveConstants(keept, late, limit, d);
-                    setLableText();
-                    if (oldL != keept) {
-                        ap.li.handler.editAllCheckoutSizes();
-                    }
-                } else if (late > 1) {
-                    ap.li.handler.saveConstants(keept, late, limit, d);
-                    setLableText();
-                    if (oldL != late) {
-                        ap.li.handler.editAllCheckoutSizes();
-                    }
-                } else if (d > 1) {
-                    ap.li.handler.saveConstants(keept, late, limit, d);
-                    setLableText();
-                    if (oldL != d) {
-                        ap.li.handler.editAllCheckoutSizes();
-                    }
-                } else {
-                    LoginScreenError lse = new LoginScreenError();
-                    lse.jLabel1.setText("Size of checkoutLimit is two small");
-                    lse.setVisible(true);
-                }
-            } catch (NumberFormatException e) {
-                LoginScreenError lse = new LoginScreenError();
-                lse.jLabel1.setText("Only digits are accepted");
-                lse.setVisible(true);
-            }
-        } else {
+        try {
+            int keept = Integer.parseInt(keeptime);
+            double late = Double.parseDouble(latefee);
+            int limit = Integer.parseInt(booklimit);
+            double d = Double.parseDouble(dmg);
+            ap.li.handler.saveConstants(keept, late, limit, d);
+
+        } catch (NumberFormatException e) {
             LoginScreenError lse = new LoginScreenError();
-            lse.jLabel1.setText("A field was left empty");
+            lse.jLabel1.setText("Only digits are accepted");
             lse.setVisible(true);
         }
 

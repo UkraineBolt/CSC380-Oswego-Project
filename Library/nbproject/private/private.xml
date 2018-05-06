@@ -3,16 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/src/library/Handler.java</file>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/test/library/AccountsTest.java</file>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/test/library/StockTest.java</file>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/test/library/AccountTest.java</file>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/test/library/AdminPageTest.java</file>
-            <file>file:/C:/Users/shado/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/test/library/LogsTest.java</file>
-=======
-            <file>file:/C:/Users/tok/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/src/GUI/LoginScreen.java</file>
->>>>>>> 0aa3fbc977a5285d3423615bc79af457522bcdb9
+            <file>file:/C:/Users/shado/Documents/NetBeansProjects/CSC380-Oswego-Project/Library/src/GUI/SetFee.java</file>
         </group>
     </open-files>
 </project-private>

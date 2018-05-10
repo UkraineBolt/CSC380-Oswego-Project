@@ -59,7 +59,7 @@ public class AddBook extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("CRN:");
+        jLabel6.setText("ISBN:");
 
         jLabel5.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));

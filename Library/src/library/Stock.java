@@ -260,10 +260,13 @@ public class Stock implements java.io.Serializable {
 
     void removeBook(Book b) {
         for (int i = 0; i < books.size(); i++) {
-            if (books.get(i).equals(b) && books.get(i).count > 1) {
-                books.get(i).count--;
-            } else {
+            if (books.get(i).equals(b)) {
+                if(books.get(i).count > 1){
+                    books.get(i).count--;
+                    break;
+                }
                 books.remove(books.get(i));
+                break;
             }
         }
     }

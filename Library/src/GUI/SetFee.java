@@ -296,6 +296,7 @@ public class SetFee extends javax.swing.JFrame {
             int limit = Integer.parseInt(booklimit);
             double d = Double.parseDouble(dmg);
             ap.li.handler.saveConstants(keept, late, limit, d);
+            setLableText();
 
         } catch (NumberFormatException e) {
             LoginScreenError lse = new LoginScreenError();

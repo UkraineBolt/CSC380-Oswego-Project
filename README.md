@@ -18,4 +18,4 @@ A list of things we would had liked to see done:
 3) change current GUI to a handmade GUI instead of using the generated code from NetBeans and force coding certain operations to get things to work (did this due to time constrants and limited people)
 4) Make the code base more readable.
 
-In the end, the program met the bar functionality of a library app while look presentable which landed us a 98 on this project.
+In the end, the program met the bare functionality of a library app while look presentable which landed us a 98 on this project.
